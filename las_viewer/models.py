@@ -10,7 +10,7 @@ class LasUpload(models.Model):
 
     def save(self, *args, **kwargs):
         try:
-            this = LasUpload.objects.get(filename=self.filename)
+            this = LasUpload.objects.get(hashed_filename=self.hashed_filename)
             if this.las_file:
                 this.las_file.delete()
         except ObjectDoesNotExist:
