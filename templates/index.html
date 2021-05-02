@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="get" hx-get="/" hx-params="*" hx-target="#las_plot" hx-indicator="#indicator">
+    <select name="curves1" id="curves1" multiple>
+        {% for curve in las_curves %}
+            <option value="{{ curve }}">{{ curve }}</option>
+        {% endfor %}
+    </select>
+    <select name="curves2" id="curves2" multiple>
+        {% for curve in las_curves %}
+            <option value="{{ curve }}">{{ curve }}</option>
+        {% endfor %}
+    </select>
+    <select name="curves3" id="curves3" multiple>
+        {% for curve in las_curves %}
+            <option value="{{ curve }}">{{ curve }}</option>
+        {% endfor %}
+    </select>
+    <input type="submit">
+<img id="indicator" class="htmx-indicator" src="{% static 'img/spinner.gif' %}" style="width:50px;height:50px;"/>
+</form>
+<div id="las_plot">
+{{ las_div | safe }}
+{{ las_script | safe }}
+</div>
+<script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.1.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://unpkg.com/htmx.org@1.3.3"></script>
+</body>
+</html>
