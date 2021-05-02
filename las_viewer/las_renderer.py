@@ -90,11 +90,12 @@ class LasRenderer:
         self.fig_dict["fig{0}".format(log_index)].add_tools(HoverTool(tooltips=TOOLTIPS))
         # return self.plot_list, self.fig_dict["fig{0}".format(log_index)]
 
-    def render_plot_to_html(self):
-        self.plot_list[0].y_range = Range1d(4500, 4000)
+    def set_range(self):
+        # self.plot_list[0].y_range = Range1d(4500, 4000)
         for fig in self.plot_list[1:]:
             fig.y_range = self.plot_list[0].y_range
 
+    def render_plot_to_html(self):
         plot = gridplot([self.plot_list], sizing_mode='stretch_both', toolbar_options=dict(logo=None))
         plot_script, plot_div = components(plot)
         return plot_script, plot_div

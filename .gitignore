@@ -1,0 +1,11 @@
+**/env
+*.pyc
+**/.vscode
+*.zip
+*.segy
+*.npy
+*.h5
+HOPE_full/variables.py
+**/.idea
+**/node_modules
+**/las
