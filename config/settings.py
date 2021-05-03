@@ -130,4 +130,4 @@ STATICFILES_DIRS = [str(BASE_DIR / "static")]
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-HASHID_FIELD_SALT = 'Kt@7buVg0tYYBEQGS/Q0?=-HmyC6#7h0eVJ(=h*P'
+HASHID_FIELD_SALT = 'wys_31hr5n2+@%5xq!_00w5o$i@5b5ar#j@h0c7kv+zp@je@5b'
