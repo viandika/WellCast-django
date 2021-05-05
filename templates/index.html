@@ -6,13 +6,25 @@
     <title>Title</title>
 </head>
 <body>
-<form action="post" enctype="multipart/form-data" hx-post="/" hx-encoding='multipart/form-data' hx-target="#las_form" hx-indicator="#indicator">
+<form action="post" enctype="multipart/form-data" hx-post="/" hx-encoding='multipart/form-data' hx-target="#las_list"
+      hx-indicator="#indicator">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="Submit">
 </form>
+<div id="las_list">
+    <form id="las_dd" hx-get="/" hx-params="*" hx-target="#las_form" hx-indicator="#indicator">
+        <select name="selected_las" id="selected_las">
+            {% for file in las_list %}
+                <option value="{{ file }}">{{ file }}</option>
+            {% endfor %}
+            <input type="submit">
+        </select>
+    </form>
+</div>
 <div id="las_area">
     <form id="las_form" action="get" hx-get="/" hx-params="*" hx-target="#las_plot" hx-indicator="#indicator">
+        <input type="hidden" id="selected_las" name="selected_las" value="{{ selected_las }}">
         <select name="curves1" id="curves1" multiple>
             {% for curve in las_curves %}
                 <option value="{{ curve }}">{{ curve }}</option>
@@ -29,11 +41,12 @@
             {% endfor %}
         </select>
         <input type="submit">
-    <img id="indicator" class="htmx-indicator" src="{% static 'img/spinner.gif' %}" style="width:50px;height:50px;"/>
+        <img id="indicator" class="htmx-indicator" src="{% static 'img/spinner.gif' %}"
+             style="width:50px;height:50px;"/>
     </form>
     <div id="las_plot">
-    {{ las_div | safe }}
-    {{ las_script | safe }}
+        {{ las_div | safe }}
+        {{ las_script | safe }}
     </div>
 </div>
 <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.1.min.js"

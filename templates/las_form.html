@@ -1,6 +1,7 @@
 {% load static %}
 
 <form id="las_form" action="get" hx-get="/" hx-params="*" hx-target="#las_plot" hx-indicator="#indicator">
+    <input type="hidden" id="selected_las" name="selected_las" value="{{ selected_las }}">
         <select name="curves1" id="curves1" multiple>
             {% for curve in las_curves %}
                 <option value="{{ curve }}">{{ curve }}</option>
