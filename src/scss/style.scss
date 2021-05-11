@@ -1,0 +1,9 @@
+// add Roboto Font
+@import "../../node_modules/@fontsource/roboto/index.css";
+
+$font-family-sans-serif: Roboto;
+$primary: #00AFF0;
+$secondary: #F58634;
+$border-radius: .9rem;
+
+@import "../../node_modules/bootstrap/scss/bootstrap";

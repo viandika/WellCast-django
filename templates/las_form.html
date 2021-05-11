@@ -2,7 +2,7 @@
 
 <form id="las_form" action="get" hx-get="/" hx-params="*" hx-target="#las_plot" hx-indicator="#indicator">
     <input type="hidden" id="selected_las" name="selected_las" value="{{ selected_las }}">
-        <select name="curves1" id="curves1" multiple>
+        <select name="curves1" id="curves1" class="border border-gray-300 rounded-full text-gray-600 h-10 pl-5 pr-10 bg-white hover:border-gray-400 focus:outline-none appearance-none" multiple>
             {% for curve in las_curves %}
                 <option value="{{ curve }}">{{ curve }}</option>
             {% endfor %}
