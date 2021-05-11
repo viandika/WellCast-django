@@ -103,6 +103,20 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'WARNING',
+    },
+}
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -131,3 +145,5 @@ STATICFILES_DIRS = [str(BASE_DIR / "static")]
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 HASHID_FIELD_SALT = 'wys_31hr5n2+@%5xq!_00w5o$i@5b5ar#j@h0c7kv+zp@je@5b'
+
+SESSION_COOKIE_AGE = 15 * 60
