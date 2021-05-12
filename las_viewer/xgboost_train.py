@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import os
 import json
+from django.conf import settings
 
 
 def load_data(filename):
@@ -13,10 +14,7 @@ def load_data(filename):
         'WELL': filename,
         'START': las_file.well.STRT.value,
         'STOP': las_file.well.STOP.value,
-        'STEP': las_file.well.STEP.value,
-        'LAT': las_file.well.SLAT.value,
-        'LON': las_file.well.SLON.value,
-        'DATUM': las_file.well.DATUM.value
+        'STEP': las_file.well.STEP.value
     }]
     data_well['WELL'] = filename
 
@@ -63,50 +61,38 @@ def merge_alias(db, alias, logs_selected):
     return merged_data
 
 
-# Initialization
-current_dir = os.getcwd()
-train_source_dir = '/data/train'
-test_source_dir = '/data/test'
-alias_file = '/data/alias.json'
-logs_selected = ['WELL', 'DEPT', 'CAL', 'SP', 'GR', 'POR', 'DRES', 'DTCO', 'PEF', 'DENS', 'DRHO']
+def dataframing_train():
+    '''
+    TODO: fix directories and make it so it accepts uploaded las
+    :return: data frame of train
+    '''
+    # Initialization
+    train_source_dir = settings.BASE_DIR / 'las' / 'train'
+    alias_file = settings.BASE_DIR / 'las' / 'alias.json'
+    logs_selected = ['WELL', 'DEPTH', 'CAL', 'RXO', 'GR', 'POR', 'DRES', 'DT', 'DENS']
 
-with open(current_dir + alias_file, 'r') as file:
-    alias = json.load(file)
+    with open(alias_file, 'r') as file:
+        alias = json.load(file)
 
-# Loading raw data for train dataset
-data_train = pd.DataFrame()
-log_ava_train = pd.DataFrame()
-for f in sorted(os.listdir(current_dir + train_source_dir)):
-    data_well, log_list = load_data(current_dir + f"/{train_source_dir}/{f}")
-    data_train = data_train.append(data_well)
-    log_ava_train = log_ava_train.append(log_list)
+    # Loading raw data for train dataset
+    data_train = pd.DataFrame()
+    log_ava_train = pd.DataFrame()
+    las_files = [file for file in train_source_dir.iterdir() if file.is_file()]
+    for f in sorted(las_files):
+        data_well, log_list = load_data(f)
+        data_train = data_train.append(data_well)
+        log_ava_train = log_ava_train.append(log_list)
 
-# Merge log aliases for train dataset
-data_train = data_train.reset_index()
-train = merge_alias(data_train, alias, logs_selected).dropna()
-train.rename(columns={'POR':'NPHI', 'DENS':'RHOB'}, inplace=True)
+    # Merge log aliases for train dataset
+    data_train = data_train.reset_index()
+    train = merge_alias(data_train, alias, logs_selected).dropna()
+    train.rename(columns={'POR': 'NPHI', 'DENS': 'RHOB'}, inplace=True)
 
-# Select well data which has more than 5000ft length
-log_ava_train['LENGTH'] = log_ava_train['STOP'] - log_ava_train['START']
-log_ava_train = log_ava_train.sort_values('LENGTH', ascending=False)
-well_selected = log_ava_train[log_ava_train['LENGTH'] > 10000]
-well_selected = well_selected['WELL']
+    # Select well data which has more than 5000ft length
+    log_ava_train['LENGTH'] = log_ava_train['STOP'] - log_ava_train['START']
+    log_ava_train = log_ava_train.sort_values('LENGTH', ascending=False)
+    well_selected = log_ava_train[log_ava_train['LENGTH'] > 100]
+    well_selected = well_selected['WELL']
 
-train = train[train['WELL'].isin(well_selected)]
-
-# Loading raw data for test dataset
-data_test = pd.DataFrame()
-log_ava_test = pd.DataFrame()
-for f in sorted(os.listdir(current_dir + test_source_dir)):
-    data_well, log_list = load_data(current_dir + f"/{test_source_dir}/{f}")
-    data_test = data_test.append(data_well)
-    log_ava_test = log_ava_test.append(log_list)
-
-# Merge log aliases for test dataset
-data_test = data_test.reset_index()
-test = merge_alias(data_test, alias, logs_selected)
-test.rename(columns={'POR':'NPHI', 'DENS':'RHOB'}, inplace=True)
-
-# Save loaded data
-train.to_csv('data/preprocessed/train.csv')
-test.to_csv('data/preprocessed/test.csv')
+    train = train[train['WELL'].isin(well_selected)]
+    return train

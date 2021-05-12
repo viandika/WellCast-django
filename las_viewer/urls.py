@@ -1,7 +1,7 @@
 from django.urls import path, include
 
-from las_viewer.views import index
+from las_viewer.views import las_page
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', las_page, name='las_page'),
 ]
