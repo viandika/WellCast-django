@@ -96,3 +96,8 @@ def dataframing_train():
 
     train = train[train['WELL'].isin(well_selected)]
     return train
+
+
+def get_quartile(df, columns):
+    quart_dict = {col: df[col].quantile([0.25, 0.75]).tolist() for col in columns}
+    return quart_dict

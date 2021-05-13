@@ -1,1 +1,15 @@
 {{ las_div | safe }}
+{% for col, quartile in quartiles.items %}
+    <div class="row">
+        <div class="col-lg-1">
+            <input type="number" class="form-control" placeholder="{{ quartile.0 }}">
+        </div>
+        <div class="col-lg-1">
+            < {{ col }} <
+        </div>
+        <div class="col-lg-1">
+            <input type="number" class="form-control" placeholder="{{ quartile.1 }}">
+        </div>
+    </div>
+    <br/>
+{% endfor %}

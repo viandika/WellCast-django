@@ -5,7 +5,7 @@ from django.conf import settings
 
 from las_viewer.forms import LasUploadForm
 from las_viewer.models import LasUpload
-from las_viewer.xgboost_train import dataframing_train
+from las_viewer.xgboost_train import dataframing_train, get_quartile
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -37,6 +37,7 @@ def las_page(request):
                 features = ['CAL', 'RXO', 'GR', 'NPHI', 'DRES', 'RHOB']
 
                 train_df = dataframing_train()
+
                 fig = make_subplots(rows=1, cols=6)
                 for idx, feature in enumerate(features):
                     fig.add_trace(go.Box(y=train_df[feature], name=feature), row=1, col=idx + 1)
@@ -44,9 +45,13 @@ def las_page(request):
                     'displaylogo': False,
                     'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toggleSpikelines', 'autoScale2d']
                 }
-                las_div = fig.to_html(full_html=True, config=config)
+                las_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
+
+                quartiles = get_quartile(train_df, features)
+
                 context = {
-                    'las_div': las_div
+                    'las_div': las_div,
+                    'quartiles': quartiles,
                 }
                 template_name = "las_box.html"
                 return render(request, template_name, context)
