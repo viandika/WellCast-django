@@ -4,6 +4,9 @@ import pandas as pd
 import os
 import json
 from django.conf import settings
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+from xgboost import XGBRegressor
 
 
 def load_data(filename):
@@ -101,3 +104,19 @@ def dataframing_train():
 def get_quartile(df, columns):
     quart_dict = {col: df[col].quantile([0.25, 0.75]).tolist() for col in columns}
     return quart_dict
+
+def train_model(df, columns, y_name):
+    X = df[columns]
+    y = df[y_name]
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=9)
+
+    model = XGBRegressor()
+    model.fit(X_train, y_train)
+
+    pred_train = model.predict(X_train)
+    rmse_train = np.sqrt(mean_squared_error(y_train, pred_train))
+    pred_test = model.predict(X_test)
+    rmse_test = np.sqrt(mean_squared_error(y_test, pred_test))
+
+    return model, pred_train, rmse_train, pred_test, rmse_test

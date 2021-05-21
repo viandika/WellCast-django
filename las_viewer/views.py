@@ -5,9 +5,12 @@ from django.conf import settings
 
 from las_viewer.forms import LasUploadForm
 from las_viewer.models import LasUpload
-from las_viewer.xgboost_train import dataframing_train, get_quartile
+from las_viewer.xgboost_train import dataframing_train, get_quartile, train_model
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
+import pandas as pd
+from sklearn.model_selection import train_test_split
+
 
 def las_page(request):
     if request.method == 'POST':
@@ -33,10 +36,11 @@ def las_page(request):
 
     if request.method == 'GET':
         if request.htmx:
+            features = ['CAL', 'RXO', 'GR', 'NPHI', 'DRES', 'RHOB']
             if request.htmx.target == 'las_box':
-                features = ['CAL', 'RXO', 'GR', 'NPHI', 'DRES', 'RHOB']
-
                 train_df = dataframing_train()
+                train_df_json = train_df.to_json(default_handler=str)
+                request.session['train_df'] = train_df_json
 
                 fig = make_subplots(rows=1, cols=6)
                 for idx, feature in enumerate(features):
@@ -55,6 +59,50 @@ def las_page(request):
                 }
                 template_name = "las_box.html"
                 return render(request, template_name, context)
+            elif request.htmx.target == 'las_box_limited':
+                train_df = pd.read_json(request.session['train_df'])
+                for col in features:
+                    train_df = train_df.loc[
+                        (train_df[col] > float(request.GET.get(col + '_bottom'))) &
+                        (train_df[col] < float(request.GET.get(col + '_top')))
+                        ]
+                if 'las_limited_preview' in request.GET:
+                    fig = make_subplots(rows=1, cols=6)
+                    for idx, feature in enumerate(features):
+                        fig.add_trace(go.Box(y=train_df[feature], name=feature), row=1, col=idx + 1)
+                    config = {
+                        'displaylogo': False,
+                        'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toggleSpikelines', 'autoScale2d']
+                    }
+                    las_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
+
+                    context = {
+                        'las_div': las_div
+                    }
+                    template_name = "las_limited.html"
+                    return render(request, template_name, context)
+                else:
+                    train_df = pd.read_json(request.session['train_df'])
+                    model, pred_train, rmse_train, pred_test, rmse_test = train_model(train_df, features, 'DT')
+                    bar_feature_importance = go.Figure(
+                        [
+                            go.Bar(
+                                x=features,
+                                y=model.feature_importances_
+                            )
+                        ]
+                    )
+                    config = {
+                        'displaylogo': False,
+                        'modeBarButtonsToRemove': ['select2d', 'lasso2d', 'toggleSpikelines', 'autoScale2d']
+                    }
+                    las_div = bar_feature_importance.to_html(full_html=False, config=config, include_plotlyjs=False)
+
+                    context = {
+                        'las_div': las_div,
+                    }
+                    template_name = "las_pred.html"
+                    return render(request, template_name, context)
             else:
                 template_name = "las_only.html"
         else:

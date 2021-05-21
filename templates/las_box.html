@@ -1,15 +1,19 @@
 {{ las_div | safe }}
-{% for col, quartile in quartiles.items %}
-    <div class="row">
-        <div class="col-lg-1">
-            <input type="number" class="form-control" placeholder="{{ quartile.0 }}">
+<form id="las_limit" data-hx-get="/" data-hx-params="*" data-hx-target="#las_box_limited">
+    {% for col, quartile in quartiles.items %}
+        <div class="row">
+            <div class="col-lg-1">
+                <input type="number" class="form-control" placeholder="{{ quartile.0 }}" value="{{ quartile.0 }}" name="{{ col }}_bottom">
+            </div>
+            <div class="col-lg-1">
+                < {{ col }} <
+            </div>
+            <div class="col-lg-1">
+                <input type="number" class="form-control" placeholder="{{ quartile.1 }}" value="{{ quartile.1 }}" name="{{ col }}_top">
+            </div>
         </div>
-        <div class="col-lg-1">
-            < {{ col }} <
-        </div>
-        <div class="col-lg-1">
-            <input type="number" class="form-control" placeholder="{{ quartile.1 }}">
-        </div>
-    </div>
-    <br/>
-{% endfor %}
+        <br/>
+    {% endfor %}
+    <input type="submit" class="btn btn-primary text-white" name="las_limited_preview" value="Preview"/>
+    <input type="submit" class="btn btn-primary text-white" name="las_limited_submit" value="Submit">
+</form>
