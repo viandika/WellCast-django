@@ -9,3 +9,4 @@ HOPE_full/variables.py
 **/.idea
 **/node_modules
 **/las
+!/las/train/*

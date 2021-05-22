@@ -1,3 +1,4 @@
+{#TODO: need to fix preview in html#}
 {{ las_div | safe }}
 <form id="las_limit" data-hx-get="/" data-hx-params="*" data-hx-target="#las_box_limited">
     {% for col, quartile in quartiles.items %}
@@ -14,6 +15,6 @@
         </div>
         <br/>
     {% endfor %}
-    <input type="submit" class="btn btn-primary text-white" name="las_limited_preview" value="Preview"/>
-    <input type="submit" class="btn btn-primary text-white" name="las_limited_submit" value="Submit">
+    <input type="checkbox" class="form-check-input" value="" id="las_limited_preview" name="las_limited_preview"/>
+    <input type="submit" class="btn btn-primary text-white"/>
 </form>
