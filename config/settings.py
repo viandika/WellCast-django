@@ -146,4 +146,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 HASHID_FIELD_SALT = 'wys_31hr5n2+@%5xq!_00w5o$i@5b5ar#j@h0c7kv+zp@je@5b'
 
-SESSION_COOKIE_AGE = 15 * 60
+SESSION_COOKIE_AGE = 60 * 60

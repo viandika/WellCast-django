@@ -13,13 +13,15 @@ def load_data(filename):
     las_file = lasio.read(filename)
     data_well = las_file.df()
     log = list(data_well.columns.values)
-    header = [{
-        'WELL': filename,
-        'START': las_file.well.STRT.value,
-        'STOP': las_file.well.STOP.value,
-        'STEP': las_file.well.STEP.value
-    }]
-    data_well['WELL'] = filename
+    header = [
+        {
+            "WELL": filename,
+            "START": las_file.well.STRT.value,
+            "STOP": las_file.well.STOP.value,
+            "STEP": las_file.well.STEP.value,
+        }
+    ]
+    data_well["WELL"] = filename
 
     log_list = pd.DataFrame(header)
     for newlog in log:
@@ -28,21 +30,31 @@ def load_data(filename):
 
 
 def merge_alias(db, alias, logs_selected):
-    well = db['WELL'].unique()
+    well = db["WELL"].unique()
     merged_data = pd.DataFrame()
 
     for i in range(len(well)):
-        data = db.where(db['WELL'] == well[i]).dropna(axis=1, how='all')
+        data = db.where(db["WELL"] == well[i]).dropna(axis=1, how="all")
         for j in range(len(alias)):
-            welllog_name = list(set(data.columns).intersection(alias.get(list(alias)[j])))
+            welllog_name = list(
+                set(data.columns).intersection(alias.get(list(alias)[j]))
+            )
             samelog = data[welllog_name]
-            count_log = dict(sorted(zip(welllog_name, samelog.count()), key=lambda item: item[1], reverse=True))
+            count_log = dict(
+                sorted(
+                    zip(welllog_name, samelog.count()),
+                    key=lambda item: item[1],
+                    reverse=True,
+                )
+            )
             welllog_name = list(count_log.keys())
             if len(welllog_name) != 0:
                 # If more than one log aliases exist, normalize each log to have same data range in the same depth
                 if len(welllog_name) > 1:
                     alias_logs = data[welllog_name].dropna()
-                    if (list(alias)[j] not in ['CAL', 'DTCO', 'DTSM']) and (len(alias_logs) != 0):
+                    if (list(alias)[j] not in ["CAL", "DTCO", "DTSM"]) and (
+                        len(alias_logs) != 0
+                    ):
                         a = []
                         b = []
                         c = []
@@ -56,25 +68,27 @@ def merge_alias(db, alias, logs_selected):
                         for n in range(len(welllog_name)):
                             data.loc[:, welllog_name[n]] *= 1 / c[n]
                     for k in range(len(welllog_name) - 1):
-                        data[welllog_name[0]].fillna(data[welllog_name[k + 1]], inplace=True)
+                        data[welllog_name[0]].fillna(
+                            data[welllog_name[k + 1]], inplace=True
+                        )
                 data[list(alias)[j]] = data[welllog_name[0]]
         merged_data = merged_data.append(data)
-        merged_data = merged_data[merged_data['WELL'].notna()]
+        merged_data = merged_data[merged_data["WELL"].notna()]
     merged_data = merged_data[logs_selected]
     return merged_data
 
 
 def dataframing_train():
-    '''
+    """
     TODO: fix directories and make it so it accepts uploaded las
     :return: data frame of train
-    '''
+    """
     # Initialization
-    train_source_dir = settings.BASE_DIR / 'las' / 'train'
-    alias_file = settings.BASE_DIR / 'las' / 'alias.json'
-    logs_selected = ['WELL', 'DEPTH', 'CAL', 'RXO', 'GR', 'POR', 'DRES', 'DT', 'DENS']
+    train_source_dir = settings.BASE_DIR / "las" / "train"
+    alias_file = settings.BASE_DIR / "las" / "alias.json"
+    logs_selected = ["WELL", "DEPTH", "CAL", "RXO", "GR", "POR", "DRES", "DT", "DENS"]
 
-    with open(alias_file, 'r') as file:
+    with open(alias_file, "r") as file:
         alias = json.load(file)
 
     # Loading raw data for train dataset
@@ -89,15 +103,15 @@ def dataframing_train():
     # Merge log aliases for train dataset
     data_train = data_train.reset_index()
     train = merge_alias(data_train, alias, logs_selected).dropna()
-    train.rename(columns={'POR': 'NPHI', 'DENS': 'RHOB'}, inplace=True)
+    train.rename(columns={"POR": "NPHI", "DENS": "RHOB"}, inplace=True)
 
     # Select well data which has more than 5000ft length
-    log_ava_train['LENGTH'] = log_ava_train['STOP'] - log_ava_train['START']
-    log_ava_train = log_ava_train.sort_values('LENGTH', ascending=False)
-    well_selected = log_ava_train[log_ava_train['LENGTH'] > 100]
-    well_selected = well_selected['WELL']
+    log_ava_train["LENGTH"] = log_ava_train["STOP"] - log_ava_train["START"]
+    log_ava_train = log_ava_train.sort_values("LENGTH", ascending=False)
+    well_selected = log_ava_train[log_ava_train["LENGTH"] > 100]
+    well_selected = well_selected["WELL"]
 
-    train = train[train['WELL'].isin(well_selected)]
+    train = train[train["WELL"].isin(well_selected)]
     return train
 
 
@@ -105,11 +119,14 @@ def get_quartile(df, columns):
     quart_dict = {col: df[col].quantile([0.25, 0.75]).tolist() for col in columns}
     return quart_dict
 
+
 def train_model(df, columns, y_name):
     X = df[columns]
     y = df[y_name]
 
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=9)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.3, random_state=9
+    )
 
     model = XGBRegressor()
     model.fit(X_train, y_train)

@@ -10,3 +10,4 @@ HOPE_full/variables.py
 **/node_modules
 **/las
 !/las/train/*
+!/las/alias.json
