@@ -52,7 +52,7 @@ def merge_alias(db, alias, logs_selected):
                 # If more than one log aliases exist, normalize each log to have same data range in the same depth
                 if len(welllog_name) > 1:
                     alias_logs = data[welllog_name].dropna()
-                    if (list(alias)[j] not in ["CAL", "DTCO", "DTSM"]) and (
+                    if (list(alias)[j] not in ["CALI", "DTCO", "DTSM"]) and (
                         len(alias_logs) != 0
                     ):
                         a = []
@@ -86,7 +86,7 @@ def dataframing_train():
     # Initialization
     train_source_dir = settings.BASE_DIR / "las" / "train"
     alias_file = settings.BASE_DIR / "las" / "alias.json"
-    logs_selected = ["WELL", "DEPTH", "CAL", "RXO", "GR", "POR", "DRES", "DT", "DENS"]
+    #logs_selected = ["WELL", "DEPTH", "CAL", "RXO", "GR", "POR", "DRES", "DT", "DENS"]
 
     with open(alias_file, "r") as file:
         alias = json.load(file)
@@ -102,8 +102,8 @@ def dataframing_train():
 
     # Merge log aliases for train dataset
     data_train = data_train.reset_index()
-    train = merge_alias(data_train, alias, logs_selected).dropna()
-    train.rename(columns={"POR": "NPHI", "DENS": "RHOB"}, inplace=True)
+    train = merge_alias(data_train, alias, list(data_train.columns)).dropna()
+    #train.rename(columns={"POR": "NPHI", "DENS": "RHOB"}, inplace=True)
 
     # Select well data which has more than 5000ft length
     log_ava_train["LENGTH"] = log_ava_train["STOP"] - log_ava_train["START"]
@@ -121,7 +121,7 @@ def get_quartile(df, columns):
 
 
 def train_model(df, columns, y_name):
-    X = df[columns]
+    X = df[columns].drop([y_name], axis=1)
     y = df[y_name]
 
     X_train, X_test, y_train, y_test = train_test_split(

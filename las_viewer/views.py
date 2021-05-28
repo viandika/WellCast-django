@@ -38,13 +38,17 @@ def las_page(request):
 
     if request.method == "GET":
         if request.htmx:
-            features = ["CAL", "RXO", "GR", "NPHI", "DRES", "RHOB"]
+            #features = ["CAL", "RXO", "GR", "NPHI", "DRES", "RHOB"]
             if request.htmx.target == "las_box":
                 train_df = dataframing_train()
                 train_df_json = train_df.to_json(default_handler=str)
                 request.session["train_df"] = train_df_json
-
-                fig = make_subplots(rows=1, cols=6)
+                features=list(train_df.columns)
+                features.remove('WELL')
+                features.remove('DEPTH')
+                request.session["features"]= features
+                print (features)
+                fig = make_subplots(rows=1, cols=len(features))
                 for idx, feature in enumerate(features):
                     fig.add_trace(
                         go.Box(y=train_df[feature], name=feature), row=1, col=idx + 1
@@ -72,13 +76,15 @@ def las_page(request):
                 return render(request, template_name, context)
             elif request.htmx.target == "las_box_limited":
                 train_df = pd.read_json(request.session["train_df"])
+                features = request.session["features"]
+                print (features)
                 for col in features:
                     train_df = train_df.loc[
                         (train_df[col] > float(request.GET.get(col + "_bottom")))
                         & (train_df[col] < float(request.GET.get(col + "_top")))
                     ]
                 if "las_limited_preview" in request.GET:
-                    fig = make_subplots(rows=1, cols=6)
+                    fig = make_subplots(rows=1, cols=len(features))
                     for idx, feature in enumerate(features):
                         fig.add_trace(
                             go.Box(y=train_df[feature], name=feature),
