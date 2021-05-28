@@ -38,7 +38,6 @@ def las_page(request):
 
     if request.method == "GET":
         if request.htmx:
-            #features = ["CAL", "RXO", "GR", "NPHI", "DRES", "RHOB"]
             if request.htmx.target == "las_box":
                 train_df = dataframing_train()
                 train_df_json = train_df.to_json(default_handler=str)
@@ -77,7 +76,6 @@ def las_page(request):
             elif request.htmx.target == "las_box_limited":
                 train_df = pd.read_json(request.session["train_df"])
                 features = request.session["features"]
-                print (features)
                 for col in features:
                     train_df = train_df.loc[
                         (train_df[col] > float(request.GET.get(col + "_bottom")))
