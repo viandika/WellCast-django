@@ -110,8 +110,10 @@ def las_page(request):
                     model, pred_train, rmse_train, pred_test, rmse_test = train_model(
                         train_df, features, "DT"
                     )
+                    new_features=features
+                    new_features.remove('DT')
                     bar_feature_importance = go.Figure(
-                        [go.Bar(x=features, y=model.feature_importances_)]
+                        [go.Bar(x=new_features, y=model.feature_importances_)]
                     )
                     config = {
                         "displaylogo": False,
