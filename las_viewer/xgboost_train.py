@@ -86,7 +86,6 @@ def dataframing_train():
     # Initialization
     train_source_dir = settings.BASE_DIR / "las" / "train"
     alias_file = settings.BASE_DIR / "las" / "alias.json"
-    # logs_selected = ["WELL", "DEPTH", "CAL", "RXO", "GR", "POR", "DRES", "DT", "DENS"]
 
     with open(alias_file, "r") as file:
         alias = json.load(file)
@@ -103,7 +102,6 @@ def dataframing_train():
     # Merge log aliases for train dataset
     data_train = data_train.reset_index()
     train = merge_alias(data_train, alias, list(data_train.columns)).dropna()
-    # train.rename(columns={"POR": "NPHI", "DENS": "RHOB"}, inplace=True)
 
     # Select well data which has more than 5000ft length
     log_ava_train["LENGTH"] = log_ava_train["STOP"] - log_ava_train["START"]
