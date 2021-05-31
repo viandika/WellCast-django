@@ -1,20 +1,51 @@
-{#TODO: need to fix preview in html#}
-{{ las_div | safe }}
-<form id="las_limit" data-hx-get="/" data-hx-params="*" data-hx-target="#las_box_limited">
-    {% for col, quartile in quartiles.items %}
+<div class="row">
+    <div class="col-3">
+        <form id="las_limit">
+            {% for col, quartile in iqr.items %}
+                <div class="row">
+                    <div class="col-lg-4">
+                        <input type="number" class="form-control" placeholder="{{ quartile.0 }}"
+                               value="{{ quartile.0 }}"
+                               name="{{ col }}_bottom">
+                    </div>
+                    <div class="col-lg-4">
+                        < {{ col }} <
+                    </div>
+                    <div class="col-lg-4">
+                        <input type="number" class="form-control" placeholder="{{ quartile.1 }}"
+                               value="{{ quartile.1 }}"
+                               name="{{ col }}_top">
+                    </div>
+                </div>
+                <br/>
+            {% endfor %}
+            {#    <input type="checkbox" class="form-check-input" value="" id="las_limited_preview" name="las_limited_preview"/>#}
+            <button type="submit" class="btn btn-primary text-white" data-hx-include="#las_limit" data-hx-get="/threeb"
+                    data-hx-target="#las_box_preview">
+                Preview
+            </button>
+            <button type="submit" class="btn btn-secondary text-white" data-hx-include="#las_limit" data-hx-get="/four"
+                    data-hx-target="#las_box_limited">
+                Submit
+            </button>
+        </form>
+    </div>
+    <div class="col-9">
         <div class="row">
-            <div class="col-lg-1">
-                <input type="number" class="form-control" placeholder="{{ quartile.0 }}" value="{{ quartile.0 }}" name="{{ col }}_bottom">
-            </div>
-            <div class="col-lg-1">
-                < {{ col }} <
-            </div>
-            <div class="col-lg-1">
-                <input type="number" class="form-control" placeholder="{{ quartile.1 }}" value="{{ quartile.1 }}" name="{{ col }}_top">
+            <div class="col">
+                <h6 class="mb-2 text-muted">Before</h6>
+                {{ las_div | safe }}
             </div>
         </div>
-        <br/>
-    {% endfor %}
-    <input type="checkbox" class="form-check-input" value="" id="las_limited_preview" name="las_limited_preview"/>
-    <input type="submit" class="btn btn-primary text-white"/>
-</form>
+        <hr>
+        <div class="row">
+            <div class="col">
+                <h6 class="mb-2 text-muted">After</h6>
+                <div id="las_box_preview">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

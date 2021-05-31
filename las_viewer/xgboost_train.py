@@ -86,7 +86,7 @@ def dataframing_train():
     # Initialization
     train_source_dir = settings.BASE_DIR / "las" / "train"
     alias_file = settings.BASE_DIR / "las" / "alias.json"
-    #logs_selected = ["WELL", "DEPTH", "CAL", "RXO", "GR", "POR", "DRES", "DT", "DENS"]
+    # logs_selected = ["WELL", "DEPTH", "CAL", "RXO", "GR", "POR", "DRES", "DT", "DENS"]
 
     with open(alias_file, "r") as file:
         alias = json.load(file)
@@ -103,7 +103,7 @@ def dataframing_train():
     # Merge log aliases for train dataset
     data_train = data_train.reset_index()
     train = merge_alias(data_train, alias, list(data_train.columns)).dropna()
-    #train.rename(columns={"POR": "NPHI", "DENS": "RHOB"}, inplace=True)
+    # train.rename(columns={"POR": "NPHI", "DENS": "RHOB"}, inplace=True)
 
     # Select well data which has more than 5000ft length
     log_ava_train["LENGTH"] = log_ava_train["STOP"] - log_ava_train["START"]
@@ -118,6 +118,17 @@ def dataframing_train():
 def get_quartile(df, columns):
     quart_dict = {col: df[col].quantile([0.25, 0.75]).tolist() for col in columns}
     return quart_dict
+
+
+def get_iqr(columns, quartiles):
+    iqr_dict = {
+        col: [
+            quartiles[col][0] - (1.5 * (quartiles[col][1] - quartiles[col][0])),
+            quartiles[col][1] + (1.5 * (quartiles[col][1] - quartiles[col][0])),
+        ]
+        for col in columns
+    }
+    return iqr_dict
 
 
 def train_model(df, columns, y_name):
