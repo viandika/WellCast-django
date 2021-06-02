@@ -54,15 +54,21 @@ def two_las_upload(request):
                     context = {"las_files": las_files}
                     return render(request, template_name, context)
 
-
-def threea_data_cleaning(request):
+def log_selector(request):
     train_df = dataframing_train()  # TODO: make options dynamic
     train_df_json = train_df.to_json(default_handler=str)
     request.session["train_df"] = train_df_json
     features = list(train_df.columns)
-    features.remove("WELL")
-    features.remove("DEPTH")
+    # TODO: remove strings columns
+
+    template_name = "log_selector.html"
+    context = {"features": features}
+    return render(request, template_name, context)
+
+def threea_data_cleaning(request):
+    features = request.GET.getlist('selected_log')
     request.session["features"] = features
+    train_df = pd.read_json(request.session["train_df"])
 
     fig = make_subplots(rows=1, cols=len(features))
     for idx, feature in enumerate(features):

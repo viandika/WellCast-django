@@ -40,16 +40,6 @@
                     <h5 class="card-title">2. Select .las files for training</h5>
                     <h6 class="card-subtitle mb-2 text-muted">These files will be merged to prepare for training</h6>
                     <div id="las_list">
-                        <form id="las_files" data-hx-get="/threea" data-hx-params="*" data-hx-target="#las_box"
-                              data-hx-indicator="#indicator">
-                            <label for="selected_las" class="form-label">.las files:</label>
-                            <select name="selected_las" id="selected_las" class="form-select mb-2" multiple>
-                                {% for file in las_files %}
-                                    <option value="{{ file }}">{{ file }}</option>
-                                {% endfor %}
-                            </select>
-                            <button type="submit" class="btn btn-primary text-white">Submit</button>
-                        </form>
                     </div>
                 </div>
             </div>
@@ -61,6 +51,9 @@
                 <div class="card-body">
                     <h5 class="card-title">3. Remove data parts</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Box plot</h6>
+                    <div id="log_selector_form">
+
+                    </div>
                     <div id="las_box">
 
                     </div>
