@@ -60,6 +60,9 @@ def log_selector(request):
     request.session["train_df"] = train_df_json
     features = list(train_df.columns)
     # TODO: remove strings columns
+    for col in train_df.columns:
+        if train_df[col].dtypes != float and train_df[col].dtypes != int:
+            features.remove(col)
 
     template_name = "log_selector.html"
     context = {"features": features}
@@ -136,19 +139,26 @@ def threeb_preview_cleaned(request):
     template_name = "las_limited.html"
     return render(request, template_name, context)
 
+def predicted_log(request):
+    features = request.session["features"]
+
+    template_name = "predicted_log.html"
+    context = {"features": features}
+    return render(request, template_name, context)
 
 def four_model_output(request):
     train_df = pd.read_json(request.session["train_df"])
     features = request.session["features"]
+    predicted_log = request.GET.get('predicted_log')
     for col in features:
         train_df = train_df.loc[
             (train_df[col] > float(request.GET.get(col + "_bottom")))
             & (train_df[col] < float(request.GET.get(col + "_top")))
         ]
     model, pred_train, rmse_train, pred_test, rmse_test = train_model(
-        train_df, features, "DT"
+        train_df, features, predicted_log
     )
-    features.remove("DT")
+    features.remove(predicted_log)
     bar_feature_importance = go.Figure(
         [go.Bar(x=features, y=model.feature_importances_)]
     )
@@ -167,6 +177,8 @@ def four_model_output(request):
 
     context = {
         "las_div": las_div,
+        "rmse_train": rmse_train,
+        "rmse_test": rmse_test
     }
     template_name = "las_pred.html"
     return render(request, template_name, context)

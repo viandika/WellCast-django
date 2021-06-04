@@ -6,6 +6,7 @@ from las_viewer.views import (
     two_las_upload,
     threea_data_cleaning,
     threeb_preview_cleaned,
+    predicted_log,
     four_model_output,
 )
 
@@ -15,5 +16,6 @@ urlpatterns = [
     path("log_selector", log_selector, name="log_selector"),
     path("threea", threea_data_cleaning, name="las_cleaning"),
     path("threeb", threeb_preview_cleaned, name="las_cleaned_preview"),
+    path("predicted_log", predicted_log, name="predicted_log"),
     path("four", four_model_output, name="model_output"),
 ]
