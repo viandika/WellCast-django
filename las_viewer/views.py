@@ -266,7 +266,7 @@ def five_predicts(request):
                     x=df_real2["PRED"],
                     y=df_real2.index,
                     mode="lines",
-                    name="DT_PRED",
+                    name=predicted_log + " Pred",
                 )
             )
             fig.add_trace(
@@ -274,7 +274,7 @@ def five_predicts(request):
                     x=df_real2[predicted_log],
                     y=df_real2.index,
                     mode="lines",
-                    name="DT",
+                    name=predicted_log,
                 )
             )
             fig.update_yaxes(autorange="reversed")
