@@ -73,8 +73,12 @@ def merge_alias(db, alias, logs_selected):
                         )
                 data[list(alias)[j]] = data[welllog_name[0]]
         merged_data = merged_data.append(data)
+        grouped_log = [key for key in merged_data.columns if key in alias]
+        grouped_log.append("WELL")
+        # if "DEPTH" in merged_data:
+        #     merged_data.drop(["DEPTH"], axis=1, inplace=True)
         merged_data = merged_data[merged_data["WELL"].notna()]
-    merged_data = merged_data[logs_selected]
+    merged_data = merged_data[grouped_log]
     return merged_data
 
 
@@ -94,13 +98,19 @@ def dataframing_train():
     data_train = pd.DataFrame()
     log_ava_train = pd.DataFrame()
     las_files = [file for file in train_source_dir.iterdir() if file.is_file()]
+
     for f in sorted(las_files):
         data_well, log_list = load_data(f)
+        # for column in data_well:
+        #     for key in alias:
+        #         if column in alias[key]:
+        #             data_well.rename(columns={column: key}, inplace=True)
         data_train = data_train.append(data_well)
         log_ava_train = log_ava_train.append(log_list)
 
     # Merge log aliases for train dataset
     data_train = data_train.reset_index()
+    # data_train.rename(columns={"DEPT": "DEPTH"}, inplace=True)
     train = merge_alias(data_train, alias, list(data_train.columns)).dropna()
 
     # Select well data which has more than 5000ft length

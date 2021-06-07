@@ -28,7 +28,7 @@ DT   .US/F                 :
 GR   .GAPI                 :  
 ILD  .OHMM                 :  
 MSFL .OHMM                 :  
-NPHI_LS.V/V                  :  
+NPHI.V/V                  :
 RHOB .G/C3                 :  
 ~Parameter Information Block
 #MNEM.UNIT            Value   Description
@@ -37,7 +37,7 @@ PROJECT.     petro@kponwjlx001:
 SET  .                 WIRE:  
 ~Other Information Block
 # 
-~A       DEPTH           CALI             DT             GR            ILD           MSFL        NPHI_LS           RHOB 
+~A       DEPTH           CALI             DT             GR            ILD           MSFL        NPHI           RHOB
        1820.00        12.5160        56.1250        39.5000      2000.0000         1.7090    -999.250000      -999.2500
        1820.50        12.5160        56.2500        40.5000      2000.0000         1.7470    -999.250000      -999.2500
        1821.00        12.5080        56.3120        39.1250      2000.0000         1.6830    -999.250000      -999.2500

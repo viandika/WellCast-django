@@ -8,6 +8,7 @@ from las_viewer.views import (
     threeb_preview_cleaned,
     predicted_log,
     four_model_output,
+    five_predicts,
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path("threeb", threeb_preview_cleaned, name="las_cleaned_preview"),
     path("predicted_log", predicted_log, name="predicted_log"),
     path("four", four_model_output, name="model_output"),
+    path("five", five_predicts, name="five_predicts"),
 ]

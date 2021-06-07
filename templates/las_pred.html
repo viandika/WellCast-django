@@ -4,9 +4,9 @@
 
 {{ las_div | safe }}
 
-<form method="post" enctype="multipart/form-data" data-hx-post="/"
+<form method="post" enctype="multipart/form-data" data-hx-post="/five"
       data-hx-encoding='multipart/form-data'
-      data-hx-target="#las_list"
+      data-hx-target="#output_log"
       data-hx-indicator="#indicator">
     {% csrf_token %}
     <div class="row">
