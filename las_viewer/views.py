@@ -1,6 +1,7 @@
 import json
 import os
 
+from django.http import FileResponse
 from django.shortcuts import render
 from django.conf import settings
 
@@ -19,6 +20,7 @@ from plotly.subplots import make_subplots
 import pandas as pd
 import numpy as np
 from xgboost import XGBRegressor
+import lasio
 
 
 def one_base_page(request):
@@ -211,7 +213,7 @@ def five_predicts(request):
                 filename=request.FILES["las_file"].name,
             )
             instance.save()  # save form to database
-
+            request.session["pred_las"] = las_file.name
             alias_file = settings.BASE_DIR / "las" / "alias.json"
 
             with open(alias_file, "r") as file:
@@ -247,8 +249,8 @@ def five_predicts(request):
             for feature in features:
                 if feature not in df_real2.columns:
                     df_real2[feature] = np.nan
-
-            features.remove(predicted_log)
+            if predicted_log in features:
+                features.remove(predicted_log)
             model = XGBRegressor()
             model.load_model(
                 settings.BASE_DIR
@@ -258,6 +260,11 @@ def five_predicts(request):
             )
 
             dt_pred = model.predict(df_real2[features])
+
+            # save pred to session
+            dt_pred_json = json.dumps(dt_pred.tolist())
+            request.session["pred_df"] = dt_pred_json
+
             df_real2["PRED"] = dt_pred
             df_real2.index = df_real2["DEPTH"]
             fig = go.Figure()
@@ -295,9 +302,30 @@ def five_predicts(request):
             las_div = fig.to_html(
                 full_html=False, config=config, include_plotlyjs=False
             )
+
             template_name = "las_predicted.html"
             context = {"las_div": las_div}
             return render(request, template_name, context)
+
+
+def download_las(request):
+    las_filename = request.session["pred_las"]
+    pred_df = pd.read_json(request.session["pred_df"])
+    # recreate las file for download
+    las = lasio.read(settings.BASE_DIR / "las" / las_filename)
+    well = las.df()
+    well["Predicted_Log"] = pred_df
+    las.set_data(well)
+    las.write(
+        str(settings.BASE_DIR / "las" / "downloads" / ("pred " + las_filename)),
+        version=2.0,
+    )
+    return FileResponse(
+        open(
+            str(settings.BASE_DIR / "las" / "downloads" / ("pred " + las_filename)),
+            "rb",
+        )
+    )
 
 
 # def las_page(request):

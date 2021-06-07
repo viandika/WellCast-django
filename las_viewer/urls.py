@@ -9,6 +9,7 @@ from las_viewer.views import (
     predicted_log,
     four_model_output,
     five_predicts,
+    download_las,
 )
 
 urlpatterns = [
@@ -20,4 +21,5 @@ urlpatterns = [
     path("predicted_log", predicted_log, name="predicted_log"),
     path("four", four_model_output, name="model_output"),
     path("five", five_predicts, name="five_predicts"),
+    path("download_las", download_las, name="download_las"),
 ]
