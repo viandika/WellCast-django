@@ -7,9 +7,7 @@
 - [ ] ...
 
 ## How to run locally
-https://gohugo.io/getting-started/installing/#windows
-
-then in the cloned repo folder run
+in the cloned repo folder run
 ``` 
 pip install -r requirements.txt
 python manage.py migrate
