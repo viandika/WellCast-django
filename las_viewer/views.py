@@ -35,39 +35,44 @@ def one_base_page(request):
 def two_las_upload(request):
     if request.method == "POST":
         form = LasUploadForm(request.POST, request.FILES)
+        uploaded_file_ids = []
         if form.is_valid():
-            instance = LasUpload(
-                las_file=request.FILES["las_file"],
-                filename=request.FILES["las_file"].name,
-            )
-            instance.save()  # save form to database
+            for file in request.FILES.getlist("las_file"):
+                instance = LasUpload(
+                    las_file=file,
+                    filename=file.name,
+                )
+                instance.save()  # save form to database
+                uploaded_file_ids.append(instance.pk.hashid)
 
+            file_names_qs = LasUpload.objects.filter(pk__in=uploaded_file_ids).values(
+                "las_file"
+            )
+            file_names = [os.path.basename(file["las_file"]) for file in file_names_qs]
             # add file names to sesion
             if "las_list" in request.session:
                 las_list = request.session["las_list"]
-                las_list.append(os.path.basename(instance.las_file.name))
+                las_list.extend(file_names)
                 request.session["las_list"] = las_list
             else:
-                request.session["las_list"] = [os.path.basename(instance.las_file.name)]
+                las_list = file_names
+                request.session["las_list"] = file_names
 
             # Return box number 2
             if request.htmx:
                 if request.htmx.target == "las_list":
-                    las_path = settings.BASE_DIR / "las" / "train"
-                    las_files = [
-                        file.name for file in las_path.iterdir() if file.is_file()
-                    ]
                     template_name = "las_list.html"
-                    context = {"las_files": las_files}
+                    context = {"las_files": las_list}
                     return render(request, template_name, context)
 
 
 def log_selector(request):
-    train_df = dataframing_train()  # TODO: make options dynamic
+    selected_las = request.GET.getlist("selected_las")
+    train_df = dataframing_train(selected_las)
     train_df_json = train_df.to_json(default_handler=str)
     request.session["train_df"] = train_df_json
     features = list(train_df.columns)
-    # TODO: remove strings columns
+
     for col in train_df.columns:
         if train_df[col].dtypes != float and train_df[col].dtypes != int:
             features.remove(col)
@@ -83,8 +88,13 @@ def threea_data_cleaning(request):
     train_df = pd.read_json(request.session["train_df"])
 
     fig = make_subplots(rows=1, cols=len(features))
+    # TODO: plotly slows browser when theres a lot of points. Current workaround is to only show the whiskers
     for idx, feature in enumerate(features):
-        fig.add_trace(go.Box(y=train_df[feature], name=feature), row=1, col=idx + 1)
+        fig.add_trace(
+            go.Box(y=train_df[feature], name=feature, boxpoints=False),
+            row=1,
+            col=idx + 1,
+        )
 
     fig.update_layout(
         height=300,
@@ -124,7 +134,7 @@ def threeb_preview_cleaned(request):
     fig = make_subplots(rows=1, cols=len(features))
     for idx, feature in enumerate(features):
         fig.add_trace(
-            go.Box(y=train_df[feature], name=feature),
+            go.Box(y=train_df[feature], name=feature, boxpoints=False),
             row=1,
             col=idx + 1,
         )
@@ -159,7 +169,7 @@ def predicted_log(request):
 
 def four_model_output(request):
     train_df = pd.read_json(request.session["train_df"])
-    features = request.session.get("features")
+    features = request.session.get("features").copy()
     predicted_log = request.GET.get("predicted_log")
     request.session["predicted_log"] = predicted_log
     for col in features:
@@ -174,8 +184,10 @@ def four_model_output(request):
     model.save_model(
         settings.BASE_DIR / "las" / "models" / (request.session.session_key + ".json")
     )
-
+    # trained_features = features
+    # trained_features.remove(predicted_log)
     # features.remove(predicted_log)
+    features.remove(predicted_log)
     bar_feature_importance = go.Figure(
         [go.Bar(x=features, y=model.feature_importances_)]
     )
@@ -243,7 +255,7 @@ def five_predicts(request):
                 # data["CALI"] = data["CALI"].apply(lambda x: x if x > 0 else avgcal)
                 df_real2 = df_real2.append(data)
 
-            features = request.session["features"]
+            features = request.session["features"].copy()
             predicted_log = request.session["predicted_log"]
 
             for feature in features:

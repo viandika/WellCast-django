@@ -82,13 +82,13 @@ def merge_alias(db, alias, logs_selected):
     return merged_data
 
 
-def dataframing_train():
+def dataframing_train(las_files):
     """
-    TODO: fix directories and make it so it accepts uploaded las
+
     :return: data frame of train
     """
     # Initialization
-    train_source_dir = settings.BASE_DIR / "las" / "train"
+    train_source_dir = settings.BASE_DIR / "las"
     alias_file = settings.BASE_DIR / "las" / "alias.json"
 
     with open(alias_file, "r") as file:
@@ -97,10 +97,9 @@ def dataframing_train():
     # Loading raw data for train dataset
     data_train = pd.DataFrame()
     log_ava_train = pd.DataFrame()
-    las_files = [file for file in train_source_dir.iterdir() if file.is_file()]
 
     for f in sorted(las_files):
-        data_well, log_list = load_data(f)
+        data_well, log_list = load_data(train_source_dir / f)
         # for column in data_well:
         #     for key in alias:
         #         if column in alias[key]:
@@ -111,7 +110,8 @@ def dataframing_train():
     # Merge log aliases for train dataset
     data_train = data_train.reset_index()
     # data_train.rename(columns={"DEPT": "DEPTH"}, inplace=True)
-    train = merge_alias(data_train, alias, list(data_train.columns)).dropna()
+    train = merge_alias(data_train, alias, list(data_train.columns))
+    train = train.apply(lambda x: pd.Series(x.dropna().values))
 
     # Select well data which has more than 5000ft length
     log_ava_train["LENGTH"] = log_ava_train["STOP"] - log_ava_train["START"]

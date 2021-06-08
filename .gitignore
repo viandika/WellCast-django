@@ -5,6 +5,7 @@
 *.segy
 *.npy
 *.h5
+*.sqlite3
 HOPE_full/variables.py
 **/.idea
 **/node_modules
