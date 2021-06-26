@@ -1,6 +1,7 @@
 ## TODO:
 - [ ] DEPLOY
 - [ ] Find Plotly alternative for large data
+- [ ] Logs preview modal need logs selector? if too many logs jdi kecil
 - [ ] Set proper uploads locations
 - [ ] Get better styling/template
 - [ ] Convert HTMX to JS?

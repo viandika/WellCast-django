@@ -11,15 +11,36 @@ services:
       - POSTGRES_PASSWORD=$POSTGRES_PASS
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
-    container_name: django_ml
+    command: >
+      sh -c "python manage.py wait_for_db &&
+                   python manage.py migrate &&
+                   gunicorn config.wsgi:application --bind 0.0.0.0:9000"
+    container_name: django_geovartha
     environment:
-      - DATABASE_URL
+#      - DATABASE_URL
+      - DJANGO_SETTINGS_MODULE=config.settings_docker
+      - DB_HOST
     volumes:
       - .:/code
     ports:
-      - "8000:8000"
+      - "9000:9000"
+    expose:
+      - 9000
+#    entrypoint:
+#      - /code/wait_for_db.sh
     depends_on:
       - postgres
-  memcached:
-    image: memcached:1-alpine
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - "6379:6379"
+  nginx:
+    container_name: geovartha_nginx
+    build: ./nginx
+    ports:
+      - 1337:80
+    volumes:
+      - ./static:/code/static
+    depends_on:
+      - web
