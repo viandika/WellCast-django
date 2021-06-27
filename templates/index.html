@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
+
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body class="py-5">
 <div class="container-md">
@@ -41,25 +43,211 @@
     </div>
     <div class="row">
         <div class="col" id="las_list">
+            {% if las_files %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">2. Select .las files for training</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">These files will be merged to prepare for
+                            training</h6>
+                        <form id="las_dd">
+                            <label for="selected_las" class="form-label">.las files:</label>
+                            <select name="selected_las" id="selected_las" class="form-select mb-2" multiple>
+                                {% for file in las_files %}
+                                    <option value="{{ file }}">{{ file }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
+                                    data-hx-params="*"
+                                    data-hx-target="#log_selector_form"
+                                    data-hx-include="#las_dd">Submit
+                            </button>
+                            <button type="button" class="btn btn-secondary text-white" data-bs-toggle="modal"
+                                    data-bs-target="#las_preview_modal" data-hx-get="/las_preview" data-hx-params="*"
+                                    data-hx-target="#las_preview_modal_content"
+                                    data-hx-include="#las_dd">Preview Logs
+                            </button>
+                        </form>
+
+                        <div id="las_preview_modal" class="modal fade" tabindex="-1" role="dialog"
+                             aria-labelledby="myLargeModalLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog modal-fullscreen">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Logs Preview</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body" id="las_preview_modal_content">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
     <div class="row">
         <div class="col" id="log_selector_form">
+            {% if columns %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">3. Remove data parts</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Box plot</h6>
+
+
+                        <form id="las_selector" data-hx-get="/threea" data-hx-params="*" data-hx-target="#las_box"
+                              data-hx-indicator="#indicator">
+                            <label for="selected_log" class="form-label">Select logs</label>
+                            <select name="selected_log" id="selected_log" class="form-select mb-2" multiple>
+                                {% for column in columns %}
+                                    <option value="{{ column }}">{{ column }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-primary text-white">Submit</button>
+                        </form>
+                        <div id="las_box">
+                            {% if las_div %}
+                                <div class="row">
+                                    <div class="col-3">
+                                        <form id="las_limit">
+                                            {% for col, quartile in iqr.items %}
+                                                <div class="row">
+                                                    <div class="col-lg-4">
+                                                        <input type="number" class="form-control"
+                                                               placeholder="{{ quartile.0 }}"
+                                                               value="{{ quartile.0 }}"
+                                                               name="{{ col }}_bottom">
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        < {{ col }} <
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <input type="number" class="form-control"
+                                                               placeholder="{{ quartile.1 }}"
+                                                               value="{{ quartile.1 }}"
+                                                               name="{{ col }}_top">
+                                                    </div>
+                                                </div>
+                                                <br/>
+                                            {% endfor %}
+                                            {#    <input type="checkbox" class="form-check-input" value="" id="las_limited_preview" name="las_limited_preview"/>#}
+                                            <button type="submit" class="btn btn-primary text-white"
+                                                    data-hx-include="#las_limit"
+                                                    data-hx-get="/threeb"
+                                                    data-hx-target="#las_box_preview">
+                                                Preview
+                                            </button>
+                                            <button type="submit" class="btn btn-secondary text-white"
+                                                    data-hx-include="#las_limit"
+                                                    data-hx-get="/predicted_log"
+                                                    data-hx-target="#predicted_log">
+                                                Submit
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-9">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class="mb-2 text-muted">Before</h6>
+                                                {{ las_div | safe }}
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h6 class="mb-2 text-muted">After</h6>
+                                                <div id="las_box_preview">
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
     <div class="row">
         <div class="col" id="predicted_log">
+            {% if features %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">4. Model Assessment</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Assess the RMSE of the train & test dataset, assess
+                            the
+                            predictor parameters based on the feature importance</h6>
+
+                        <form id="predicted_log" data-hx-get="/four" data-hx-params="*"
+                              data-hx-target="#las_box_limited"
+                              data-hx-include="#las_limit"
+                              data-hx-indicator="#indicator">
+                            <label for="predicted_log" class="form-label">Select log you want to predict</label>
+                            <select name="predicted_log" id="predicted_log" class="form-control">
+                                {% for feature in features %}
+                                    <option value="{{ feature }}">{{ feature }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn btn-primary text-white">Submit</button>
+                        </form>
+                        <div id="las_box_limited">
+                            {% if rmse_test %}
+                                <br/>
+                                <h6>rmse train = {{ rmse_train }}</h6>
+                                <h6>rmse test = {{ rmse_test }}</h6>
+
+                                {{ feature_importance_div | safe }}
+
+                                <form method="post" enctype="multipart/form-data" data-hx-post="/five"
+                                      data-hx-encoding='multipart/form-data'
+                                      data-hx-target="#output_log"
+                                      data-hx-indicator="#indicator">
+                                    {% csrf_token %}
+                                    <div class="row">
+                                        <div class="col-lg-3">
+                                            <input type="file" name="las_file" required="" id="id_las_file"
+                                                   class="form-control">
+                                        </div>
+                                        <div class="col-lg-2">
+                                            <button type="submit" class="btn btn-primary text-white">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            {% endif %}
         </div>
     </div>
     <div class="row">
         <div class="col" id="output_log">
+            {% if predicted_log_div %}
+                <div class="card border-secondary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">5. Prediction result</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Plot the predicted log with the actual log</h6>
+                        {{ predicted_log_div | safe }}
+
+                        <a class="btn btn-primary text-white" href="/download_las">Download</a>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
 <script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.1.min.js"
         crossorigin="anonymous"></script>
 <script src="https://unpkg.com/htmx.org@1.3.3"></script>
-<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="{% static "js/bootstrap.bundle.js" %}"></script>
 <script>
   htmx.on('#file_upload_form', 'htmx:xhr:progress', function (evt) {

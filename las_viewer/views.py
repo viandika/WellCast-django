@@ -15,7 +15,7 @@ from plotly.subplots import make_subplots
 from xgboost import XGBRegressor
 
 from las_viewer.forms import LasUploadForm
-from las_viewer.las_renderer import lasViewer, LasRenderer
+from las_viewer.las_renderer import lasViewer
 from las_viewer.models import LasUpload
 from las_viewer.xgboost_train import (
     dataframing_train,
@@ -32,6 +32,124 @@ def one_base_page(request):
     context = {
         "form": form,
     }
+
+    if "las_list" in request.session:
+        context["las_files"] = request.session["las_list"]
+
+    if "columns" in request.session:
+        context["columns"] = request.session["columns"]
+
+    if "features" in request.session:
+        features = request.session["features"]
+        train_df = pd.read_json(request.session["train_df"])
+
+        fig = make_subplots(rows=1, cols=len(features))
+        # TODO: plotly slows browser when theres a lot of points. Current workaround is to only show the whiskers
+        for idx, feature in enumerate(features):
+            fig.add_trace(
+                go.Box(y=train_df[feature], name=feature, boxpoints=False),
+                row=1,
+                col=idx + 1,
+            )
+
+        fig.update_layout(
+            height=300,
+            margin=dict(l=10, r=10, b=10, t=10),
+        )
+
+        config = {
+            "displaylogo": False,
+            "modeBarButtonsToRemove": [
+                "select2d",
+                "lasso2d",
+                "toggleSpikelines",
+                "autoScale2d",
+            ],
+        }
+        las_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
+
+        quartiles = get_quartile(train_df, features)
+        iqr = get_iqr(features, quartiles)
+
+        context["las_div"] = las_div
+        context["iqr"] = iqr
+        context["features"] = features
+
+    if "rmse_train" in request.session:
+        features = request.session["features"]
+        model = XGBRegressor()
+        model.load_model(
+            settings.BASE_DIR
+            / "las"
+            / "models"
+            / (request.session.session_key + ".json")
+        )
+
+        bar_feature_importance = go.Figure(
+            [go.Bar(x=features, y=model.feature_importances_)]
+        )
+        config = {
+            "displaylogo": False,
+            "modeBarButtonsToRemove": [
+                "select2d",
+                "lasso2d",
+                "toggleSpikelines",
+                "autoScale2d",
+            ],
+        }
+        feature_importance_div = bar_feature_importance.to_html(
+            full_html=False, config=config, include_plotlyjs=False
+        )
+        upload_form = LasUploadForm()
+
+        context["rmse_train"] = request.session["rmse_train"]
+        context["rmse_test"] = request.session["rmse_test"]
+        context["feature_importance_div"] = feature_importance_div
+        context["upload_form"] = upload_form
+
+    if "pred_las" in request.session:
+        predicted_log = request.session["predicted_log"]
+        df_real2 = pd.read_json(request.session["df_real2"])
+        df_real2.index = df_real2["DEPTH"]
+
+        fig = go.Figure()
+        fig.add_trace(
+            go.Scatter(
+                x=df_real2["PRED"],
+                y=df_real2.index,
+                mode="lines",
+                name=predicted_log + " Pred",
+            )
+        )
+        fig.add_trace(
+            go.Scatter(
+                x=df_real2[predicted_log],
+                y=df_real2.index,
+                mode="lines",
+                name=predicted_log,
+            )
+        )
+        fig.update_yaxes(autorange="reversed")
+        fig.update_layout(
+            width=500,
+            height=800,
+            # title="fixed-ratio axes"
+        )
+        config = {
+            "displaylogo": False,
+            "modeBarButtonsToRemove": [
+                "select2d",
+                "lasso2d",
+                "toggleSpikelines",
+                "autoScale2d",
+            ],
+        }
+        predicted_log_div = fig.to_html(
+            full_html=False, config=config, include_plotlyjs=False
+        )
+
+        context["predicted_log_div"] = predicted_log_div
+
     template_name = "index.html"
     return render(request, template_name, context)
 
@@ -86,14 +204,16 @@ def log_selector(request):
     train_df = dataframing_train(selected_las)
     train_df_json = train_df.to_json(default_handler=str)
     request.session["train_df"] = train_df_json
-    features = list(train_df.columns)
+    columns = list(train_df.columns)
 
     for col in train_df.columns:
         if train_df[col].dtypes != float and train_df[col].dtypes != int:
-            features.remove(col)
+            columns.remove(col)
+
+    request.session["columns"] = columns
 
     template_name = "log_selector.html"
-    context = {"features": features}
+    context = {"columns": columns}
     return render(request, template_name, context)
 
 
@@ -195,6 +315,10 @@ def four_model_output(request):
     model, pred_train, rmse_train, pred_test, rmse_test = train_model(
         train_df, features, predicted_log
     )
+
+    request.session["rmse_train"] = rmse_train
+    request.session["rmse_test"] = rmse_test
+
     # Save model to file
     model.save_model(
         settings.BASE_DIR / "las" / "models" / (request.session.session_key + ".json")
@@ -215,13 +339,13 @@ def four_model_output(request):
             "autoScale2d",
         ],
     }
-    las_div = bar_feature_importance.to_html(
+    feature_importance_div = bar_feature_importance.to_html(
         full_html=False, config=config, include_plotlyjs=False
     )
     upload_form = LasUploadForm()
 
     context = {
-        "las_div": las_div,
+        "feature_importance_div": feature_importance_div,
         "rmse_train": rmse_train,
         "rmse_test": rmse_test,
         "upload_form": upload_form,
@@ -294,6 +418,10 @@ def five_predicts(request):
 
             df_real2["PRED"] = dt_pred
             df_real2.index = df_real2["DEPTH"]
+
+            df_real2_json = df_real2.to_json(default_handler=str)
+            request.session["df_real2"] = df_real2_json
+
             fig = go.Figure()
             fig.add_trace(
                 go.Scatter(
@@ -326,12 +454,12 @@ def five_predicts(request):
                     "autoScale2d",
                 ],
             }
-            las_div = fig.to_html(
+            predicted_log_div = fig.to_html(
                 full_html=False, config=config, include_plotlyjs=False
             )
 
             template_name = "las_predicted.html"
-            context = {"las_div": las_div}
+            context = {"predicted_log_div": predicted_log_div}
             return render(request, template_name, context)
 
 
