@@ -14,21 +14,27 @@
                 <div class="card-body">
                     <h5 class="card-title">1. Input File</h5>
                     <h6 class="card-subtitle mb-2 text-muted">Select which .las file to upload</h6>
-                    <form method="post" enctype="multipart/form-data" data-hx-post="/two"
+                    <form id="file_upload_form" method="post" enctype="multipart/form-data" data-hx-post="/two"
                           data-hx-encoding='multipart/form-data'
                           data-hx-target="#las_list"
                           data-hx-indicator="#indicator">
                         {% csrf_token %}
-                        <div class="row">
-                            <div class="col-lg-3">
+                        <div class="row mb-2">
+                            <div class="col-lg-3 mb-2">
                                 <input type="file" name="las_file" required="" id="id_las_file" class="form-control"
                                        multiple>
                             </div>
                             <div class="col-lg-2">
                                 <button type="submit" class="btn btn-primary text-white">Submit</button>
                             </div>
+
                         </div>
+
                     </form>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                             aria-valuemax="100" id='progress'></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,7 +63,7 @@
                     <div id="las_box">
 
                     </div>
-                    
+
 
                 </div>
             </div>
@@ -68,7 +74,8 @@
             <div class="card border-secondary mb-3">
                 <div class="card-body">
                     <h5 class="card-title">4. Model Assessment</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Assess the RMSE of the train & test dataset, assess the predictor parameters based on the feature importance</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Assess the RMSE of the train & test dataset, assess the
+                        predictor parameters based on the feature importance</h6>
                     <div id="predicted_log">
 
                     </div>
@@ -100,5 +107,12 @@
 <script src="https://unpkg.com/htmx.org@1.3.3"></script>
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 <script src="{% static "js/bootstrap.bundle.js" %}"></script>
+<script>
+  htmx.on('#file_upload_form', 'htmx:xhr:progress', function (evt) {
+    htmx.find('#progress').setAttribute('aria-valuenow', evt.detail.loaded / evt.detail.total * 100)
+    htmx.find('#progress').setAttribute('style', 'width:' + evt.detail.loaded / evt.detail.total * 100 + '%')
+    htmx.find('#progress').innerHTML = evt.detail.loaded / evt.detail.total * 100 + '%'
+  });
+</script>
 </body>
 </html>
