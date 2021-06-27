@@ -68,11 +68,8 @@ def one_base_page(request):
         }
         las_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
 
-        quartiles = get_quartile(train_df, features)
-        iqr = get_iqr(features, quartiles)
-
         context["las_div"] = las_div
-        context["iqr"] = iqr
+        context["iqr"] = request.session["boundaries"]
         context["features"] = features
 
     if "rmse_train" in request.session:
@@ -247,11 +244,18 @@ def threea_data_cleaning(request):
     }
     las_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
 
-    quartiles = get_quartile(train_df, features)
-    iqr = get_iqr(features, quartiles)
+    # quartiles = get_quartile(train_df, features)
+    # iqr = get_iqr(features, quartiles)
+
+    boundaries = {}
+    for feature in features:
+        boundaries[feature] = [train_df[feature].min(), train_df[feature].max()]
+
+    request.session["boundaries"] = boundaries
+
     context = {
         "las_div": las_div,
-        "iqr": iqr,
+        "iqr": boundaries,
     }
     template_name = "las_box.html"
     return render(request, template_name, context)
