@@ -12,3 +12,4 @@ HOPE_full/variables.py
 **/las
 !/las/train/*
 !/las/alias.json
+/.env

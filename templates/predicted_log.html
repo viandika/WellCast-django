@@ -1,10 +1,25 @@
-<form id="predicted_log" data-hx-get="/four" data-hx-params="*" data-hx-target="#las_box_limited" data-hx-include="#las_limit"
-      data-hx-indicator="#indicator">
-    <label for="predicted_log" class="form-label">Select log you want to predict</label>
-    <select name="predicted_log" id="predicted_log" class="form-control">
-        {% for feature in features %}
-            <option value="{{ feature }}">{{ feature }}</option>
-        {% endfor %}
-    </select>
-    <button type="submit" class="btn btn-primary text-white">Submit</button>
-</form>
+<div class="card border-secondary mb-3">
+    <div class="card-body">
+        <h5 class="card-title">4. Model Assessment</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Assess the RMSE of the train & test dataset, assess the
+            predictor parameters based on the feature importance</h6>
+
+        <form id="predicted_log" data-hx-get="/four" data-hx-params="*" data-hx-target="#las_box_limited"
+              data-hx-include="#las_limit"
+              data-hx-indicator="#indicator">
+            <label for="predicted_log" class="form-label">Select log you want to predict</label>
+            <select name="predicted_log" id="predicted_log" class="form-control">
+                {% for feature in features %}
+                    <option value="{{ feature }}">{{ feature }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary text-white">Submit</button>
+        </form>
+        <div id="las_predict_upload">
+
+        </div>
+        <div id="las_box_limited">
+
+        </div>
+    </div>
+</div>
