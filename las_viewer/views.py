@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 from bokeh.embed import components
 from bokeh.layouts import gridplot
 from django.conf import settings
+from django.contrib import messages
 from django.http import FileResponse
 from django.shortcuts import render
 from plotly.subplots import make_subplots
@@ -67,6 +68,16 @@ def two_las_upload(request):
                     template_name = "las_list.html"
                     context = {"las_files": las_list}
                     return render(request, template_name, context)
+        else:
+            if "las_list" in request.session:
+                template_name = "las_list.html"
+                messages.error(request, "File not valid")
+                context = {"las_files": request.session["las_list"]}
+                return render(request, template_name, context)
+            else:
+                template_name = "las_list.html"
+                messages.error(request, "File not valid")
+                return render(request, template_name)
 
 
 def log_selector(request):
