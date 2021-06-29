@@ -251,9 +251,10 @@
 <script src="{% static "js/bootstrap.bundle.js" %}"></script>
 <script>
   htmx.on('#file_upload_form', 'htmx:xhr:progress', function (evt) {
-    htmx.find('#progress').setAttribute('aria-valuenow', evt.detail.loaded / evt.detail.total * 100)
-    htmx.find('#progress').setAttribute('style', 'width:' + evt.detail.loaded / evt.detail.total * 100 + '%')
-    htmx.find('#progress').innerHTML = evt.detail.loaded / evt.detail.total * 100 + '%'
+    let percentage = evt.detail.loaded / evt.detail.total * 100
+    htmx.find('#progress').setAttribute('aria-valuenow', percentage.toFixed(0))
+    htmx.find('#progress').setAttribute('style', 'width:' + percentage.toFixed(0) + '%')
+    htmx.find('#progress').innerHTML = percentage.toFixed(0) + '%'
   });
 </script>
 </body>
