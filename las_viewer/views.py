@@ -265,7 +265,7 @@ def threeb_preview_cleaned(request):
     train_df = pd.read_json(request.session["train_df"])
     features = request.session["features"]
     for col in features:
-        train_df = train_df.loc[
+        train_df[col] = train_df[col].loc[
             (train_df[col] > float(request.GET.get(col + "_bottom")))
             & (train_df[col] < float(request.GET.get(col + "_top")))
         ]
