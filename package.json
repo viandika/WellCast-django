@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "scss": "node-sass --output-style compressed -o static/css src/scss --source-map true --source-map-embed true --source-map-contents true",
+    "scss": "node-sass --output-style compressed -o static/css src/scss --source-map true --source-map-contents true",
     "autoprefixer": "postcss -u autoprefixer cssnano -r static/css/*.css",
     "uglify": "uglifyjs src/js/*.js -m -o static/js/app.js --source-map && uglifyjs src/js/*.js -m -c -o static/js/app.min.js",
     "build:css": "npm run scss && npm run autoprefixer",
