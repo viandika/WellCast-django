@@ -4,9 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <link rel="icon" href="{% static 'img/favicon.ico' %}" sizes="16x16">
+
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body class="py-5">
 <div class="container-md">
@@ -51,21 +53,31 @@
                             training</h6>
                         <form id="las_dd">
                             <label for="selected_las" class="form-label">.las files:</label>
-                            <select name="selected_las" id="selected_las" class="form-select mb-2" multiple>
-                                {% for file in las_files %}
-                                    <option value="{{ file }}">{{ file }}</option>
-                                {% endfor %}
-                            </select>
-                            <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
-                                    data-hx-params="*"
-                                    data-hx-target="#log_selector_form"
-                                    data-hx-include="#las_dd">Submit
-                            </button>
-                            <button type="button" class="btn btn-secondary text-white" data-bs-toggle="modal"
-                                    data-bs-target="#las_preview_modal" data-hx-get="/las_preview" data-hx-params="*"
-                                    data-hx-target="#las_preview_modal_content"
-                                    data-hx-include="#las_dd">Preview Logs
-                            </button>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <select name="selected_las" id="selected_las"
+                                            style="visibility: hidden; width: 100%" size="1" multiple>
+                                        {% for file in las_files %}
+                                            <option value="{{ file }}">{{ file }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 mt-2">
+                                    <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
+                                            data-hx-params="*"
+                                            data-hx-target="#log_selector_form"
+                                            data-hx-include="#las_dd">Submit
+                                    </button>
+                                    <button type="button" class="btn btn-secondary text-white" data-bs-toggle="modal"
+                                            data-bs-target="#las_preview_modal" data-hx-get="/las_preview"
+                                            data-hx-params="*"
+                                            data-hx-target="#las_preview_modal_content"
+                                            data-hx-include="#las_dd">Preview Logs
+                                    </button>
+                                </div>
+                            </div>
                         </form>
 
                         <div id="las_preview_modal" class="modal fade" tabindex="-1" role="dialog"
@@ -245,17 +257,9 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.bokeh.org/bokeh/release/bokeh-2.3.1.min.js"
-        crossorigin="anonymous"></script>
-<script src="https://unpkg.com/htmx.org@1.3.3"></script>
-<script src="{% static "js/bootstrap.bundle.js" %}"></script>
-<script>
-  htmx.on('#file_upload_form', 'htmx:xhr:progress', function (evt) {
-    let percentage = evt.detail.loaded / evt.detail.total * 100
-    htmx.find('#progress').setAttribute('aria-valuenow', percentage.toFixed(0))
-    htmx.find('#progress').setAttribute('style', 'width:' + percentage.toFixed(0) + '%')
-    htmx.find('#progress').innerHTML = percentage.toFixed(0) + '%'
-  });
-</script>
+
+<script src="{% static "js/app.min.js" %}"></script>
+<script src="{% static "js/index.js" %}"></script>
+
 </body>
 </html>

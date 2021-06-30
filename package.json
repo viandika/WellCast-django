@@ -4,7 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "scss": "node-sass --output-style compressed -o static/css src/scss --source-map true --source-map-embed true --source-map-contents true",
+    "autoprefixer": "postcss -u autoprefixer cssnano -r static/css/*.css",
+    "uglify": "uglifyjs src/js/*.js -m -o static/js/app.js --source-map && uglifyjs src/js/*.js -m -c -o static/js/app.min.js",
+    "build:css": "npm run scss && npm run autoprefixer",
+    "build:js": "npm run uglify",
+    "build": "npm run build:css && npm run build:js",
+    "watch:css": "onchange 'src/scss/*.scss' -- npm run build:css",
+    "watch:js": "onchange 'src/js/*.js' -- npm run build:js",
+    "watch:all": "parallelshell \"npm run watch:css\" \"npm run watch:js\""
   },
   "repository": {
     "type": "git",
@@ -14,16 +22,28 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@fontsource/roboto": "^4.3.0",
-    "bootstrap": "^5.0.0"
+    "@bokeh/bokehjs": "2.3.1",
+    "@fontsource/roboto": "^4.4.5",
+    "@popperjs/core": "^2.9.2",
+    "D": "^1.0.0",
+    "bootstrap": "^5.0.0",
+    "jquery": "^3.6.0",
+    "plotly.js": "^2.2.0",
+    "plotly.js-dist": "^2.2.0",
+    "select2": "^4.1.0-rc.0",
+    "select2-bootstrap-5-theme": "^1.1.1"
   },
   "devDependencies": {
-    "autoprefixer": "^10.2.5",
+    "autoprefixer": "^10.2.6",
     "cssnano": "^4.1.11",
-    "gulp": "^4.0.2",
-    "gulp-postcss": "^9.0.0",
-    "gulp-sass": "^4.1.0",
-    "gulp-sourcemaps": "^3.0.0",
-    "postcss": "^8.2.14"
+    "eslint": "^7.29.0",
+    "htmx.org": "^1.4.1",
+    "node-sass": "^6.0.1",
+    "onchange": "^7.1.0",
+    "parallelshell": "^3.0.1",
+    "postcss": "^8.3.5",
+    "postcss-cli": "^8.3.1",
+    "rollup": "^2.52.4",
+    "uglify-js": "^3.13.10"
   }
 }

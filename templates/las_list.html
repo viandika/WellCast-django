@@ -5,28 +5,39 @@
         <h6 class="card-subtitle mb-2 text-muted">These files will be merged to prepare for training</h6>
         <form id="las_dd">
             <label for="selected_las" class="form-label">.las files:</label>
-            <select name="selected_las" id="selected_las" class="form-select mb-2" multiple>
-                {% for file in las_files %}
-                    <option value="{{ file }}">{{ file }}</option>
-                {% endfor %}
-            </select>
-            <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector" data-hx-params="*"
-                    data-hx-target="#log_selector_form"
-                    data-hx-include="#las_dd">Submit
-            </button>
-            <button type="button" class="btn btn-secondary text-white" data-bs-toggle="modal"
-                    data-bs-target="#las_preview_modal" data-hx-get="/las_preview" data-hx-params="*"
-                    data-hx-target="#las_preview_modal_content"
-                    data-hx-include="#las_dd">Preview Logs
-            </button>
+            <div class="row">
+                <div class="col-lg-6">
+                    <select name="selected_las" id="selected_las"
+                            style="visibility: hidden; width: 100%" size="1" multiple>
+                        {% for file in las_files %}
+                            <option value="{{ file }}">{{ file }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 mt-2">
+                    <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
+                            data-hx-params="*"
+                            data-hx-target="#log_selector_form"
+                            data-hx-include="#las_dd">Submit
+                    </button>
+                    <button type="button" class="btn btn-secondary text-white" data-bs-toggle="modal"
+                            data-bs-target="#las_preview_modal" data-hx-get="/las_preview"
+                            data-hx-params="*"
+                            data-hx-target="#las_preview_modal_content"
+                            data-hx-include="#las_dd">Preview Logs
+                    </button>
+                </div>
+            </div>
         </form>
 
-        <div id="las_preview_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+        <div id="las_preview_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="logs_modal_label"
              aria-hidden="true">
             <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Logs Preview</h5>
+                        <h5 id="logs_modal_label" class="modal-title">Logs Preview</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="las_preview_modal_content">

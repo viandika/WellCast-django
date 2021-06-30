@@ -1,19 +1,37 @@
 {% load static %}
-{% if selected_las %}
-    <form id="las_preview_form" data-hx-get="/las_preview" data-hx-params="*" data-hx-trigger="change"
-          data-hx-target="#las_preview">
+{% if las_list %}
+    <form id="las_preview_form">
         <div class="form-group">
             <label for="single_select_las">Select a file to preview: </label>
-            <select class="form-control" name="single_select_las" id="single_select_las">
-                {% for file in selected_las %}
+            <select class="form-control mb-2" name="single_select_las" id="single_select_las" data-hx-get="/las_preview"
+                    data-hx-params="*" data-hx-trigger="change"
+                    data-hx-target="#las_preview">
+                {% for file in las_list %}
                     <option value="{{ file }}">{{ file }}</option>
                 {% endfor %}
-
             </select>
         </div>
     </form>
 {% endif %}
 <div id="las_preview">
+    <div class="row">
+        <div class="col-lg-10">
+            <select class="form-control mb-2" name="selected_logs" id="selected_logs"
+                    style="visibility: hidden; width: 100%" size="1" multiple>
+                {% for curve in curves_list %}
+                    <option value="{{ curve }}" selected>{{ curve }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-lg-2">
+            <button type="button" class="btn btn-secondary text-white"
+                    data-bs-target="#las_preview" data-hx-get="/las_preview"
+                    data-hx-params="*"
+                    data-hx-target="#las_preview"
+                    data-hx-include="#selected_logs">submit
+            </button>
+        </div>
+    </div>
     {{ plot_div | safe }}
     {{ plot_script | safe }}
 </div>

@@ -497,19 +497,34 @@ def las_preview(request):
         "scale_height",
         "scale_both",
     ]
-    selected_las = request.GET.getlist("selected_las")
+    # selected_las = request.GET.getlist("selected_las")
     single_select_las = request.GET.get("single_select_las")
+    las_list = request.session["las_list"]
+    curves_list = request.GET.getlist("selected_logs")
 
     if single_select_las:
         well = lasViewer(settings.BASE_DIR / "las" / single_select_las)
     else:
-        well = lasViewer(settings.BASE_DIR / "las" / selected_las[0])
+        well = lasViewer(settings.BASE_DIR / "las" / las_list[0])
+
+    if not curves_list:
+        curves_list = [
+            curve.mnemonic
+            for curve in well.curves[:]
+            if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT"
+        ]
 
     myLog = []
-    for curve in well.curves[:]:
-        if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT":
-            fig = well.addplot(curve.mnemonic)
-            myLog.append(fig)
+
+    for logs in curves_list:
+        fig = well.addplot(logs)
+        myLog.append(fig)
+    # else:
+    #     for curve in well.curves[:]:
+    #         if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT":
+    #             fig = well.addplot(curve.mnemonic)
+    #             myLog.append(fig)
+
     for i in myLog:
         i.y_range = myLog[0].y_range
     plot = gridplot([myLog], sizing_mode="stretch_both")
@@ -520,11 +535,13 @@ def las_preview(request):
         context = {
             "plot_script": plot_script,
             "plot_div": plot_div,
+            "curves_list": curves_list,
         }
     else:
         context = {
             "plot_script": plot_script,
             "plot_div": plot_div,
-            "selected_las": selected_las,
+            "las_list": las_list,
+            "curves_list": curves_list,
         }
     return render(request, "las_preview.html", context)
