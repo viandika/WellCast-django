@@ -20,15 +20,17 @@
                 <br/>
             {% endfor %}
             {#    <input type="checkbox" class="form-check-input" value="" id="las_limited_preview" name="las_limited_preview"/>#}
-            <button type="submit" class="btn btn-primary text-white" data-hx-include="#las_limit"
-                    data-hx-get="/threeb"
-                    data-hx-target="#las_box_preview">
-                Preview
-            </button>
-            <button type="submit" class="btn btn-secondary text-white" data-hx-include="#las_limit"
+            <button type="submit" class="btn btn-primary text-white"
+                    data-hx-include="#las_limit"
                     data-hx-get="/predicted_log"
                     data-hx-target="#predicted_log">
                 Submit
+            </button>
+            <button type="submit" class="btn btn-secondary text-white"
+                    data-hx-include="#las_limit"
+                    data-hx-get="/threeb"
+                    data-hx-target="#las_box_preview">
+                Preview
             </button>
         </form>
     </div>

@@ -2,6 +2,18 @@
     <div class="card-body">
         <h5 class="card-title">5. Prediction result</h5>
         <h6 class="card-subtitle mb-2 text-muted">Plot the predicted log with the actual log</h6>
+
+        <button
+                data-hx-get="/preview_pred_las"
+                data-hx-target="#preview-las-modals-here"
+                data-hx-trigger="click"
+                class="btn btn-secondary text-white"
+                _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
+            Open Uploaded file logs
+        </button>
+
+        <div id="preview-las-modals-here"></div>
+
         {{ predicted_log_div | safe }}
 
         <a class="btn btn-primary text-white" href="/download_las">Download</a>
