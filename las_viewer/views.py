@@ -14,7 +14,7 @@ from django.shortcuts import render
 from plotly.subplots import make_subplots
 from xgboost import XGBRegressor
 
-from las_viewer.forms import LasUploadForm
+from las_viewer.forms import LasUploadForm, ContactUsForm
 from las_viewer.las_renderer import lasViewer
 from las_viewer.models import LasUpload
 from las_viewer.xgboost_train import (
@@ -545,3 +545,17 @@ def las_preview(request):
             "curves_list": curves_list,
         }
     return render(request, "las_preview.html", context)
+
+
+def feedback(request):
+    if request.method == "POST":
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Thank you for your feedback")
+        context = {"form": form}
+
+    else:
+        form = ContactUsForm()
+        context = {"form": form}
+    return render(request, "contact_us.html", context)

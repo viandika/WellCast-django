@@ -13,8 +13,27 @@
     <script src="{% static "js/index.js" %}"></script>
 
 </head>
-<body class="py-5">
-<div class="container-md">
+<body>
+<nav class="navbar navbar-light bg-dark">
+    <div class="container-fluid">
+    <span class="navbar-brand">
+      <img src="{% static 'img/cropped-vartha-research.png' %}" alt="GeoVartha Logo" width="200" height="77">
+    </span>
+        <form class="d-flex">
+            <button type="button" class="btn btn-outline-primary" data-hx-get="/feedback"
+                    data-hx-target="#feedback-modals-here"
+                    data-hx-trigger="click"
+                    _="on htmx:afterOnLoad wait 10ms then add .show to #feedback-modal then add .show to #feedback-modal-backdrop">
+                Feedback?
+            </button>
+        </form>
+    </div>
+</nav>
+
+
+<div id="feedback-modals-here"></div>
+
+<div class="container-md py-3">
     <div class="row">
         <div class="col">
             <div class="card border-secondary mb-3">
@@ -124,12 +143,12 @@
                                     <option value="{{ column }}">{{ column }}</option>
                                 {% endfor %}
                             </select>
-                            <button type="submit" class="btn btn-primary text-white">Submit</button>
+                            <button type="submit" class="btn btn-primary text-white mb-3">Submit</button>
                         </form>
                         <div id="las_box">
                             {% if las_div %}
                                 <div class="row">
-                                    <div class="col-3">
+                                    <div class="col-4">
                                         <form id="las_limit">
                                             {% for col, quartile in iqr.items %}
                                                 <div class="row">
@@ -166,7 +185,7 @@
                                             </button>
                                         </form>
                                     </div>
-                                    <div class="col-9">
+                                    <div class="col-8">
                                         <div class="row">
                                             <div class="col">
                                                 <h6 class="mb-2 text-muted">Before</h6>

@@ -11,6 +11,7 @@ from las_viewer.views import (
     five_predicts,
     download_las,
     las_preview,
+    feedback,
 )
 
 urlpatterns = [
@@ -24,4 +25,5 @@ urlpatterns = [
     path("five", five_predicts, name="five_predicts"),
     path("download_las", download_las, name="download_las"),
     path("las_preview", las_preview, name="las_preview"),
+    path("feedback", feedback, name="feedback"),
 ]

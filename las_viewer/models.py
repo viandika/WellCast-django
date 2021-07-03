@@ -17,3 +17,9 @@ class LasUpload(models.Model):
     #     except ObjectDoesNotExist:
     #         pass
     #     super(LasUpload, self).save(*args, **kwargs)
+
+
+class ContactUs(models.Model):
+    name = models.CharField(max_length=50, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    message = models.TextField()

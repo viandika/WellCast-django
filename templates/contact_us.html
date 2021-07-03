@@ -1,0 +1,27 @@
+<div id="feedback-modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+<div id="feedback-modal" class="modal fade show" tabindex="-1" style="display:block;">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Feedback Form</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        onclick="closeModal()"></button>
+            </div>
+            <div class="modal-body">
+                {% include 'messages.html' %}
+                <form id="feedback_form" method="post" data-hx-post="/feedback">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    {% for field in form %}
+                        <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                    {% endfor %}
+                    <input type="submit" value="Submit" class="btn btn-primary text-white">
+                </form>
+            </div>
+            {#            <div class="modal-footer">#}
+            {#                <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>#}
+            {#            </div>#}
+        </div>
+    </div>
+</div>
