@@ -24,7 +24,14 @@ function setMultiSelect() {
   $('#selected_logs').select2({
     dropdownParent: $("#las_preview_modal"),
     multiple: true,
-    placeholder: 'Click here to select files',
+    // placeholder: 'Click here to select files',
+    closeOnSelect: false,
+    theme: "bootstrap-5",
+  });
+  $('#selected_log').select2({
+    dropdownPosition: 'below',
+    multiple: true,
+    // placeholder: 'Click here to select files',
     closeOnSelect: false,
     theme: "bootstrap-5",
   });
@@ -43,3 +50,4 @@ function closeModal() {
     container.removeChild(modal)
   }, 200)
 }
+

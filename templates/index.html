@@ -11,6 +11,7 @@
 
     <script src="{% static "js/app.min.js" %}"></script>
     <script src="{% static "js/index.js" %}"></script>
+    <script src="{% static "js/custom.js" %}"></script>
 
 </head>
 <body>
@@ -138,12 +139,13 @@
                         <form id="las_selector" data-hx-get="/threea" data-hx-params="*" data-hx-target="#las_box"
                               data-hx-indicator="#indicator">
                             <label for="selected_log" class="form-label">Select logs</label>
-                            <select name="selected_log" id="selected_log" class="form-select mb-2" multiple>
+                            <select name="selected_log" id="selected_log" style="visibility: hidden; width: 100%"
+                                    size="1" multiple>
                                 {% for column in columns %}
                                     <option value="{{ column }}">{{ column }}</option>
                                 {% endfor %}
                             </select>
-                            <button type="submit" class="btn btn-primary text-white mb-3">Submit</button>
+                            <button type="submit" class="btn btn-primary text-white my-3">Submit</button>
                         </form>
                         <div id="las_box">
                             {% if las_div %}
