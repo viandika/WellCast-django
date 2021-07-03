@@ -519,6 +519,7 @@ def las_preview(request):
     for logs in curves_list:
         fig = well.addplot(logs)
         myLog.append(fig)
+
     # else:
     #     for curve in well.curves[:]:
     #         if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT":
@@ -527,8 +528,8 @@ def las_preview(request):
 
     for i in myLog:
         i.y_range = myLog[0].y_range
-    plot = gridplot([myLog], sizing_mode="stretch_both")
 
+    plot = gridplot([myLog], sizing_mode="stretch_both")
     plot_script, plot_div = components(plot)
 
     if request.htmx.target == "las_preview":
@@ -545,6 +546,40 @@ def las_preview(request):
             "curves_list": curves_list,
         }
     return render(request, "las_preview.html", context)
+
+
+def preview_pred_las(request):
+    curves_list = request.GET.getlist("selected_logs")
+    las_pred_filename = request.session["pred_las"]
+
+    well = lasViewer(settings.BASE_DIR / "las" / las_pred_filename)
+
+    if not curves_list:
+        curves_list = [
+            curve.mnemonic
+            for curve in well.curves[:]
+            if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT"
+        ]
+
+    myLog = []
+
+    for logs in curves_list:
+        fig = well.addplot(logs)
+        myLog.append(fig)
+
+    for i in myLog:
+        i.y_range = myLog[0].y_range
+
+    plot = gridplot([myLog], sizing_mode="stretch_both")
+    plot_script, plot_div = components(plot)
+
+    context = {
+        "plot_script": plot_script,
+        "plot_div": plot_div,
+        "curves_list": curves_list,
+        "las_pred_filename": las_pred_filename,
+    }
+    return render(request, "las_pred_preview.html", context)
 
 
 def feedback(request):

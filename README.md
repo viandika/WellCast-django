@@ -1,5 +1,7 @@
 ## TODO:
 - [ ] DEPLOY
+- [ ] Fix unnecessary double logs preview function
+- [ ] Add loading indicator
 - [ ] Find Plotly alternative for large data
 - [ ] Logs preview modal need logs selector? if too many logs jdi kecil
 - [ ] Set proper uploads locations

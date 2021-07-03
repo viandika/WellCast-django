@@ -93,35 +93,19 @@
                                             data-hx-target="#log_selector_form"
                                             data-hx-include="#las_dd">Submit
                                     </button>
-                                    <button type="button" class="btn btn-secondary text-white" data-bs-toggle="modal"
-                                            data-bs-target="#las_preview_modal" data-hx-get="/las_preview"
+                                    <button type="button" class="btn btn-secondary text-white"
+                                            data-hx-get="/las_preview"
                                             data-hx-params="*"
-                                            data-hx-target="#las_preview_modal_content"
-                                            data-hx-include="#las_dd">Preview Logs
+                                            data-hx-target="#las-preview-train-modal-here"
+                                            data-hx-trigger="click"
+                                            _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
+                                        Preview Logs
                                     </button>
                                 </div>
                             </div>
                         </form>
+                        <div id="las-preview-train-modal-here"></div>
 
-                        <div id="las_preview_modal" class="modal fade" tabindex="-1" role="dialog"
-                             aria-labelledby="myLargeModalLabel"
-                             aria-hidden="true">
-                            <div class="modal-dialog modal-fullscreen">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title">Logs Preview</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body" id="las_preview_modal_content">
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             {% endif %}
@@ -173,18 +157,20 @@
                                                 <br/>
                                             {% endfor %}
                                             {#    <input type="checkbox" class="form-check-input" value="" id="las_limited_preview" name="las_limited_preview"/>#}
+
                                             <button type="submit" class="btn btn-primary text-white"
-                                                    data-hx-include="#las_limit"
-                                                    data-hx-get="/threeb"
-                                                    data-hx-target="#las_box_preview">
-                                                Preview
-                                            </button>
-                                            <button type="submit" class="btn btn-secondary text-white"
                                                     data-hx-include="#las_limit"
                                                     data-hx-get="/predicted_log"
                                                     data-hx-target="#predicted_log">
                                                 Submit
                                             </button>
+                                            <button type="submit" class="btn btn-secondary text-white"
+                                                    data-hx-include="#las_limit"
+                                                    data-hx-get="/threeb"
+                                                    data-hx-target="#las_box_preview">
+                                                Preview
+                                            </button>
+
                                         </form>
                                     </div>
                                     <div class="col-8">
@@ -222,7 +208,7 @@
                             the
                             predictor parameters based on the feature importance</h6>
 
-                        <form id="predicted_log" data-hx-get="/four" data-hx-params="*"
+                        <form id="predicted_log_form" data-hx-get="/four" data-hx-params="*"
                               data-hx-target="#las_box_limited"
                               data-hx-include="#las_limit"
                               data-hx-indicator="#indicator">
@@ -249,7 +235,7 @@
                                     {% csrf_token %}
                                     <div class="row">
                                         <div class="col-lg-3">
-                                            <input type="file" name="las_file" required="" id="id_las_file"
+                                            <input type="file" name="las_file" required="" id="id_las_file_predict"
                                                    class="form-control">
                                         </div>
                                         <div class="col-lg-2">
@@ -272,6 +258,18 @@
                     <div class="card-body">
                         <h5 class="card-title">5. Prediction result</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Plot the predicted log with the actual log</h6>
+
+                        <button
+                                data-hx-get="/preview_pred_las"
+                                data-hx-target="#preview-las-modals-here"
+                                data-hx-trigger="click"
+                                class="btn btn-secondary text-white"
+                                _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
+                            Open Uploaded file logs
+                        </button>
+
+                        <div id="preview-las-modals-here"></div>
+
                         {{ predicted_log_div | safe }}
 
                         <a class="btn btn-primary text-white" href="/download_las">Download</a>

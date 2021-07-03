@@ -22,7 +22,7 @@ function setMultiSelect() {
     //   {#dropdownCssClass: "select2--small",#}
   });
   $('#selected_logs').select2({
-    dropdownParent: $("#las_preview_modal"),
+    // dropdownParent: $("#las_preview_modal"),
     multiple: true,
     // placeholder: 'Click here to select files',
     closeOnSelect: false,
@@ -41,6 +41,33 @@ function closeModal() {
   const container = document.getElementById("feedback-modals-here")
   const backdrop = document.getElementById("feedback-modal-backdrop")
   const modal = document.getElementById("feedback-modal")
+
+  modal.classList.remove("show")
+  backdrop.classList.remove("show")
+
+  setTimeout(function () {
+    container.removeChild(backdrop)
+    container.removeChild(modal)
+  }, 200)
+}
+function closePreviewModal() {
+  const container = document.getElementById("las-preview-train-modal-here")
+  const backdrop = document.getElementById("preview-las-modal-backdrop")
+  const modal = document.getElementById("preview-las-modal")
+
+  modal.classList.remove("show")
+  backdrop.classList.remove("show")
+
+  setTimeout(function () {
+    container.removeChild(backdrop)
+    container.removeChild(modal)
+  }, 200)
+}
+
+function closePredPreviewModal() {
+  const container = document.getElementById("preview-las-modals-here")
+  const backdrop = document.getElementById("preview-las-modal-backdrop")
+  const modal = document.getElementById("preview-las-modal")
 
   modal.classList.remove("show")
   backdrop.classList.remove("show")
