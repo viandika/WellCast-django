@@ -459,6 +459,10 @@ def five_predicts(request):
             template_name = "las_predicted.html"
             context = {"predicted_log_div": predicted_log_div}
             return render(request, template_name, context)
+        else:
+            template_name = "las_predicted.html"
+            messages.error(request, "File not valid")
+            return render(request, template_name)
 
 
 def download_las(request):
