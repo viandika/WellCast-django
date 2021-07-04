@@ -6,10 +6,10 @@
 *.npy
 *.h5
 *.sqlite3
-HOPE_full/variables.py
 **/.idea
 **/node_modules
-**/las
-!/las/train/*
+**/las/*
 !/las/alias.json
 /.env
+**/models/*
+**/las_downloads/*

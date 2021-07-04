@@ -76,10 +76,7 @@ def one_base_page(request):
         features = request.session["features"]
         model = XGBRegressor()
         model.load_model(
-            settings.BASE_DIR
-            / "las"
-            / "models"
-            / (request.session.session_key + ".json")
+            settings.MEDIA_ROOT / "models" / (request.session.session_key + ".json")
         )
 
         bar_feature_importance = go.Figure(
@@ -325,7 +322,7 @@ def four_model_output(request):
 
     # Save model to file
     model.save_model(
-        settings.BASE_DIR / "las" / "models" / (request.session.session_key + ".json")
+        settings.MEDIA_ROOT / "models" / (request.session.session_key + ".json")
     )
     # trained_features = features
     # trained_features.remove(predicted_log)
@@ -369,13 +366,13 @@ def five_predicts(request):
             )
             instance.save()  # save form to database
             request.session["pred_las"] = las_file.name
-            alias_file = settings.BASE_DIR / "las" / "alias.json"
+            alias_file = settings.MEDIA_ROOT / "utils" / "alias.json"
 
             with open(alias_file, "r") as file:
                 alias = json.load(file)
 
             data_real, log_ava_real = load_data(
-                settings.BASE_DIR / "las" / las_file.name
+                settings.MEDIA_ROOT / "las" / las_file.name
             )
             data_real = data_real.reset_index()
             df_real = merge_alias(data_real, alias, list(data_real.columns))
@@ -408,10 +405,7 @@ def five_predicts(request):
                 features.remove(predicted_log)
             model = XGBRegressor()
             model.load_model(
-                settings.BASE_DIR
-                / "las"
-                / "models"
-                / (request.session.session_key + ".json")
+                settings.MEDIA_ROOT / "models" / (request.session.session_key + ".json")
             )
 
             dt_pred = model.predict(df_real2[features])
@@ -471,17 +465,17 @@ def download_las(request):
     las_filename = request.session["pred_las"]
     pred_df = pd.read_json(request.session["pred_df"])
     # recreate las file for download
-    las = lasio.read(settings.BASE_DIR / "las" / las_filename)
+    las = lasio.read(settings.MEDIA_ROOT / "las" / las_filename)
     well = las.df()
     well["Predicted_Log"] = pred_df
     las.set_data(well)
     las.write(
-        str(settings.BASE_DIR / "las" / "downloads" / ("pred " + las_filename)),
+        str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + las_filename)),
         version=2.0,
     )
     return FileResponse(
         open(
-            str(settings.BASE_DIR / "las" / "downloads" / ("pred " + las_filename)),
+            str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + las_filename)),
             "rb",
         )
     )
@@ -503,9 +497,9 @@ def las_preview(request):
     curves_list = request.GET.getlist("selected_logs")
 
     if single_select_las:
-        well = lasViewer(settings.BASE_DIR / "las" / single_select_las)
+        well = lasViewer(settings.MEDIA_ROOT / "las" / single_select_las)
     else:
-        well = lasViewer(settings.BASE_DIR / "las" / las_list[0])
+        well = lasViewer(settings.MEDIA_ROOT / "las" / las_list[0])
 
     if not curves_list:
         curves_list = [
@@ -552,7 +546,7 @@ def preview_pred_las(request):
     curves_list = request.GET.getlist("selected_logs")
     las_pred_filename = request.session["pred_las"]
 
-    well = lasViewer(settings.BASE_DIR / "las" / las_pred_filename)
+    well = lasViewer(settings.MEDIA_ROOT / "las" / las_pred_filename)
 
     if not curves_list:
         curves_list = [

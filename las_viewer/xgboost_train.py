@@ -88,8 +88,8 @@ def dataframing_train(las_files):
     :return: data frame of train
     """
     # Initialization
-    train_source_dir = settings.BASE_DIR / "las"
-    alias_file = settings.BASE_DIR / "las" / "alias.json"
+    train_source_dir = settings.MEDIA_ROOT / "las"
+    alias_file = settings.MEDIA_ROOT / "utils" / "alias.json"
 
     with open(alias_file, "r") as file:
         alias = json.load(file)
