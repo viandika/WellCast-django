@@ -39,8 +39,10 @@
         <div class="col">
             <div class="card border-secondary mb-3">
                 <div class="card-body">
-                    <h5 class="card-title">1. Input File</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Select which .las file to upload</h6>
+                        <h5 class="card-title d-flex justify-content-between align-items-center">1. Input File
+                            <a class="btn btn-outline-success" href="/download_sample">Download Sample</a>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Select which .las file to upload</h6>
                     <form id="file_upload_form" method="post" enctype="multipart/form-data" data-hx-post="/two"
                           data-hx-encoding='multipart/form-data'
                           data-hx-target="#las_list"

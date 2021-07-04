@@ -481,6 +481,10 @@ def download_las(request):
     )
 
 
+def download_sample(request):
+    return FileResponse(open(settings.MEDIA_ROOT / "utils" / "sample_files.zip", "rb"))
+
+
 def las_preview(request):
     sizeModes = [
         "fixed",

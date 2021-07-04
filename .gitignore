@@ -13,3 +13,4 @@
 /.env
 **/models/*
 **/las_downloads/*
+!**/sample_files.zip
