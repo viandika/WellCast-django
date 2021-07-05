@@ -41,14 +41,14 @@
         <div class="col">
             <div class="card border-secondary mb-3">
                 <div class="card-body">
-                        <h5 class="card-title d-flex justify-content-between align-items-center">1. Input File
-                            <a class="btn btn-outline-success" href="/download_sample">Download Sample</a>
-                        </h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Select which .las file to upload</h6>
+                    <h5 class="card-title d-flex justify-content-between align-items-center">1. Input File
+                        <a class="btn btn-outline-success" href="/download_sample">Download Sample</a>
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">Select which .las file to upload</h6>
                     <form id="file_upload_form" method="post" enctype="multipart/form-data" data-hx-post="/two"
                           data-hx-encoding='multipart/form-data'
                           data-hx-target="#las_list"
-                          data-hx-indicator="#indicator">
+                          data-hx-indicator="#upload_indicator">
                         {% csrf_token %}
                         <div class="row mb-2">
                             <div class="col-lg-3 mb-2">
@@ -56,7 +56,10 @@
                                        multiple>
                             </div>
                             <div class="col-lg-2">
-                                <button type="submit" class="btn btn-primary text-white">Submit</button>
+                                <button type="submit" class="btn btn-primary text-white">Submit
+                                    <img id="upload_indicator" style="height:20px;" class="htmx-indicator"
+                                         src="{% static 'img/bars.svg' %}"/>
+                                </button>
                             </div>
 
                         </div>
@@ -95,15 +98,21 @@
                                     <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
                                             data-hx-params="*"
                                             data-hx-target="#log_selector_form"
-                                            data-hx-include="#las_dd">Submit
+                                            data-hx-include="#las_dd"
+                                            data-hx-indicator="#submit_train_indicator">Submit
+                                        <img id="submit_train_indicator" style="height:20px;" class="htmx-indicator"
+                                             src="{% static 'img/bars.svg' %}"/>
                                     </button>
                                     <button type="button" class="btn btn-secondary text-white"
                                             data-hx-get="/las_preview"
                                             data-hx-params="*"
                                             data-hx-target="#las-preview-train-modal-here"
                                             data-hx-trigger="click"
+                                            data-hx-indicator="#preview_train_indicator"
                                             _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
                                         Preview Logs
+                                        <img id="preview_train_indicator" style="height:20px;" class="htmx-indicator"
+                                             src="{% static 'img/bars.svg' %}"/>
                                     </button>
                                 </div>
                             </div>
@@ -270,17 +279,19 @@
                         <h5 class="card-title">3. Pre-conditioning</h5>
                         <h6 class="card-subtitle mb-2 text-muted">Assess the data before training the model</h6>
 
-                        {{heatmap_div|safe}}
+                        {{ heatmap_div|safe }}
                         <form id="las_selector" data-hx-get="/threea" data-hx-params="*" data-hx-target="#las_box"
-                              data-hx-indicator="#indicator">
-                            <label for="selected_log" class="form-label">Select logs</label>
+                              data-hx-indicator="#submit_logs_indicator">
+                            <label for="selected_log" class="form-label mt-2">Select logs</label>
                             <select name="selected_log" id="selected_log" style="visibility: hidden; width: 100%"
                                     size="1" multiple>
                                 {% for column in columns %}
                                     <option value="{{ column }}">{{ column }}</option>
                                 {% endfor %}
                             </select>
-                            <button type="submit" class="btn btn-primary text-white my-3">Submit</button>
+                            <button type="submit" class="btn btn-primary text-white my-3">Submit
+                                <img id="submit_logs_indicator" style="height:20px;" class="htmx-indicator"
+                                     src="{% static 'img/bars.svg' %}"/></button>
                         </form>
                         <div id="las_box">
                             {% if las_div %}
@@ -312,14 +323,22 @@
                                             <button type="submit" class="btn btn-primary text-white"
                                                     data-hx-include="#las_limit"
                                                     data-hx-get="/predicted_log"
-                                                    data-hx-target="#predicted_log">
+                                                    data-hx-target="#predicted_log"
+                                                    data-hx-indicator="#submit_precondition_indicator">
                                                 Submit
+                                                <img id="submit_precondition_indicator" style="height:20px;"
+                                                     class="htmx-indicator"
+                                                     src="{% static 'img/bars.svg' %}"/>
                                             </button>
                                             <button type="submit" class="btn btn-secondary text-white"
                                                     data-hx-include="#las_limit"
                                                     data-hx-get="/threeb"
-                                                    data-hx-target="#las_box_preview">
+                                                    data-hx-target="#las_box_preview"
+                                                    data-hx-indicator="#preview_precondition_indicator">
                                                 Preview
+                                                <img id="preview_precondition_indicator" style="height:20px;"
+                                                     class="htmx-indicator"
+                                                     src="{% static 'img/bars.svg' %}"/>
                                             </button>
 
                                         </form>
@@ -362,36 +381,42 @@
                         <form id="predicted_log_form" data-hx-get="/four" data-hx-params="*"
                               data-hx-target="#las_box_limited"
                               data-hx-include="#las_limit"
-                              data-hx-indicator="#indicator">
+                              data-hx-indicator="#submit_predict_log_indicator">
                             <label for="predicted_log" class="form-label">Select log you want to predict</label>
                             <select name="predicted_log" id="predicted_log" class="form-control">
                                 {% for feature in features %}
                                     <option value="{{ feature }}">{{ feature }}</option>
                                 {% endfor %}
                             </select>
-                            <button type="submit" class="btn btn-primary text-white">Submit</button>
+                            <button type="submit" class="btn btn-primary text-white my-2">Submit
+                                <img id="submit_predict_log_indicator" style="height:20px;" class="htmx-indicator"
+                                     src="{% static 'img/bars.svg' %}"/></button>
                         </form>
                         <div id="las_box_limited">
                             {% if rmse_test %}
                                 <br/>
-                                <h6>rmse train = {{ rmse_train }}</h6>
-                                <h6>rmse test = {{ rmse_test }}</h6>
+                                <h6>RMSE train = {{ rmse_train }}</h6>
+                                <h6>RMSE test = {{ rmse_test }}</h6>
 
                                 {{ feature_importance_div | safe }}
 
                                 <form method="post" enctype="multipart/form-data" data-hx-post="/five"
                                       data-hx-encoding='multipart/form-data'
                                       data-hx-target="#output_log"
-                                      data-hx-indicator="#indicator">
+                                      data-hx-indicator="#submit_pred_file_indicator">
                                     {% csrf_token %}
-                                    <label for="id_las_file_predict" class="form-label">Select file to be used for prediction:</label>
+                                    <label for="id_las_file_predict" class="form-label">Select file to be used for
+                                        prediction:</label>
                                     <div class="row">
                                         <div class="col-lg-3">
                                             <input type="file" name="las_file" required="" id="id_las_file_predict"
                                                    class="form-control">
                                         </div>
                                         <div class="col-lg-2">
-                                            <button type="submit" class="btn btn-primary text-white">Submit</button>
+                                            <button type="submit" class="btn btn-primary text-white">Submit
+                                                <img id="submit_pred_file_indicator" style="height:20px;"
+                                                     class="htmx-indicator"
+                                                     src="{% static 'img/bars.svg' %}"/></button>
                                         </div>
                                     </div>
                                 </form>
@@ -415,9 +440,12 @@
                                 data-hx-get="/preview_pred_las"
                                 data-hx-target="#preview-las-modals-here"
                                 data-hx-trigger="click"
-                                class="btn btn-secondary text-white"
+                                data-hx-indicator="#preview_pred_log_indicator"
+                                class="btn btn-secondary text-white my-3"
                                 _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
                             Open Uploaded file logs
+                            <img id="preview_pred_log_indicator" style="height:20px;" class="htmx-indicator"
+                                 src="{% static 'img/bars.svg' %}"/>
                         </button>
 
                         <div id="preview-las-modals-here"></div>

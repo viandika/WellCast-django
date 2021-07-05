@@ -1,56 +1,68 @@
 {% load static %}
 {% if las_list %}
-<div id="preview-las-modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
-<div id="preview-las-modal" class="modal fade show" tabindex="-1" style="display:block;">
+    <div id="preview-las-modal-backdrop" class="modal-backdrop fade show" style="display:block;"></div>
+    <div id="preview-las-modal" class="modal fade show" tabindex="-1" style="display:block;">
     <div class="modal-dialog modal-fullscreen modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Logs Preview</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                        onclick="closePreviewModal()"></button>
-            </div>
-            <div class="modal-body">
+    <div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Logs Preview</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                onclick="closePreviewModal()"></button>
+    </div>
+    <div class="modal-body">
 
-                    <form id="las_preview_form">
-                        <div class="form-group">
-                            <label for="single_select_las">Select a file to preview: </label>
-                            <select class="form-control mb-2" name="single_select_las" id="single_select_las"
-                                    data-hx-get="/las_preview"
-                                    data-hx-params="*" data-hx-trigger="change"
-                                    data-hx-target="#las_preview">
-                                {% for file in las_list %}
-                                    <option value="{{ file }}">{{ file }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                    </form>
-                {% endif %}
-                <div id="las_preview">
-                    <div class="row">
-                        <div class="col-lg-10">
-                            <select class="form-control mb-2" name="selected_logs" id="selected_logs"
-                                    style="visibility: hidden; width: 100%" size="1" multiple>
-                                {% for curve in curves_list %}
-                                    <option value="{{ curve }}" selected>{{ curve }}</option>
-                                {% endfor %}
-                            </select>
-                        </div>
-                        <div class="col-lg-2">
-                            <button type="button" class="btn btn-secondary text-white"
-                                    data-bs-target="#las_preview" data-hx-get="/las_preview"
-                                    data-hx-params="*"
-                                    data-hx-target="#las_preview"
-                                    data-hx-include="#selected_logs">submit
-                            </button>
-                        </div>
-                    </div>
-                    {{ plot_div | safe }}
-                    {{ plot_script | safe }}
+    <form id="las_preview_form">
+        <div class="form-group">
+            <label for="single_select_las">Select a file to preview: </label>
+            <div class="row">
+                <div class="col-lg-6">
+                    <select class="form-control mb-2" name="single_select_las" id="single_select_las"
+                            data-hx-get="/las_preview"
+                            data-hx-params="*" data-hx-trigger="change"
+                            data-hx-target="#las_preview"
+                            data-hx-indicator="#modal_preview_train_files_indicator">
+                        {% for file in las_list %}
+                            <option value="{{ file }}">{{ file }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-2">
+                    <img id="modal_preview_train_files_indicator" style="height:30px;" class="htmx-indicator"
+                         src="{% static 'img/bars-black.svg' %}"/>
                 </div>
             </div>
+        </div>
+    </form>
+{% endif %}
+<div id="las_preview">
+    <div class="row">
+        <div class="col-lg-10">
+            <select class="form-control mb-2" name="selected_logs" id="selected_logs"
+                    style="visibility: hidden; width: 100%" size="1" multiple>
+                {% for curve in curves_list %}
+                    <option value="{{ curve }}" selected>{{ curve }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-lg-2">
+            <button type="button" class="btn btn-secondary text-white"
+                    data-bs-target="#las_preview" data-hx-get="/las_preview"
+                    data-hx-params="*"
+                    data-hx-target="#las_preview"
+                    data-hx-include="#selected_logs"
+                    data-hx-indicator="#modal_preview_train_logs_indicator">submit
+                <img id="modal_preview_train_logs_indicator" style="height:20px;" class="htmx-indicator"
+                     src="{% static 'img/bars.svg' %}"/>
+            </button>
+        </div>
+    </div>
+    {{ plot_div | safe }}
+    {{ plot_script | safe }}
+</div>
+</div>
 {#            <div class="modal-footer">#}
 {#                <button type="button" class="btn btn-secondary" onclick="closePreviewModal()">Close</button>#}
 {#            </div>#}
-        </div>
-    </div>
+</div>
+</div>
 </div>

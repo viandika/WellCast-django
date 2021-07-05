@@ -25,7 +25,10 @@
                                     data-bs-target="#las_preview" data-hx-get="/preview_pred_las"
                                     data-hx-params="*"
                                     data-hx-target="#las_preview"
-                                    data-hx-include="#selected_logs">submit
+                                    data-hx-include="#selected_logs"
+                                    data-hx-indicator="#modal_preview_pred_logs_indicator">submit
+                                <img id="modal_preview_pred_logs_indicator" style="height:20px;" class="htmx-indicator"
+                                     src="{% static 'img/bars.svg' %}"/>
                             </button>
                         </div>
                     </div>

@@ -1,20 +1,27 @@
+{% load static %}
 <br/>
-<h6>rmse train = {{ rmse_train }}</h6>
-<h6>rmse test = {{ rmse_test }}</h6>
+<h6>RMSE train = {{ rmse_train }}</h6>
+<h6>RMSE test = {{ rmse_test }}</h6>
 
 {{ feature_importance_div | safe }}
 
 <form method="post" enctype="multipart/form-data" data-hx-post="/five"
       data-hx-encoding='multipart/form-data'
       data-hx-target="#output_log"
-      data-hx-indicator="#indicator">
+      data-hx-indicator="#submit_pred_file_indicator">
     {% csrf_token %}
+    <label for="id_las_file_predict" class="form-label">Select file to be used for
+        prediction:</label>
     <div class="row">
         <div class="col-lg-3">
-            <input type="file" name="las_file" required="" id="id_las_file_predict" class="form-control">
+            <input type="file" name="las_file" required="" id="id_las_file_predict"
+                   class="form-control">
         </div>
         <div class="col-lg-2">
-            <button type="submit" class="btn btn-primary text-white">Submit</button>
+            <button type="submit" class="btn btn-primary text-white">Submit
+                <img id="submit_pred_file_indicator" style="height:20px;"
+                     class="htmx-indicator"
+                     src="{% static 'img/bars.svg' %}"/></button>
         </div>
     </div>
 </form>

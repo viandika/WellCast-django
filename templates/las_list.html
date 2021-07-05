@@ -1,3 +1,4 @@
+{% load static %}
 {% include 'messages.html' %}
 <div class="card border-secondary mb-3">
     <div class="card-body">
@@ -20,15 +21,21 @@
                     <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
                             data-hx-params="*"
                             data-hx-target="#log_selector_form"
-                            data-hx-include="#las_dd">Submit
+                            data-hx-include="#las_dd"
+                            data-hx-indicator="#submit_train_indicator">Submit
+                        <img id="submit_train_indicator" style="height:20px;" class="htmx-indicator"
+                             src="{% static 'img/bars.svg' %}"/>
                     </button>
                     <button type="button" class="btn btn-secondary text-white"
                             data-hx-get="/las_preview"
                             data-hx-params="*"
                             data-hx-target="#las-preview-train-modal-here"
                             data-hx-trigger="click"
+                            data-hx-indicator="#preview_train_indicator"
                             _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
                         Preview Logs
+                        <img id="preview_train_indicator" style="height:20px;" class="htmx-indicator"
+                             src="{% static 'img/bars.svg' %}"/>
                     </button>
                 </div>
             </div>

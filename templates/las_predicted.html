@@ -1,3 +1,4 @@
+{% load static %}
 {% include 'messages.html' %}
 {% if predicted_log_div %}
     <div class="card border-secondary mb-3">
@@ -9,9 +10,12 @@
             data-hx-get="/preview_pred_las"
             data-hx-target="#preview-las-modals-here"
             data-hx-trigger="click"
-            class="btn btn-secondary text-white"
+            data-hx-indicator="#preview_pred_log_indicator"
+            class="btn btn-secondary text-white my-3"
             _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
         Open Uploaded file logs
+        <img id="preview_pred_log_indicator" style="height:20px;" class="htmx-indicator"
+             src="{% static 'img/bars.svg' %}"/>
     </button>
 
     <div id="preview-las-modals-here"></div>
