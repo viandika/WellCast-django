@@ -1,9 +1,9 @@
 <div class="card border-secondary mb-3">
     <div class="card-body">
-        <h5 class="card-title">3. Remove data parts</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Box plot</h6>
+        <h5 class="card-title">3. Pre-Conditioning</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Assess the data before training the model</h6>
 
-
+        {{heatmap_div|safe}}
         <form id="las_selector" data-hx-get="/threea" data-hx-params="*" data-hx-target="#las_box"
               data-hx-indicator="#indicator">
             <label for="selected_log" class="form-label">Select logs</label>
