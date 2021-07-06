@@ -1,10 +1,10 @@
 ## TODO:
 - [ ] DEPLOY
 - [ ] Fix unnecessary double logs preview function
-- [ ] Add loading indicator
+- [x] Add loading indicator
 - [ ] Find Plotly alternative for large data
-- [ ] Logs preview modal need logs selector? if too many logs jdi kecil
-- [ ] Set proper uploads locations
+- [x] Logs preview modal need logs selector? if too many logs jdi kecil
+- [x] Set proper uploads locations
 - [ ] Get better styling/template
 - [ ] Convert HTMX to JS?
 - [ ] ...

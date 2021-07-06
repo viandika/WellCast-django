@@ -39,37 +39,16 @@ services:
     container_name: redis
     ports:
       - "6379:6379"
-  nginx-proxy:
-    container_name: nginx-proxy
-    build: nginx
-    restart: always
+  nginx:
+    container_name: geovartha_nginx
+    build: ./nginx
     ports:
-      - 443:443
-      - 80:80
+      - 1337:80
     volumes:
       - static_volume:/code/staticfiles
-      #      - media_volume:/home/app/web/mediafiles
-      - certs:/etc/nginx/certs
-      - html:/usr/share/nginx/html
-      - vhost:/etc/nginx/vhost.d
-      - /var/run/docker.sock:/tmp/docker.sock:ro
     depends_on:
       - web
-  nginx-proxy-letsencrypt:
-    image: jrcs/letsencrypt-nginx-proxy-companion
-    env_file:
-      - .env.staging.proxy-companion
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - certs:/etc/nginx/certs
-      - html:/usr/share/nginx/html
-      - vhost:/etc/nginx/vhost.d
-    depends_on:
-      - nginx-proxy
 
 volumes:
   postgres_data:
   static_volume:
-  certs:
-  html:
-  vhost:

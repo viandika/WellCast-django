@@ -10,7 +10,7 @@
 **/node_modules
 **/las/*
 !/las/alias.json
-/.env
+/.env*
 **/models/*
 **/las_downloads/*
 !**/sample_files.zip
