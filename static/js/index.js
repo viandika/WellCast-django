@@ -22,7 +22,7 @@ function setMultiSelect() {
     //   {#dropdownCssClass: "select2--small",#}
   });
   $('#selected_logs').select2({
-    // dropdownParent: $("#las_preview_modal"),
+    dropdownParent: $("#preview-las-modal"),
     multiple: true,
     placeholder: 'Click here to select logs',
     closeOnSelect: false,

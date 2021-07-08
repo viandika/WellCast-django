@@ -4,6 +4,7 @@ from bokeh.io import show, output_notebook, curdoc
 from bokeh.layouts import gridplot
 from bokeh.embed import components
 import random
+import pandas as pd
 
 import lasio
 import numpy as np
@@ -143,7 +144,8 @@ class lasViewer:
         self.las = lasio.read(str(self.lasname))
         # df = las.df()
         # df_drop = df.dropna()
-        self.df = self.las.df().dropna().reset_index()
+        self.df_precut = self.las.df().reset_index()
+        self.df = self.df_precut.apply(lambda x: pd.Series(x.dropna().values))
         self.curvename = self.las.curves.keys()
         self.unit = [
             self.las.curves["%s" % self.curvename[i]].unit
