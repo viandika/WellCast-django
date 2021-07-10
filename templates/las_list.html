@@ -3,7 +3,12 @@
 <div class="card border-secondary mb-3">
     <div class="card-body">
         <h5 class="card-title">2. Select .las files for training</h5>
-        <h6 class="card-subtitle mb-2 text-muted">These files will be merged to prepare for training</h6>
+        <h6 class="card-subtitle mb-2 text-muted">Click on the preview button to view the logs of the
+            uploaded las files.
+            <br/>
+            Subsequent to the visual inspection, select the las files that will be used for the training
+            process.
+        </h6>
         <form id="las_dd">
             <label for="selected_las" class="form-label">.las files:</label>
             <div class="row">
@@ -18,14 +23,6 @@
             </div>
             <div class="row">
                 <div class="col-lg-4 mt-2">
-                    <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
-                            data-hx-params="*"
-                            data-hx-target="#log_selector_form"
-                            data-hx-include="#las_dd"
-                            data-hx-indicator="#submit_train_indicator">Submit
-                        <img id="submit_train_indicator" style="height:20px;" class="htmx-indicator"
-                             src="{% static 'img/bars.svg' %}"/>
-                    </button>
                     <button type="button" class="btn btn-secondary text-white"
                             data-hx-get="/las_preview"
                             data-hx-params="*"
@@ -39,13 +36,25 @@
                     </button>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-lg-4 my-2">
+                    <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
+                            data-hx-params="*"
+                            data-hx-target="#log_selector_form"
+                            data-hx-include="#las_dd"
+                            data-hx-indicator="#submit_train_indicator">Submit
+                        <img id="submit_train_indicator" style="height:20px;" class="htmx-indicator"
+                             src="{% static 'img/bars.svg' %}"/>
+                    </button>
+                </div>
+            </div>
         </form>
 
         <div id="las-preview-train-modal-here"></div>
 
-        <span class="text-danger"><i>Disclaimer:</i> logs in the uploaded file will be renamed/aliased using our library. Click <a
+        <p class="text-danger"><i>Disclaimer:</i> uploaded logs file will be renamed, and existing log header will be aliased using our library. Click <a
                 href="javascript:"
-                data-bs-toggle="modal" data-bs-target="#alias-modal">HERE</a> to see this library</span>
+                data-bs-toggle="modal" data-bs-target="#alias-modal">HERE</a> to see the aliasing library.</p>
 
         <div class="modal fade" id="alias-modal" tabindex="-1" aria-labelledby="alias-modal-label"
              aria-hidden="true">

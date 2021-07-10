@@ -66,9 +66,10 @@ def one_base_page(request):
         )
         fig.update_layout(
             height=300,
-            margin=dict(l=10, r=10, b=10, t=10),
-            title={"text": "Correlation Heat map", "y": 0, "x": 0.5},
+            margin=dict(l=10, r=10, b=10, t=40),
+            title={"text": "Correlation Heatmap", "x": 0.5},
             annotations=annotations,
+            paper_bgcolor="#eee",
         )
         config = {
             "displaylogo": False,
@@ -277,9 +278,10 @@ def log_selector(request):
     )
     fig.update_layout(
         height=300,
-        margin=dict(l=10, r=10, b=10, t=10),
-        title={"text": "Correlation Heat map", "y": 0, "x": 0.5},
+        margin=dict(l=10, r=10, b=10, t=40),
+        title={"text": "Correlation Heatmap", "x": 0.5},
         annotations=annotations,
+        paper_bgcolor="#eee",
     )
     config = {
         "displaylogo": False,

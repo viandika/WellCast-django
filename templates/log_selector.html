@@ -1,13 +1,26 @@
 {% load static %}
 <div class="card border-secondary mb-3">
     <div class="card-body">
-        <h5 class="card-title">3. Pre-Conditioning</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Assess the data before training the model</h6>
+        <h5 class="card-title">3. Exploratory Data Analysis (EDA)</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Calculate the correlation coefficient between all the
+            different logs included in the data. <br/>Colorbar shows correlation coefficient value. <br/>High
+            value (1) shows positive correlation, low value (-1) shows negative correlation, while 0
+            shows no correlation</h6>
 
         {{ heatmap_div|safe }}
+
+        <p class="card-subtitle my-3 text-muted"><img
+                src="{% static 'img/iconmonstr-info-8.svg' %}"
+                alt="information" style="height:1.3em;"> Based on the correlation heat map, please
+            choose the log data to be included for the model training (including the target
+            log)</p>
+
         <form id="las_selector" data-hx-get="/threea" data-hx-params="*" data-hx-target="#las_box"
               data-hx-indicator="#submit_logs_indicator">
-            <label for="selected_log" class="form-label mt-2">Select logs</label>
+            {#                            <label for="selected_log" class="form-label mt-4">Based on the correlation heat map, please#}
+            {#                                choose the log data to be included for the model training (including the target#}
+            {#                                log)#}
+            {#                            </label>#}
             <select name="selected_log" id="selected_log" style="visibility: hidden; width: 100%"
                     size="1" multiple>
                 {% for column in columns %}
