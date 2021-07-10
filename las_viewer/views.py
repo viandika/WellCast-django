@@ -42,7 +42,7 @@ def one_base_page(request):
         for n, row in cor.iterrows():
             for m, val in row.iteritems():
                 annotations.append(
-                    go.Annotation(
+                    go.layout.Annotation(
                         text=str(round(cor[n][m], 2)),
                         x=m,
                         y=n,
@@ -253,7 +253,7 @@ def log_selector(request):
     for n, row in cor.iterrows():
         for m, val in row.iteritems():
             annotations.append(
-                go.Annotation(
+                go.layout.Annotation(
                     text=str(round(cor[n][m], 2)),
                     x=m,
                     y=n,
