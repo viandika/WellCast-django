@@ -130,6 +130,11 @@ def one_base_page(request):
         bar_feature_importance = go.Figure(
             [go.Bar(x=features, y=model.feature_importances_)]
         )
+
+        bar_feature_importance.update_layout(
+            yaxis_title="Feature Importance",
+        )
+
         config = {
             "displaylogo": False,
             "modeBarButtonsToRemove": [
@@ -425,6 +430,11 @@ def four_model_output(request):
     bar_feature_importance = go.Figure(
         [go.Bar(x=features, y=model.feature_importances_)]
     )
+
+    bar_feature_importance.update_layout(
+        yaxis_title="Feature Importance",
+    )
+
     config = {
         "displaylogo": False,
         "modeBarButtonsToRemove": [
