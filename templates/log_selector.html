@@ -3,14 +3,17 @@
     <div class="card-body">
         <h5 class="card-title">3. Exploratory Data Analysis (EDA)</h5>
         <h6 class="card-subtitle mb-2 text-muted">Calculate the correlation coefficient between all the
-            different logs included in the data. <br/>Colorbar shows correlation coefficient value. <br/>High
+            different logs included in the data<sup><a
+                    href="https://www.researchgate.net/publication/275470782_Pearson's_correlation_coefficient"
+                    target="_blank" rel="noopener noreferrer">[1]</a></sup>.
+            <br/>Colorbar shows correlation coefficient value. <br/>High
             value (1) shows positive correlation, low value (-1) shows negative correlation, while 0
             shows no correlation</h6>
 
         {{ heatmap_div|safe }}
 
         <p class="card-subtitle my-3 text-muted"><img
-                src="{% static 'img/iconmonstr-info-8.svg' %}"
+                src="{% static 'img/information-icon-red.svg' %}"
                 alt="information" style="height:1.3em;"> Based on the correlation heat map, please
             choose the log data to be included for the model training (including the target
             log)</p>

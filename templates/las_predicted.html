@@ -2,32 +2,45 @@
 {% include 'messages.html' %}
 {% if predicted_log_div %}
     <div class="card border-secondary mb-3">
-    <div class="card-body">
-    <h5 class="card-title">5. Prediction result</h5>
-    <h6 class="card-subtitle mb-2 text-muted">Plot the predicted log with the actual log</h6>
+        <div class="card-body">
+            <h5 class="card-title">5. Prediction result</h5>
+            <h6 class="card-subtitle mb-2 text-muted">Plot the predicted log with the actual log</h6>
 
-    <button
-            data-hx-get="/preview_pred_las"
-            data-hx-target="#preview-las-modals-here"
-            data-hx-trigger="click"
-            data-hx-indicator="#preview_pred_log_indicator"
-            class="btn btn-secondary text-white my-3"
-            _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
-        Open Uploaded file logs
-        <img id="preview_pred_log_indicator" style="height:20px;" class="htmx-indicator"
-             src="{% static 'img/bars.svg' %}"/>
-    </button>
+            <button
+                    data-hx-get="/preview_pred_las"
+                    data-hx-target="#preview-las-modals-here"
+                    data-hx-trigger="click"
+                    data-hx-indicator="#preview_pred_log_indicator"
+                    class="btn btn-secondary text-white my-3"
+                    _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
+                Open Uploaded file logs
+                <img id="preview_pred_log_indicator" style="height:20px;" class="htmx-indicator"
+                     src="{% static 'img/bars.svg' %}"/>
+            </button>
 
-    <div id="preview-las-modals-here"></div>
+            <div id="preview-las-modals-here"></div>
 
-    {{ predicted_log_div | safe }}
+            {{ predicted_log_div | safe }}
 
-    <p class="text-danger"><i>Disclaimer:</i> this workflow might not produce a good result on your
-        dataset. The aim of this web-application is to facilitate a non-programmer geoscientists who
-        are willing to learn and try the implementation on machine learning workflow on missing well
-        log prediction.</p>
+            <p class="text-danger"><i>Disclaimer:</i> this workflow might not produce a good result on your
+                dataset. The aim of this web-application is to facilitate a non-programmer geoscientists who
+                are willing to learn and try the implementation on machine learning workflow on missing well
+                log prediction.</p>
 
-    <a class="btn btn-primary text-white" href="/download_las">Download</a>
+            <a class="btn btn-primary text-white" href="/download_las">Download</a>
+
+        </div>
+    </div>
+    <h5>References</h5>
+    <p>1. Sedgwick, Philip (2012). <a
+            href="https://www.researchgate.net/publication/275470782_Pearson's_correlation_coefficient"
+            target="_blank"
+            rel="noopener noreferrer">Pearson's correlation coefficient</a></p>
+    <p>2. Ayyadevara, V Kishore (2018). <a
+            href="https://www.researchgate.net/publication/326087729_Gradient_Boosting_Machine" target="_blank"
+            rel="noopener noreferrer">Gradient Boosting Machine</a></p>
+    <p>3. Chai, T., Draxler, R. R. (2014). <a
+            href="https://www.researchgate.net/publication/262980567_Root_mean_square_error_RMSE_or_mean_absolute_error_MAE"
+            target="_blank"
+            rel="noopener noreferrer">Root mean square error (RMSE) or mean absolute error (MAE)?</a></p>
 {% endif %}
-</div>
-</div>

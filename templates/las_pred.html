@@ -1,5 +1,14 @@
 {% load static %}
 <br/>
+
+<p class="card-subtitle mb-3 text-muted"><img
+        src="{% static 'img/information-icon-red.svg' %}"
+        alt="information" style="height:1.3em;"> Assess the Root Mean Square Error
+    (RMSE)<sup><a
+            href="https://www.researchgate.net/publication/262980567_Root_mean_square_error_RMSE_or_mean_absolute_error_MAE"
+            target="_blank" rel="noopener noreferrer">[3]</a></sup> of the train &
+    validation samples.</p>
+
 <div class="row">
     <div class="col-lg-4 col-sm-12">
         <table class="table table-vcenter table-bordered">
@@ -8,7 +17,7 @@
                 <td>{{ rmse_train | floatformat:3 }}</td>
             </tr>
             <tr>
-                <th class="table-light">RMSE test</th>
+                <th class="table-light">RMSE validation</th>
                 <td>{{ rmse_test | floatformat:3 }}</td>
             </tr>
         </table>
@@ -16,7 +25,7 @@
 </div>
 
 <p class="card-subtitle mb-3 text-muted"><img
-        src="{% static 'img/iconmonstr-info-8.svg' %}"
+        src="{% static 'img/information-icon-red.svg' %}"
         alt="information" style="height:1.3em;"> Assess the predictor parameters based
     on the feature importance</p>
 
