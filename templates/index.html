@@ -37,8 +37,27 @@
 <div class="container-md py-3">
     {#    <h2>WellCast</h2>#}
     <h5>WellCast is a web-application tool for predicting missing well log data using the machine learning workflow. In
-        this application, we used gradient boost method (tree-based algorithm) which was adapted from the result of SPE
-        GCS ML Challenge 2021. This workflow summarized on the picture below.</h5>
+        this application, we used gradient boost method (tree-based algorithm) which was adapted from the result of <a
+                href="https://github.com/Geovartha/spe-gcs-ml-challenge-2021-/blob/main/spe_gcs_ml_challenge_2021.ipynb"
+                target="_blank" rel="noopener noreferrer">SPE
+            GCS ML Challenge 2021</a>. This workflow summarized on the picture below.</h5>
+
+    <div class="accordion" id="workflow-accordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="workflow-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#worflow-main"
+                        aria-expanded="true" aria-controls="collapseOne">
+                    Workflow Diagram
+                </button>
+            </h2>
+            <div id="worflow-main" class="accordion-collapse collapse show" aria-labelledby="workflow-header"
+                 data-bs-parent="#workflow-accordion">
+                <div class="accordion-body">
+                    <img src="{% static 'img/workflow.png' %}" alt="workflow diagram">
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col">
             <div class="card border-secondary my-3">
@@ -80,10 +99,12 @@
                 <div class="card border-secondary mb-3">
                     <div class="card-body">
                         <h5 class="card-title">2. Select .las files for training</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Click on the preview button to view the logs of the
+                        <h6 class="card-subtitle mb-2 text-muted">Click on the preview button to view the logs of
+                            the
                             uploaded las files.
                             <br/>
-                            Subsequent to the visual inspection, select the las files that will be used for the training
+                            Subsequent to the visual inspection, select the las files that will be used for the
+                            training
                             process.
                         </h6>
                         <form id="las_dd">
@@ -108,14 +129,16 @@
                                             data-hx-indicator="#preview_train_indicator"
                                             _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
                                         Preview Logs
-                                        <img id="preview_train_indicator" style="height:20px;" class="htmx-indicator"
+                                        <img id="preview_train_indicator" style="height:20px;"
+                                             class="htmx-indicator"
                                              src="{% static 'img/bars.svg' %}"/>
                                     </button>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4 my-2">
-                                    <button type="submit" class="btn btn-primary text-white" data-hx-get="/log_selector"
+                                    <button type="submit" class="btn btn-primary text-white"
+                                            data-hx-get="/log_selector"
                                             data-hx-params="*"
                                             data-hx-target="#log_selector_form"
                                             data-hx-include="#las_dd"
@@ -128,9 +151,11 @@
                         </form>
                         <div id="las-preview-train-modal-here"></div>
 
-                        <p class="text-danger"><i>Disclaimer:</i> uploaded logs file will be renamed, and existing log header will be aliased using our library. Click <a
-                                href="javascript:"
-                                data-bs-toggle="modal" data-bs-target="#alias-modal">HERE</a> to see the aliasing library.</p>
+                        <p class="text-danger"><i>Disclaimer:</i> uploaded logs file will be renamed, and existing
+                            log header will be aliased using our library. Click <a
+                                    href="javascript:"
+                                    data-bs-toggle="modal" data-bs-target="#alias-modal">HERE</a> to see the
+                            aliasing library.</p>
 
                         <div class="modal fade" id="alias-modal" tabindex="-1" aria-labelledby="alias-modal-label"
                              aria-hidden="true">
@@ -268,7 +293,8 @@
                                         </table>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            Close
                                         </button>
                                     </div>
                                 </div>
@@ -286,7 +312,8 @@
                 <div class="card border-secondary mb-3">
                     <div class="card-body">
                         <h5 class="card-title">3. Exploratory Data Analysis (EDA)</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Calculate the correlation coefficient between all the
+                        <h6 class="card-subtitle mb-2 text-muted">Calculate the correlation coefficient between all
+                            the
                             different logs included in the data. <br/>Colorbar shows correlation coefficient value.
                             <br/>High
                             value (1) shows positive correlation, low value (-1) shows negative correlation, while 0
@@ -320,7 +347,8 @@
                             {% if las_div %}
                                 <p class="card-subtitle mb-3 text-muted"><img
                                         src="{% static 'img/iconmonstr-info-8.svg' %}"
-                                        alt="information" style="height:1.3em;"> You can remove potential data outlier
+                                        alt="information" style="height:1.3em;"> You can remove potential data
+                                    outlier
                                     by
                                     modifying the minimum and maximum
                                     value accepted for each logs.</p>
@@ -415,7 +443,8 @@
                         <h5 class="card-title">4. Model Building</h5>
                         <h6 class="card-subtitle mb-2 text-muted">The supervised learning method deployed here is a
                             gradient boosting method [2].<br/><br/>
-                            The data samples from the training wells are divided into training and validation samples
+                            The data samples from the training wells are divided into training and validation
+                            samples
                             with the proportion of 80 and 20 percent respectively.</h6>
 
                         <form id="predicted_log_form" data-hx-get="/four" data-hx-params="*"
@@ -452,7 +481,8 @@
 
                                 <p class="card-subtitle mb-3 text-muted"><img
                                         src="{% static 'img/iconmonstr-info-8.svg' %}"
-                                        alt="information" style="height:1.3em;"> Assess the predictor parameters based
+                                        alt="information" style="height:1.3em;"> Assess the predictor parameters
+                                    based
                                     on the feature importance</p>
 
                                 {{ feature_importance_div | safe }}
@@ -510,9 +540,12 @@
 
                         {{ predicted_log_div | safe }}
 
-                        <p class="text-danger"><i>Disclaimer:</i> this workflow might not produce a good result on your
-                            dataset. The aim of this web-application is to facilitate a non-programmer geoscientists who
-                            are willing to learn and try the implementation of machine learning workflow on missing well
+                        <p class="text-danger"><i>Disclaimer:</i> this workflow might not produce a good result on
+                            your
+                            dataset. The aim of this web-application is to facilitate a non-programmer geoscientists
+                            who
+                            are willing to learn and try the implementation of machine learning workflow on missing
+                            well
                             log prediction.</p>
 
                         <a class="btn btn-primary text-white" href="/download_las">Download</a>
