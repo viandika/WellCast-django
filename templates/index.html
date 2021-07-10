@@ -399,8 +399,21 @@
                         <div id="las_box_limited">
                             {% if rmse_test %}
                                 <br/>
-                                <h6>RMSE train = {{ rmse_train }}</h6>
-                                <h6>RMSE test = {{ rmse_test }}</h6>
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-12">
+                                        <table class="table table-vcenter table-bordered">
+                                            <tr>
+                                                <th class="table-light">RMSE train</th>
+                                                <td>{{ rmse_train | floatformat:3 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="table-light">RMSE test</th>
+                                                <td>{{ rmse_test | floatformat:3 }}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+
 
                                 {{ feature_importance_div | safe }}
 
