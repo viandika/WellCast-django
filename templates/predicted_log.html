@@ -10,17 +10,18 @@
             samples
             with the proportion of 80 and 20 percent respectively.</h6>
 
-        <form id="predicted_log_form" data-hx-get="/four" data-hx-params="*"
-              data-hx-target="#las_box_limited"
-              data-hx-include="#las_limit"
-              data-hx-indicator="#submit_predict_log_indicator">
+        <form id="predicted_log_form">
             <label for="predicted_log" class="form-label">Select log you want to predict</label>
             <select name="predicted_log" id="predicted_log" class="form-control">
                 {% for feature in features %}
                     <option value="{{ feature }}">{{ feature }}</option>
                 {% endfor %}
             </select>
-            <button type="submit" class="btn btn-primary text-white my-2">Submit
+            <button type="submit" class="btn btn-primary text-white my-2" data-hx-get="/four"
+                    data-hx-params="*"
+                    data-hx-target="#las_box_limited"
+                    data-hx-include="#las_limit, #predicted_log"
+                    data-hx-indicator="#submit_predict_log_indicator">Submit
                 <img id="submit_predict_log_indicator" style="height:20px;" class="htmx-indicator"
                      src="{% static 'img/bars.svg' %}"/></button>
         </form>
