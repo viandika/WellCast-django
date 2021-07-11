@@ -65,11 +65,14 @@
                     <h5 class="card-title d-flex justify-content-between align-items-center">1. Input File
                         <a class="btn btn-outline-success" href="/download_sample">Download Sample</a>
                     </h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Select .las file to be uploaded</h6>
+                    <h6 class="card-subtitle mb-2 text-muted">Please download and try
+                        our sample files by clicking the button on the right. Additional instruction document is
+                        included inside too.</h6>
                     <form id="file_upload_form" method="post" enctype="multipart/form-data" data-hx-post="/two"
                           data-hx-encoding='multipart/form-data'
                           data-hx-target="#las_list"
                           data-hx-indicator="#upload_indicator">
+                        <label for="id_las_file" class="form-label">Select .las file to be uploaded. </label>
                         {% csrf_token %}
                         <div class="row mb-2">
                             <div class="col-lg-3 mb-2">
@@ -151,8 +154,10 @@
                         </form>
                         <div id="las-preview-train-modal-here"></div>
 
-                        <p class="text-danger"><i>Disclaimer:</i> uploaded logs file will be renamed, and existing
-                            log header will be aliased using our library. Click <a
+                        <p class="text-danger"><i>Disclaimer:</i> uploaded logs files will be merged and will be aliased
+                            using an aliasing library. Please make sure all the logs mnemonics on
+                            your wells are listed, rename temporarily if necessary.
+                            Click <a
                                     href="javascript:"
                                     data-bs-toggle="modal" data-bs-target="#alias-modal">HERE</a> to see the
                             aliasing library.</p>
@@ -579,6 +584,10 @@
                         href="https://www.researchgate.net/publication/262980567_Root_mean_square_error_RMSE_or_mean_absolute_error_MAE"
                         target="_blank"
                         rel="noopener noreferrer">Root mean square error (RMSE) or mean absolute error (MAE)?</a></p>
+                <p>4. Doa Ibu Team (2021). <a
+                        href="https://github.com/Geovartha/spe-gcs-ml-challenge-2021-/blob/main/spe_gcs_ml_challenge_2021.ipynb"
+                        target="_blank"
+                        rel="noopener noreferrer">SPE GCS ML Challenge 2021</a></p>
             {% endif %}
         </div>
     </div>
