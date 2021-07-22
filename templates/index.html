@@ -21,7 +21,10 @@
       <img src="{% static 'img/by-geov.png' %}" alt="GeoVartha Logo" width="200" height="60.5">
     </span>
         <form class="d-flex">
-            <button type="button" class="btn btn-outline-primary" data-hx-get="/feedback"
+            
+            <a class="btn btn-outline-secondary m-1" href="https://geovartha.id" target="_blank" rel="noopener noreferrer">Our website</a>
+ 
+            <button type="button" class="btn btn-outline-primary m-1" data-hx-get="/feedback"
                     data-hx-target="#feedback-modals-here"
                     data-hx-trigger="click"
                     _="on htmx:afterOnLoad wait 10ms then add .show to #feedback-modal then add .show to #feedback-modal-backdrop">
