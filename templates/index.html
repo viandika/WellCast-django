@@ -22,9 +22,10 @@
       <a style="centered:true" href="https://doi.org/10.5281/zenodo.5201856"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.5201856.svg" alt="DOI"></a>
     </span>
         <form class="d-flex">
-            
-            <a class="btn btn-outline-secondary m-1" href="https://geovartha.id" target="_blank" rel="noopener noreferrer">Our website</a>
- 
+
+            <a class="btn btn-outline-secondary m-1" href="https://geovartha.id" target="_blank"
+               rel="noopener noreferrer">Our website</a>
+
             <button type="button" class="btn btn-outline-primary m-1" data-hx-get="/feedback"
                     data-hx-target="#feedback-modals-here"
                     data-hx-trigger="click"
@@ -38,7 +39,7 @@
 
 <div id="feedback-modals-here"></div>
 
-<div class="container-md py-3">
+<div class="container-lg py-3">
     {#    <h2>WellCast</h2>#}
     <h5>WellCast is a web-application tool for predicting missing well log data using the machine learning workflow. In
         this application, we used gradient boost method (tree-based algorithm) which was adapted from the result of <a
@@ -57,7 +58,7 @@
             <div id="worflow-main" class="accordion-collapse collapse show" aria-labelledby="workflow-header"
                  data-bs-parent="#workflow-accordion">
                 <div class="accordion-body">
-                    <img src="{% static 'img/workflow.png' %}" alt="workflow diagram">
+                    <img src="{% static 'img/workflow.png' %}" class="img-fluid" alt="workflow diagram">
                 </div>
             </div>
         </div>
