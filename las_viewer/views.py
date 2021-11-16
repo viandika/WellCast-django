@@ -17,6 +17,7 @@ from xgboost import XGBRegressor
 from las_viewer.forms import LasUploadForm, ContactUsForm
 from las_viewer.las_renderer import lasViewer
 from las_viewer.models import LasUpload
+from las_viewer.utils import plot_correlation_heatmap, plot_range_boxplot, plot_importance_bar, plot_predicted_line
 from las_viewer.xgboost_train import (
     dataframing_train,
     train_model,
@@ -36,54 +37,9 @@ def one_base_page(request):
 
     if "columns" in request.session:
         train_df = pd.read_json(request.session["train_df"])
-        cor = train_df.corr()
 
-        annotations = []
-        for n, row in cor.iterrows():
-            for m, val in row.iteritems():
-                annotations.append(
-                    go.layout.Annotation(
-                        text=str(round(cor[n][m], 2)),
-                        x=m,
-                        y=n,
-                        xref="x1",
-                        yref="y1",
-                        showarrow=False,
-                    )
-                )
+        heatmap_div = plot_correlation_heatmap(train_df)
 
-        fig = go.Figure(
-            go.Heatmap(
-                x=cor.index,
-                y=cor.columns,
-                z=cor,
-                hovertemplate="<b>%{x}:%{y}</b> = %{z}<extra></extra>",
-                colorbar=dict(title=dict(text="Correlation Coefficient", side="right")),
-                colorscale="RdBu",
-                zmin=-1,
-                zmax=1,
-            )
-        )
-        fig.update_layout(
-            height=300,
-            margin=dict(l=10, r=10, b=10, t=40),
-            title={"text": "Correlation Heatmap", "x": 0.5},
-            annotations=annotations,
-            paper_bgcolor="#eee",
-        )
-        config = {
-            "displaylogo": False,
-            "modeBarButtonsToRemove": [
-                "select2d",
-                "lasso2d",
-                "toggleSpikelines",
-                "autoScale2d",
-            ],
-        }
-
-        heatmap_div = fig.to_html(
-            full_html=False, config=config, include_plotlyjs=False
-        )
         context["heatmap_div"] = heatmap_div
         context["columns"] = request.session["columns"]
 
@@ -91,30 +47,7 @@ def one_base_page(request):
         features = request.session["features"]
         train_df = pd.read_json(request.session["train_df"])
 
-        fig = make_subplots(rows=1, cols=len(features))
-        # TODO: plotly slows browser when theres a lot of points. Current workaround is to only show the whiskers
-        for idx, feature in enumerate(features):
-            fig.add_trace(
-                go.Box(y=train_df[feature], name=feature, boxpoints=False),
-                row=1,
-                col=idx + 1,
-            )
-
-        fig.update_layout(
-            height=300,
-            margin=dict(l=10, r=10, b=10, t=10),
-        )
-
-        config = {
-            "displaylogo": False,
-            "modeBarButtonsToRemove": [
-                "select2d",
-                "lasso2d",
-                "toggleSpikelines",
-                "autoScale2d",
-            ],
-        }
-        las_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
+        las_div = plot_range_boxplot(train_df, features)
 
         context["las_div"] = las_div
         context["iqr"] = request.session["boundaries"]
@@ -127,26 +60,8 @@ def one_base_page(request):
             settings.MEDIA_ROOT / "models" / (request.session.session_key + ".json")
         )
 
-        bar_feature_importance = go.Figure(
-            [go.Bar(x=features, y=model.feature_importances_)]
-        )
+        feature_importance_div = plot_importance_bar(model, features)
 
-        bar_feature_importance.update_layout(
-            yaxis_title="Feature Importance",
-        )
-
-        config = {
-            "displaylogo": False,
-            "modeBarButtonsToRemove": [
-                "select2d",
-                "lasso2d",
-                "toggleSpikelines",
-                "autoScale2d",
-            ],
-        }
-        feature_importance_div = bar_feature_importance.to_html(
-            full_html=False, config=config, include_plotlyjs=False
-        )
         upload_form = LasUploadForm()
 
         context["rmse_train"] = request.session["rmse_train"]
@@ -159,41 +74,7 @@ def one_base_page(request):
         df_real2 = pd.read_json(request.session["df_real2"])
         df_real2.index = df_real2["DEPTH"]
 
-        fig = go.Figure()
-        fig.add_trace(
-            go.Scatter(
-                x=df_real2["PRED"],
-                y=df_real2.index,
-                mode="lines",
-                name=predicted_log + " Pred",
-            )
-        )
-        fig.add_trace(
-            go.Scatter(
-                x=df_real2[predicted_log],
-                y=df_real2.index,
-                mode="lines",
-                name=predicted_log,
-            )
-        )
-        fig.update_yaxes(autorange="reversed")
-        fig.update_layout(
-            width=500,
-            height=800,
-            # title="fixed-ratio axes"
-        )
-        config = {
-            "displaylogo": False,
-            "modeBarButtonsToRemove": [
-                "select2d",
-                "lasso2d",
-                "toggleSpikelines",
-                "autoScale2d",
-            ],
-        }
-        predicted_log_div = fig.to_html(
-            full_html=False, config=config, include_plotlyjs=False
-        )
+        predicted_log_div = plot_predicted_line(df_real2, predicted_log)
 
         context["predicted_log_div"] = predicted_log_div
 
@@ -202,6 +83,9 @@ def one_base_page(request):
 
 
 def two_las_upload(request):
+    """
+    Process uploaded LAS Files
+    """
     if request.method == "POST":
         form = LasUploadForm(request.POST, request.FILES)
         uploaded_file_ids = []
@@ -211,14 +95,15 @@ def two_las_upload(request):
                     las_file=file,
                     filename=file.name,
                 )
-                instance.save()  # save form to database
+                instance.save()
                 uploaded_file_ids.append(instance.pk.hashid)
 
             file_names_qs = LasUpload.objects.filter(pk__in=uploaded_file_ids).values(
                 "las_file"
             )
             file_names = [os.path.basename(file["las_file"]) for file in file_names_qs]
-            # add file names to sesion
+
+            # add file names to session
             if "las_list" in request.session:
                 las_list = request.session["las_list"]
                 las_list.extend(file_names)
@@ -248,57 +133,16 @@ def two_las_upload(request):
 def log_selector(request):
     selected_las = request.GET.getlist("selected_las")
     request.session["selected_las"] = selected_las
+
     train_df = dataframing_train(selected_las)
     train_df_json = train_df.to_json(default_handler=str)
     request.session["train_df"] = train_df_json
+
     columns = list(train_df.columns)
 
-    cor = train_df.corr()
+    heatmap_div = plot_correlation_heatmap(train_df)
 
-    annotations = []
-    for n, row in cor.iterrows():
-        for m, val in row.iteritems():
-            annotations.append(
-                go.layout.Annotation(
-                    text=str(round(cor[n][m], 2)),
-                    x=m,
-                    y=n,
-                    xref="x1",
-                    yref="y1",
-                    showarrow=False,
-                )
-            )
-
-    fig = go.Figure(
-        go.Heatmap(
-            x=cor.index,
-            y=cor.columns,
-            z=cor,
-            hovertemplate="<b>%{x}:%{y}</b> = %{z}<extra></extra>",
-            colorbar=dict(title=dict(text="Correlation Coefficient", side="right")),
-            colorscale="RdBu",
-            zmin=-1,
-            zmax=1,
-        )
-    )
-    fig.update_layout(
-        height=300,
-        margin=dict(l=10, r=10, b=10, t=40),
-        title={"text": "Correlation Heatmap", "x": 0.5},
-        annotations=annotations,
-        paper_bgcolor="#eee",
-    )
-    config = {
-        "displaylogo": False,
-        "modeBarButtonsToRemove": [
-            "select2d",
-            "lasso2d",
-            "toggleSpikelines",
-            "autoScale2d",
-        ],
-    }
-
-    heatmap_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
+    # Remove the target log from future processes
     for col in train_df.columns:
         if train_df[col].dtypes != float and train_df[col].dtypes != int:
             columns.remove(col)
@@ -315,34 +159,9 @@ def threea_data_cleaning(request):
     request.session["features"] = features
     train_df = pd.read_json(request.session["train_df"])
 
-    fig = make_subplots(rows=1, cols=len(features))
-    # TODO: plotly slows browser when theres a lot of points. Current workaround is to only show the whiskers
-    for idx, feature in enumerate(features):
-        fig.add_trace(
-            go.Box(y=train_df[feature], name=feature, boxpoints=False),
-            row=1,
-            col=idx + 1,
-        )
+    las_div = plot_range_boxplot(train_df, features)
 
-    fig.update_layout(
-        height=300,
-        margin=dict(l=10, r=10, b=10, t=10),
-    )
-
-    config = {
-        "displaylogo": False,
-        "modeBarButtonsToRemove": [
-            "select2d",
-            "lasso2d",
-            "toggleSpikelines",
-            "autoScale2d",
-        ],
-    }
-    las_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
-
-    # quartiles = get_quartile(train_df, features)
-    # iqr = get_iqr(features, quartiles)
-
+    # Get the initial minmax for each log. Will be used as default values.
     boundaries = {}
     for feature in features:
         boundaries[feature] = [train_df[feature].min(), train_df[feature].max()]
@@ -360,35 +179,16 @@ def threea_data_cleaning(request):
 def threeb_preview_cleaned(request):
     train_df = pd.read_json(request.session["train_df"])
     features = request.session["features"]
+
+    # Get the boundary parameters for each log from user input.
     for col in features:
         train_df[col] = train_df[col].loc[
             (train_df[col] > float(request.GET.get(col + "_bottom")))
             & (train_df[col] < float(request.GET.get(col + "_top")))
         ]
 
-    fig = make_subplots(rows=1, cols=len(features))
-    for idx, feature in enumerate(features):
-        fig.add_trace(
-            go.Box(y=train_df[feature], name=feature, boxpoints=False),
-            row=1,
-            col=idx + 1,
-        )
+    las_div = plot_range_boxplot(train_df, features)
 
-    fig.update_layout(
-        height=300,
-        margin=dict(l=10, r=10, b=10, t=10),
-    )
-
-    config = {
-        "displaylogo": False,
-        "modeBarButtonsToRemove": [
-            "select2d",
-            "lasso2d",
-            "toggleSpikelines",
-            "autoScale2d",
-        ],
-    }
-    las_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
     context = {"las_div": las_div}
     template_name = "las_limited.html"
     return render(request, template_name, context)
@@ -407,11 +207,14 @@ def four_model_output(request):
     features = request.session.get("features").copy()
     predicted_log = request.GET.get("predicted_log")
     request.session["predicted_log"] = predicted_log
+
+    # Get the boundary parameters for each log from user input.
     for col in features:
         train_df = train_df.loc[
             (train_df[col] > float(request.GET.get(col + "_bottom")))
             & (train_df[col] < float(request.GET.get(col + "_top")))
         ]
+
     model, pred_train, rmse_train, pred_test, rmse_test = train_model(
         train_df, features, predicted_log
     )
@@ -419,34 +222,16 @@ def four_model_output(request):
     request.session["rmse_train"] = rmse_train
     request.session["rmse_test"] = rmse_test
 
+    # TODO: make sure there is a folder for model
     # Save model to file
     model.save_model(
         settings.MEDIA_ROOT / "models" / (request.session.session_key + ".json")
     )
-    # trained_features = features
-    # trained_features.remove(predicted_log)
-    # features.remove(predicted_log)
+
     features.remove(predicted_log)
-    bar_feature_importance = go.Figure(
-        [go.Bar(x=features, y=model.feature_importances_)]
-    )
 
-    bar_feature_importance.update_layout(
-        yaxis_title="Feature Importance",
-    )
+    feature_importance_div = plot_importance_bar(model, features)
 
-    config = {
-        "displaylogo": False,
-        "modeBarButtonsToRemove": [
-            "select2d",
-            "lasso2d",
-            "toggleSpikelines",
-            "autoScale2d",
-        ],
-    }
-    feature_importance_div = bar_feature_importance.to_html(
-        full_html=False, config=config, include_plotlyjs=False
-    )
     upload_form = LasUploadForm()
 
     context = {
@@ -482,8 +267,7 @@ def five_predicts(request):
             df_real = merge_alias(data_real, alias, list(data_real.columns))
             df_real.rename(columns={"DEPT": "DEPTH"}, inplace=True)
 
-            # df_real["RHOB"] = df_real["RHOB"].apply(lambda x: np.nan if x > 3.1 else x)
-            # df_real["RHOB"] = df_real["RHOB"].apply(lambda x: np.nan if x < 1 else x)
+
             well_real = df_real["WELL"].unique()
             df_real2 = pd.DataFrame()
             for w in well_real:
@@ -493,10 +277,7 @@ def five_predicts(request):
                 data = data.interpolate(
                     method="linear", axis=0, limit_direction="both", limit_area=None
                 )
-                # avggr = data["GR"].mean()
-                # avgcal = data["CALI"].mean()
-                # data["GR"] = data["GR"].apply(lambda x: x if x > 0 else avggr)
-                # data["CALI"] = data["CALI"].apply(lambda x: x if x > 0 else avgcal)
+
                 df_real2 = df_real2.append(data)
 
             features = request.session["features"].copy()
@@ -524,41 +305,7 @@ def five_predicts(request):
             df_real2_json = df_real2.to_json(default_handler=str)
             request.session["df_real2"] = df_real2_json
 
-            fig = go.Figure()
-            fig.add_trace(
-                go.Scatter(
-                    x=df_real2["PRED"],
-                    y=df_real2.index,
-                    mode="lines",
-                    name=predicted_log + " Pred",
-                )
-            )
-            fig.add_trace(
-                go.Scatter(
-                    x=df_real2[predicted_log],
-                    y=df_real2.index,
-                    mode="lines",
-                    name=predicted_log,
-                )
-            )
-            fig.update_yaxes(autorange="reversed")
-            fig.update_layout(
-                width=500,
-                height=800,
-                # title="fixed-ratio axes"
-            )
-            config = {
-                "displaylogo": False,
-                "modeBarButtonsToRemove": [
-                    "select2d",
-                    "lasso2d",
-                    "toggleSpikelines",
-                    "autoScale2d",
-                ],
-            }
-            predicted_log_div = fig.to_html(
-                full_html=False, config=config, include_plotlyjs=False
-            )
+            predicted_log_div = plot_predicted_line(df_real2, predicted_log)
 
             template_name = "las_predicted.html"
             context = {"predicted_log_div": predicted_log_div}
@@ -625,12 +372,6 @@ def las_preview(request):
     for logs in curves_list:
         fig = well.addplot(logs)
         myLog.append(fig)
-
-    # else:
-    #     for curve in well.curves[:]:
-    #         if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT":
-    #             fig = well.addplot(curve.mnemonic)
-    #             myLog.append(fig)
 
     for i in myLog:
         i.y_range = myLog[0].y_range
