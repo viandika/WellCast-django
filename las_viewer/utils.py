@@ -1,5 +1,7 @@
 import os
+import lasio
 import magic
+import pandas as pd
 from django.core.exceptions import ValidationError
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
@@ -65,9 +67,7 @@ def plot_correlation_heatmap(df):
         ],
     }
 
-    heatmap_div = fig.to_html(
-        full_html=False, config=config, include_plotlyjs=False
-    )
+    heatmap_div = fig.to_html(full_html=False, config=config, include_plotlyjs=False)
 
     return heatmap_div
 
@@ -165,3 +165,93 @@ def plot_predicted_line(df, predicted_log):
     )
 
     return predicted_log_div
+
+
+class LasPlot:
+    def __init__(self, lasname):
+        self.lasname = lasname
+        self.las = lasio.read(str(self.lasname))
+        self.df_precut = self.las.df().reset_index()
+        self.df = self.df_precut.apply(lambda x: pd.Series(x.dropna().values))
+        self.curvename = self.las.curves.keys()
+        self.unit = [
+            self.las.curves["%s" % self.curvename[i]].unit
+            for i in range(len(self.curvename))
+        ]
+        self.unitDict = dict(zip(self.curvename, self.unit))
+
+    def create_plot(self, curves):
+        fig = make_subplots(
+            rows=1,
+            cols=len(curves),
+            shared_yaxes=True,
+            y_title=(
+                self.curvename[0] + " (" + str(self.unitDict[self.curvename[0]]) + ")"
+            ),
+        )
+
+        for i, curv in enumerate(curves):
+            fig.add_trace(
+                go.Scattergl(
+                    x=self.df[curv],
+                    y=self.df[self.curvename[0]],
+                    hovertemplate=(
+                        self.curvename[0]
+                        + ": %{y:.2f} "
+                        + str(self.unitDict[self.curvename[0]])
+                        + "<br>"
+                        + curv
+                        + ": %{x:.2f} "
+                        + str(self.unitDict[curv])
+                        + "<extra></extra>"
+                    ),
+                ),
+                row=1,
+                col=i + 1,
+            )
+
+            fig.update_xaxes(
+                side="top",
+                title_text=(str(curv) + " (" + str(self.unitDict[curv]) + ")"),
+                showline=True,
+                linecolor="black",
+                row=1,
+                col=i + 1,
+            )
+
+            # Change to logarithmic if ohmm
+            if self.unitDict[curv] in ("ohmm", "OHMM"):
+                fig.update_xaxes(
+                    type="log",
+                    row=1,
+                    col=i + 1,
+                )
+
+            fig.update_yaxes(
+                autorange="reversed",
+                # title_text=(self.curvename[0] + " (" + str(self.unitDict[self.curvename[0]]) + ")"),
+                automargin=True,
+                showticklabels=True,
+                linecolor="black",
+                showline=True,
+                row=1,
+                col=i + 1,
+            )
+
+            fig.update_layout(
+                autosize=True,
+                width=(len(curves) * 300),
+                height=800,
+                margin=dict(
+                    l=80,
+                    r=20,
+                    b=10,
+                    t=80,
+                ),
+                template="seaborn",
+                showlegend=False,
+                dragmode="pan"
+                # title_text=well_file
+            )
+
+        return fig

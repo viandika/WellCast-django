@@ -17,7 +17,13 @@ from xgboost import XGBRegressor
 from las_viewer.forms import LasUploadForm, ContactUsForm
 from las_viewer.las_renderer import lasViewer
 from las_viewer.models import LasUpload
-from las_viewer.utils import plot_correlation_heatmap, plot_range_boxplot, plot_importance_bar, plot_predicted_line
+from las_viewer.utils import (
+    plot_correlation_heatmap,
+    plot_range_boxplot,
+    plot_importance_bar,
+    plot_predicted_line,
+    LasPlot,
+)
 from las_viewer.xgboost_train import (
     dataframing_train,
     train_model,
@@ -267,7 +273,6 @@ def five_predicts(request):
             df_real = merge_alias(data_real, alias, list(data_real.columns))
             df_real.rename(columns={"DEPT": "DEPTH"}, inplace=True)
 
-
             well_real = df_real["WELL"].unique()
             df_real2 = pd.DataFrame()
             for w in well_real:
@@ -324,6 +329,7 @@ def download_las(request):
     well = las.df()
     well["Predicted_Log"] = pred_df
     las.set_data(well)
+
     las.write(
         str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + las_filename)),
         version=2.0,
@@ -356,39 +362,58 @@ def las_preview(request):
     curves_list = request.GET.getlist("selected_logs")
 
     if single_select_las:
-        well = lasViewer(settings.MEDIA_ROOT / "las" / single_select_las)
+        well = LasPlot(settings.MEDIA_ROOT / "las" / single_select_las)
     else:
-        well = lasViewer(settings.MEDIA_ROOT / "las" / las_list[0])
+        well = LasPlot(settings.MEDIA_ROOT / "las" / las_list[0])
 
     if not curves_list:
         curves_list = [
             curve.mnemonic
-            for curve in well.curves[:]
+            for curve in well.las.curves[:]
             if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT"
         ]
 
     myLog = []
 
-    for logs in curves_list:
-        fig = well.addplot(logs)
-        myLog.append(fig)
+    # for logs in curves_list:
+    #     fig = well.addplot(logs)
+    #     myLog.append(fig)
 
-    for i in myLog:
-        i.y_range = myLog[0].y_range
+    fig = well.create_plot(curves_list)
 
-    plot = gridplot([myLog], sizing_mode="stretch_both")
-    plot_script, plot_div = components(plot)
+    config = {
+        "displaylogo": False,
+        "scrollZoom": True,
+        "modeBarButtonsToRemove": [
+            "select2d",
+            "lasso2d",
+            "toggleSpikelines",
+            "autoScale2d",
+        ],
+    }
+
+    preview_log_div = fig.to_html(
+        # full_html=False,
+        config=config,
+        # include_plotlyjs=False
+    )
+
+    # for i in myLog:
+    #     i.y_range = myLog[0].y_range
+    #
+    # plot = gridplot([myLog], sizing_mode="stretch_both")
+    # plot_script, plot_div = components(plot)
 
     if request.htmx.target == "las_preview":
         context = {
-            "plot_script": plot_script,
-            "plot_div": plot_div,
+            # "plot_script": plot_script,
+            "preview_log_div": preview_log_div,
             "curves_list": curves_list,
         }
     else:
         context = {
-            "plot_script": plot_script,
-            "plot_div": plot_div,
+            # "plot_script": plot_script,
+            "preview_log_div": preview_log_div,
             "las_list": las_list,
             "curves_list": curves_list,
         }
