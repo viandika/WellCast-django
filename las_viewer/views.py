@@ -424,30 +424,49 @@ def preview_pred_las(request):
     curves_list = request.GET.getlist("selected_logs")
     las_pred_filename = request.session["pred_las"]
 
-    well = lasViewer(settings.MEDIA_ROOT / "las" / las_pred_filename)
+    well = LasPlot(settings.MEDIA_ROOT / "las" / las_pred_filename)
 
     if not curves_list:
         curves_list = [
             curve.mnemonic
-            for curve in well.curves[:]
+            for curve in well.las.curves[:]
             if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT"
         ]
 
-    myLog = []
+    # myLog = []
 
-    for logs in curves_list:
-        fig = well.addplot(logs)
-        myLog.append(fig)
+    # for logs in curves_list:
+    #     fig = well.addplot(logs)
+    #     myLog.append(fig)
+    #
+    # for i in myLog:
+    #     i.y_range = myLog[0].y_range
+    #
+    # plot = gridplot([myLog], sizing_mode="stretch_both")
+    # plot_script, plot_div = components(plot)
 
-    for i in myLog:
-        i.y_range = myLog[0].y_range
+    fig = well.create_plot(curves_list)
 
-    plot = gridplot([myLog], sizing_mode="stretch_both")
-    plot_script, plot_div = components(plot)
+    config = {
+        "displaylogo": False,
+        "scrollZoom": True,
+        "modeBarButtonsToRemove": [
+            "select2d",
+            "lasso2d",
+            "toggleSpikelines",
+            "autoScale2d",
+        ],
+    }
+
+    preview_pred_log_div = fig.to_html(
+        # full_html=False,
+        config=config,
+        # include_plotlyjs=False
+    )
 
     context = {
-        "plot_script": plot_script,
-        "plot_div": plot_div,
+        # "plot_script": plot_script,
+        "preview_pred_log_div": preview_pred_log_div,
         "curves_list": curves_list,
         "las_pred_filename": las_pred_filename,
     }
