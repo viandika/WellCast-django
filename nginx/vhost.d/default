@@ -1,4 +1,0 @@
-location /static/ {
-  alias /code/staticfiles/;
-  add_header Access-Control-Allow-Origin *;
-}

@@ -18,7 +18,7 @@ plotly==4.14.3
 psycopg2==2.8.6
 pyparsing==2.4.7
 python-dateutil==2.8.1
-python-magic==0.4.24
+python-magic-bin
 pytz==2021.1
 PyYAML==5.4.1
 redis==3.5.3
