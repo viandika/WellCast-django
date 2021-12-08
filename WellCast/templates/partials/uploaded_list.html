@@ -1,0 +1,8 @@
+<label class="block text-left" style="max-width: 300px;">
+    <span class="text-gray-700">File List</span>
+    <select class="form-multiselect block w-full mt-1" multiple>
+        {% for file in las_files %}
+            <option>{{ file }}</option>
+        {% endfor %}
+    </select>
+</label>
