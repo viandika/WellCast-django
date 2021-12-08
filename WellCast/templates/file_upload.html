@@ -90,14 +90,14 @@
         our sample files by clicking the button on the right. Additional instruction document is
         included inside too.</h6>
     <form id="file_upload_form" method="post" enctype="multipart/form-data" data-hx-post="/upload_files"
-          data-hx-encoding='multipart/form-data'
+          data-hx-encoding='multipart/form-data'>
             {#          data-hx-target="#las_list"#}
-          data-hx-indicator="#upload_indicator">
+{#          data-hx-indicator="#upload_indicator">#}
         {% csrf_token %}
         <div class="flex flex-col flex-grow mb-3">
             <div x-data="{ files: null }" id="FileUpload"
                  class="block w-full py-2 px-3 relative bg-white appearance-none border-2 border-gray-300 border-solid rounded-md hover:shadow-outline-gray">
-                <input type="file" multiple name="las_file"
+                <input type="file" multiple name="las_file" accept=".las"
                        class="absolute inset-0 z-50 m-0 p-0 w-full h-full outline-none opacity-0"
                        x-on:change="files = $event.target.files; console.log($event.target.files);"
                        x-on:dragover="$el.classList.add('active')" x-on:dragleave="$el.classList.remove('active')"
@@ -133,8 +133,8 @@
             <button type="submit"
                     class="bg-green-500 px-5 py-3 text-sm shadow-sm font-medium tracking-wider text-green-100 rounded-full hover:shadow-2xl hover:bg-green-600">
                 Submit
-                <img id="upload_indicator" style="height:20px;" class="htmx-indicator"
-                     src="{% static 'img/bars.svg' %}"/>
+{#                <img id="upload_indicator" style="height:20px;" class="htmx-indicator"#}
+{#                     src="{% static 'img/bars.svg' %}"/>#}
             </button>
         </div>
     </form>
