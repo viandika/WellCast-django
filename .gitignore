@@ -14,3 +14,4 @@
 **/models/*
 **/las_downloads/*
 !**/sample_files.zip
+**/.python-version
