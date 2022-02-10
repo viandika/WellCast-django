@@ -4,31 +4,26 @@ import os
 import lasio
 import numpy as np
 import pandas as pd
-import plotly.graph_objects as go
-from bokeh.embed import components
-from bokeh.layouts import gridplot
 from django.conf import settings
 from django.contrib import messages
 from django.http import FileResponse
 from django.shortcuts import render
-from plotly.subplots import make_subplots
 from xgboost import XGBRegressor
 
-from las_viewer.forms import LasUploadForm, ContactUsForm
-from las_viewer.las_renderer import lasViewer
+from las_viewer.forms import ContactUsForm, LasUploadForm
 from las_viewer.models import LasUpload
 from las_viewer.utils import (
+    LasPlot,
     plot_correlation_heatmap,
-    plot_range_boxplot,
     plot_importance_bar,
     plot_predicted_line,
-    LasPlot,
+    plot_range_boxplot,
 )
 from las_viewer.xgboost_train import (
     dataframing_train,
-    train_model,
     load_data,
     merge_alias,
+    train_model,
 )
 
 
@@ -221,9 +216,7 @@ def four_model_output(request):
             & (train_df[col] < float(request.GET.get(col + "_top")))
         ]
 
-    model, pred_train, rmse_train, pred_test, rmse_test = train_model(
-        train_df, features, predicted_log
-    )
+    model, _, rmse_train, _, rmse_test = train_model(train_df, features, predicted_log)
 
     request.session["rmse_train"] = rmse_train
     request.session["rmse_test"] = rmse_test
@@ -266,9 +259,7 @@ def five_predicts(request):
             with open(alias_file, "r") as file:
                 alias = json.load(file)
 
-            data_real, log_ava_real = load_data(
-                settings.MEDIA_ROOT / "las" / las_file.name
-            )
+            data_real, _ = load_data(settings.MEDIA_ROOT / "las" / las_file.name)
             data_real = data_real.reset_index()
             df_real = merge_alias(data_real, alias, list(data_real.columns))
             df_real.rename(columns={"DEPT": "DEPTH"}, inplace=True)
@@ -347,15 +338,15 @@ def download_sample(request):
 
 
 def las_preview(request):
-    sizeModes = [
-        "fixed",
-        "stretch_width",
-        "stretch_height",
-        "stretch_both",
-        "scale_width",
-        "scale_height",
-        "scale_both",
-    ]
+    # sizeModes = [
+    #     "fixed",
+    #     "stretch_width",
+    #     "stretch_height",
+    #     "stretch_both",
+    #     "scale_width",
+    #     "scale_height",
+    #     "scale_both",
+    # ]
     # selected_las = request.GET.getlist("selected_las")
     single_select_las = request.GET.get("single_select_las")
     las_list = request.session["las_list"]
@@ -373,7 +364,7 @@ def las_preview(request):
             if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT"
         ]
 
-    myLog = []
+    # myLog = []
 
     # for logs in curves_list:
     #     fig = well.addplot(logs)
