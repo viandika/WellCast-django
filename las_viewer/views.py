@@ -28,6 +28,30 @@ from las_viewer.xgboost_train import (
 
 
 def one_base_page(request):
+    """Index Page.
+
+    Check if context parameter is set.
+    Each context is set based on the users progress with the appself.
+    When a context is set, display their previous input/display.
+
+    Context:
+        form: File upload form.
+        las_files: List of uploaded LAS files
+        heatmap_div: plotly heatmap of the correlation.
+        columns: columns/logs available from LAS files.
+        las_div: plotly plot of boxplot for minmax.
+        iqr: boundaries for iqr.
+        features: selected columns/logs for training.
+        rmse_train: RMSE of train model.
+        rmse_test: RMSE of test model.
+        feature_importance_div: plotly barchart of feature importance.
+        upload_form: upload form for prediction.
+        predicted_log_div: plotly log preview prediction vs real if available.
+
+    Template:
+        template: index.html
+
+    """
     form = LasUploadForm()
     context = {
         "form": form,

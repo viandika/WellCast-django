@@ -1,8 +1,8 @@
+import json
+
 import lasio
 import numpy as np
 import pandas as pd
-import os
-import json
 from django.conf import settings
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
@@ -49,7 +49,8 @@ def merge_alias(db, alias, logs_selected):
             )
             welllog_name = list(count_log.keys())
             if len(welllog_name) != 0:
-                # If more than one log aliases exist, normalize each log to have same data range in the same depth
+                # If more than one log aliases exist, normalize each log
+                # to have same data range in the same depth
                 if len(welllog_name) > 1:
                     alias_logs = data[welllog_name].dropna()
                     if (list(alias)[j] not in ["CALI", "DTCO", "DTSM"]) and (
