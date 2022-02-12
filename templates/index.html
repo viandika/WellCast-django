@@ -1,611 +1,611 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>WellCast by GeoVartha</title>
+    <head>
+        <meta charset="UTF-8">
+        <title>WellCast by GeoVartha</title>
 
-    <link rel="icon" href="{% static 'img/favicon.ico' %}" sizes="16x16">
+        <link rel="icon" href="{% static 'img/favicon.ico' %}" sizes="16x16">
 
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
-    <script src="{% static "js/app.min.js" %}"></script>
-    <script src="{% static "js/index.js" %}"></script>
-    <script src="{% static "js/custom.js" %}"></script>
+        <script src="{% static "js/app.min.js" %}"></script>
+        <script src="{% static "js/index.js" %}"></script>
+        <script src="{% static "js/custom.js" %}"></script>
 
-</head>
-<body>
-<nav class="navbar navbar-light bg-dark">
-    <div class="container-fluid">
-        <div class="row">
-            <span class="navbar-brand">
-            <img src="{% static 'img/by-geov.png' %}" alt="GeoVartha Logo" width="200" height="60.5">
-            </span>
+    </head>
+    <body>
+        <nav class="navbar navbar-light bg-dark">
+            <div class="container-fluid">
+                <div class="row">
+                    <span class="navbar-brand">
+                        <img src="{% static 'img/by-geov.png' %}" alt="GeoVartha Logo" width="200" height="60.5">
+                    </span>
+                </div>
+                <form class="d-flex">
+
+                    <a class="btn btn-outline-secondary m-1" href="https://geovartha.id" target="_blank"
+                        rel="noopener noreferrer">Our website</a>
+
+                    <button type="button" class="btn btn-outline-primary m-1" data-hx-get="/feedback"
+                        data-hx-target="#feedback-modals-here"
+                        data-hx-trigger="click"
+                        _="on htmx:afterOnLoad wait 10ms then add .show to #feedback-modal then add .show to #feedback-modal-backdrop">
+                        Feedback?
+                    </button>
+                </form>
+            </div>
+            <div class="row">
+                <a class="mx-4" target="_blank" rel="noopener noreferrer" href="https://doi.org/10.5281/zenodo.5201856"><img
+                    src="https://zenodo.org/badge/DOI/10.5281/zenodo.5201856.svg" alt="DOI"></a>
+            </div>
+
         </div>
-        <form class="d-flex">
-
-            <a class="btn btn-outline-secondary m-1" href="https://geovartha.id" target="_blank"
-               rel="noopener noreferrer">Our website</a>
-
-            <button type="button" class="btn btn-outline-primary m-1" data-hx-get="/feedback"
-                    data-hx-target="#feedback-modals-here"
-                    data-hx-trigger="click"
-                    _="on htmx:afterOnLoad wait 10ms then add .show to #feedback-modal then add .show to #feedback-modal-backdrop">
-                Feedback?
-            </button>
-        </form>
-        </div>
-        <div class="row">
-            <a class="mx-4" target="_blank" rel="noopener noreferrer" href="https://doi.org/10.5281/zenodo.5201856"><img
-              src="https://zenodo.org/badge/DOI/10.5281/zenodo.5201856.svg" alt="DOI"></a>
-        </div>
-
-    </div>
-</nav>
+    </nav>
 
 
-<div id="feedback-modals-here"></div>
+    <div id="feedback-modals-here"></div>
 
-<div class="container-lg py-3">
-    {#    <h2>WellCast</h2>#}
-    <h5>WellCast is a web-application tool for predicting missing well log data using the machine learning workflow. In
-        this application, we used gradient boost method (tree-based algorithm) which was adapted from the result of <a
+    <div class="container-lg py-3">
+        {#    <h2>WellCast</h2>#}
+        <h5>WellCast is a web-application tool for predicting missing well log data using the machine learning workflow. In
+            this application, we used gradient boost method (tree-based algorithm) which was adapted from the result of <a
                 href="https://github.com/Geovartha/spe-gcs-ml-challenge-2021-/blob/main/spe_gcs_ml_challenge_2021.ipynb"
                 target="_blank" rel="noopener noreferrer">SPE
-            GCS ML Challenge 2021</a>. This workflow summarized on the picture below.</h5>
+                GCS ML Challenge 2021</a>. This workflow summarized on the picture below.</h5>
 
-    <div class="accordion" id="workflow-accordion">
-        <div class="accordion-item">
-            <h2 class="accordion-header" id="workflow-header">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#worflow-main"
+        <div class="accordion" id="workflow-accordion">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="workflow-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#worflow-main"
                         aria-expanded="true" aria-controls="collapseOne">
-                    Workflow Diagram
-                </button>
-            </h2>
-            <div id="worflow-main" class="accordion-collapse collapse show" aria-labelledby="workflow-header"
-                 data-bs-parent="#workflow-accordion">
-                <div class="accordion-body">
-                    <img src="{% static 'img/workflow.png' %}" class="img-fluid" alt="workflow diagram">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <div class="card border-secondary my-3">
-                <div class="card-body">
-                    <h5 class="card-title d-flex justify-content-between align-items-center">1. Input File
-                        <a class="btn btn-outline-success" href="/download_sample">Download Sample</a>
-                    </h5>
-                    <h6 class="card-subtitle mb-2 text-muted">Please download and try
-                        our sample files by clicking the button on the right. Additional instruction document is
-                        included inside too.</h6>
-                    <form id="file_upload_form" method="post" enctype="multipart/form-data" data-hx-post="/two"
-                          data-hx-encoding='multipart/form-data'
-                          data-hx-target="#las_list"
-                          data-hx-indicator="#upload_indicator">
-                        <label for="id_las_file" class="form-label">Select .las file to be uploaded. </label>
-                        {% csrf_token %}
-                        <div class="row mb-2">
-                            <div class="col-lg-3 mb-2">
-                                <input type="file" name="las_file" required="" id="id_las_file" class="form-control"
-                                       multiple>
-                            </div>
-                            <div class="col-lg-2">
-                                <button type="submit" class="btn btn-primary text-white">Submit
-                                    <img id="upload_indicator" style="height:20px;" class="htmx-indicator"
-                                         src="{% static 'img/bars.svg' %}"/>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                    <span class="text-danger"><i>All las files uploaded will be removed after the session is closed or after 60 minutes.</i></span>
-                    <div class="progress mt-2">
-                        <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                             aria-valuemax="100" id='progress'></div>
+                        Workflow Diagram
+                    </button>
+                </h2>
+                <div id="worflow-main" class="accordion-collapse collapse show" aria-labelledby="workflow-header"
+                    data-bs-parent="#workflow-accordion">
+                    <div class="accordion-body">
+                        <img src="{% static 'img/workflow.png' %}" class="img-fluid" alt="workflow diagram">
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col" id="las_list">
-            {% if las_files %}
-                <div class="card border-secondary mb-3">
+        <div class="row">
+            <div class="col">
+                <div class="card border-secondary my-3">
                     <div class="card-body">
-                        <h5 class="card-title">2. Select .las files for training</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Click on the preview button to view the logs of
-                            the
-                            uploaded las files.
-                            <br/>
-                            Subsequent to the visual inspection, select the las files that will be used for the
-                            training
-                            process.
-                        </h6>
-                        <form id="las_dd">
-                            <label for="selected_las" class="form-label">.las files:</label>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <select name="selected_las" id="selected_las"
-                                            style="visibility: hidden; width: 100%" size="1" multiple>
-                                        {% for file in las_files %}
-                                            <option value="{{ file }}">{{ file }}</option>
-                                        {% endfor %}
-                                    </select>
+                        <h5 class="card-title d-flex justify-content-between align-items-center">1. Input File
+                            <a class="btn btn-outline-success" href="/download_sample">Download Sample</a>
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Please download and try
+                            our sample files by clicking the button on the right. Additional instruction document is
+                            included inside too.</h6>
+                        <form id="file_upload_form" method="post" enctype="multipart/form-data" data-hx-post="/two"
+                            data-hx-encoding='multipart/form-data'
+                            data-hx-target="#las_list"
+                            data-hx-indicator="#upload_indicator">
+                            <label for="id_las_file" class="form-label">Select .las file to be uploaded. </label>
+                            {% csrf_token %}
+                            <div class="row mb-2">
+                                <div class="col-lg-3 mb-2">
+                                    <input type="file" name="las_file" required="" id="id_las_file" class="form-control" accept=".las"
+                                        multiple>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button type="submit" class="btn btn-primary text-white">Submit
+                                        <img id="upload_indicator" style="height:20px;" class="htmx-indicator"
+                                            src="{% static 'img/bars.svg' %}"/>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-4 mt-2">
-                                    <button type="button" class="btn btn-secondary text-white"
+                        </form>
+                        <span class="text-danger"><i>All las files uploaded will be removed after the session is closed or after 60 minutes.</i></span>
+                        <div class="progress mt-2">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                aria-valuemax="100" id='progress'></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" id="las_list">
+                {% if las_files %}
+                    <div class="card border-secondary mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">2. Select .las files for training</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Click on the preview button to view the logs of
+                                the
+                                uploaded las files.
+                                <br/>
+                                Subsequent to the visual inspection, select the las files that will be used for the
+                                training
+                                process.
+                            </h6>
+                            <form id="las_dd">
+                                <label for="selected_las" class="form-label">.las files:</label>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <select name="selected_las" id="selected_las"
+                                            style="visibility: hidden; width: 100%" size="1" multiple>
+                                            {% for file in las_files %}
+                                                <option value="{{ file }}">{{ file }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4 mt-2">
+                                        <button type="button" class="btn btn-secondary text-white"
                                             data-hx-get="/las_preview"
                                             data-hx-params="*"
                                             data-hx-target="#las-preview-train-modal-here"
                                             data-hx-trigger="click"
                                             data-hx-indicator="#preview_train_indicator"
                                             _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
-                                        Preview Logs
-                                        <img id="preview_train_indicator" style="height:20px;"
-                                             class="htmx-indicator"
-                                             src="{% static 'img/bars.svg' %}"/>
-                                    </button>
+                                            Preview Logs
+                                            <img id="preview_train_indicator" style="height:20px;"
+                                                class="htmx-indicator"
+                                                src="{% static 'img/bars.svg' %}"/>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-4 my-2">
-                                    <button type="submit" class="btn btn-primary text-white"
+                                <div class="row">
+                                    <div class="col-lg-4 my-2">
+                                        <button type="submit" class="btn btn-primary text-white"
                                             data-hx-get="/log_selector"
                                             data-hx-params="*"
                                             data-hx-target="#log_selector_form"
                                             data-hx-include="#las_dd"
                                             data-hx-indicator="#submit_train_indicator">Submit
-                                        <img id="submit_train_indicator" style="height:20px;" class="htmx-indicator"
-                                             src="{% static 'img/bars.svg' %}"/>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                        <div id="las-preview-train-modal-here"></div>
-
-                        <p class="text-danger"><i>Disclaimer:</i> uploaded logs files will be merged and will be aliased
-                            using an aliasing library. Please make sure all the logs mnemonics on
-                            your wells are listed, rename temporarily if necessary.
-                            Click <a
-                                    href="javascript:"
-                                    data-bs-toggle="modal" data-bs-target="#alias-modal">HERE</a> to see the
-                            aliasing library.</p>
-
-                        <div class="modal fade" id="alias-modal" tabindex="-1" aria-labelledby="alias-modal-label"
-                             aria-hidden="true">
-                            <div class="modal-dialog modal-xl">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="alias-modal-label">Alias File</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <table class="table table-bordered table-striped">
-                                            <thead class="table-dark">
-                                            <tr>
-                                                <th scope="col">Alias</th>
-                                                <th scope="col">Logs</th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <th>CAL</th>
-                                                <th>C1, C1S, C2, CAL1R, CAL1R_R, CALD, CALI, CALI_1,
-                                                    CALI_2, CALI_SCPS, CALR, CALS, CALSR, CALSR_R, CALX,
-                                                    DCAL, HCAL, HCAL2R, HCALD, HCALR, HCALS, HCAL_1,
-                                                    HCAL_2, HCGRR, HD, HD1, HD2, HDS, HSGRR, LCAL,
-                                                    LCALD, LCALR, LCAL_1
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>GR</th>
-                                                <th>CGR, CGRD, CGRR, CGRS, ECGR, ECGRD, ECGREDTC,
-                                                    ECGRR, ECGRS, GR, GRC, GRD, GRD1, GRD_1, GRN, GRR,
-                                                    GRR_R, GRR_R1, GRR_R2, GRS, GRS1, GRT, GR_1,
-                                                    GR_EDTC, GR_STGC, HCGR, HCGRD, HCGRS, HGRT, HSGR,
-                                                    HSGRD, HSGRS, MSGRR, SGR, SGRD, SGRDD, SGRR, SGRS
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>SP</th>
-                                                <th>SPR</th>
-                                            </tr>
-                                            <tr>
-                                                <th>PEF</th>
-                                                <th>PE, PEF, PEFL, PEFS, PEFZ, PEF_SLDT</th>
-                                            </tr>
-                                            <tr>
-                                                <th>GR_OTHER</th>
-                                                <th>HFK, HTHO, HURA, THOR, URAN, CGRRPOTA</th>
-                                            </tr>
-                                            <tr>
-                                                <th>DENS</th>
-                                                <th>RHOM, RHOB, RHOB_SLDT, RHOZ, ZDEN</th>
-                                            </tr>
-                                            <tr>
-                                                <th>POR</th>
-                                                <th>CNC, CNC_LS, CNPOR_LS, DPHZLS, DPHZ_SS, DPO, ENPH_LS,
-                                                    NPHI, NPHI1, NPHILS_1, NPHILs, NPHI_LS, NPHI_LS_1,
-                                                    NPHS, NPOR, NPORLS, NPOR_LS, SNP, TNPH, TNPH_LIM,
-                                                    TNPH_LS, TNPH_SS, TNPJ_LS_1, TPHI_LS, DPHI, DPHI_LS,
-                                                    DPHI_LS, DPHI_SLDT, DPHZ, DPHZ2, DPHZ_LS, DPO, DPOR,
-                                                    DPOR_LS, DPO_LS, PORZ, PORZ_LS, PHIND_LS, PHIX,
-                                                    PHND_LS, PORS_LS, PXND, SPHI, SPHILS, SPHI_LS, SPHI_SS
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>DRES</th>
-                                                <th>AE90, AF60, AF90, AHF60, AHFCO60, AHT60, AHT90,
-                                                    AO60, AO90, AST90, AT60, AT90, CILD, HLLD, HRID,
-                                                    IDPC, IDPH, ILD, ILD1, ILD_1, LLD, LLD_R, LLD_R1,
-                                                    LLD_R2, RILD, RLA4, RLA5, RT_HRLT, TBI60, TBIT90
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>MRES</th>
-                                                <th>AE30, AST30, AT30, HRIM, ILM, ILM_1, IMBC, IMPH,
-                                                    RLA4
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>SRES</th>
-                                                <th>HMIN, HMNO, MGUARD, MSFL, MSFL_R, RLA1, RLA2, RXO8,
-                                                    RXOZ, RXOZ_R, RXO_HRLT, SFL, SFLA, SFLU, SFLU_1,
-                                                    SFLU_1
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>CO</th>
-                                                <th>AFCO, AFCO60, CIDP
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>DTCO</th>
-                                                <th>DTCO, DT, DTC
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>DEPT</th>
-                                                <th>DEPTH, DEPTH_MD, DEPT_MD
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>DTSM</th>
-                                                <th>DTSM
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>DT_OTHER</th>
-                                                <th>DTM, DTSH
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>DRHO</th>
-                                                <th>CORR, DRH, DRHO, HDRA, QRHO, QRHO_SLDT, DCOR, ZCOR
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>PR</th>
-                                                <th>PR
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>VPVS</th>
-                                                <th>PYR, VPVS, VPVS_X, VPVS_Y
-                                                </th>
-                                            </tr>
-                                            <tr>
-                                                <th>OTHERS</th>
-                                                <th>CBL, CIRF_FIL, DEVI, GRATIO, GTEM, HD1_PPC1, HD2_PPC1,
-                                                    HD2_PPC2, LTEN, RB, ROP, SIGMA, STIT, TEN, TEND,
-                                                    TEND1, TEND_1, TENR, TENR, TENR_R, TENR_R1, TENR_R2,
-                                                    TENS, TENS1, TENT, WTEP
-                                                </th>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            Close
+                                            <img id="submit_train_indicator" style="height:20px;" class="htmx-indicator"
+                                                src="{% static 'img/bars.svg' %}"/>
                                         </button>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </form>
+                            <div id="las-preview-train-modal-here"></div>
 
-                    </div>
-                </div>
-            {% endif %}
-        </div>
-    </div>
-    <div class="row">
-        <div class="col" id="log_selector_form">
-            {% if columns %}
-                <div class="card border-secondary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">3. Exploratory Data Analysis (EDA)</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Calculate the correlation coefficient between all
-                            the
-                            different logs included in the data<sup><a
-                                    href="https://www.researchgate.net/publication/275470782_Pearson's_correlation_coefficient"
-                                    target="_blank" rel="noopener noreferrer">[1]</a></sup>.
-                            <br/>Colorbar shows correlation coefficient value.
-                            <br/>High
-                            value (1) shows positive correlation, low value (-1) shows negative correlation, while 0
-                            shows no correlation</h6>
+                            <p class="text-danger"><i>Disclaimer:</i> uploaded logs files will be merged and will be aliased
+                                using an aliasing library. Please make sure all the logs mnemonics on
+                                your wells are listed, rename temporarily if necessary.
+                                Click <a
+                                    href="javascript:"
+                                    data-bs-toggle="modal" data-bs-target="#alias-modal">HERE</a> to see the
+                                aliasing library.</p>
 
-                        {{ heatmap_div|safe }}
-
-                        <p class="card-subtitle my-3 text-muted"><img
-                                src="{% static 'img/information-icon-red.svg' %}"
-                                alt="information" style="height:1.3em;"> Based on the correlation heat map, please
-                            choose the log data to be included for the model training (including the target
-                            log)</p>
-
-                        <form id="las_selector" data-hx-get="/threea" data-hx-params="*" data-hx-target="#las_box"
-                              data-hx-indicator="#submit_logs_indicator">
-                            {#                            <label for="selected_log" class="form-label mt-4">Based on the correlation heat map, please#}
-                            {#                                choose the log data to be included for the model training (including the target#}
-                            {#                                log)#}
-                            {#                            </label>#}
-                            <select name="selected_log" id="selected_log" style="visibility: hidden; width: 100%"
-                                    size="1" multiple>
-                                {% for column in columns %}
-                                    <option value="{{ column }}">{{ column }}</option>
-                                {% endfor %}
-                            </select>
-                            <button type="submit" class="btn btn-primary text-white my-3">Submit
-                                <img id="submit_logs_indicator" style="height:20px;" class="htmx-indicator"
-                                     src="{% static 'img/bars.svg' %}"/></button>
-                        </form>
-                        <div id="las_box">
-                            {% if las_div %}
-                                <p class="card-subtitle mb-3 text-muted"><img
-                                        src="{% static 'img/information-icon-red.svg' %}"
-                                        alt="information" style="height:1.3em;"> You can remove potential data
-                                    outlier
-                                    by
-                                    modifying the minimum and maximum
-                                    value accepted for each logs.</p>
-                                <div class="row">
-                                    <div class="col-4">
-                                        <form id="las_limit">
-                                            <table class="table table-responsive table-bordered table-striped">
-                                                <thead class="table-primary">
-                                                <tr>
-                                                    <th>Log</th>
-                                                    <th>Minimum</th>
-                                                    <th>Maximum</th>
-                                                </tr>
+                            <div class="modal fade" id="alias-modal" tabindex="-1" aria-labelledby="alias-modal-label"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-xl">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="alias-modal-label">Alias File</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <table class="table table-bordered table-striped">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th scope="col">Alias</th>
+                                                        <th scope="col">Logs</th>
+                                                    </tr>
                                                 </thead>
                                                 <tbody>
-                                                {% for col, quartile in iqr.items %}
                                                     <tr>
-                                                        <td><b>{{ col }}</b></td>
-                                                        <td><input type="number" class="form-control"
-                                                                   placeholder="{{ quartile.0 | floatformat:2 }}"
-                                                                   value="{{ quartile.0 | floatformat:2 }}"
-                                                                   name="{{ col }}_bottom"></td>
-                                                        <td><input type="number" class="form-control"
-                                                                   placeholder="{{ quartile.1 | floatformat:2 }}"
-                                                                   value="{{ quartile.1 | floatformat:2 }}"
-                                                                   name="{{ col }}_top"></td>
+                                                        <th>CAL</th>
+                                                        <th>C1, C1S, C2, CAL1R, CAL1R_R, CALD, CALI, CALI_1,
+                                                            CALI_2, CALI_SCPS, CALR, CALS, CALSR, CALSR_R, CALX,
+                                                            DCAL, HCAL, HCAL2R, HCALD, HCALR, HCALS, HCAL_1,
+                                                            HCAL_2, HCGRR, HD, HD1, HD2, HDS, HSGRR, LCAL,
+                                                            LCALD, LCALR, LCAL_1
+                                                        </th>
                                                     </tr>
-                                                {% endfor %}
+                                                    <tr>
+                                                        <th>GR</th>
+                                                        <th>CGR, CGRD, CGRR, CGRS, ECGR, ECGRD, ECGREDTC,
+                                                            ECGRR, ECGRS, GR, GRC, GRD, GRD1, GRD_1, GRN, GRR,
+                                                            GRR_R, GRR_R1, GRR_R2, GRS, GRS1, GRT, GR_1,
+                                                            GR_EDTC, GR_STGC, HCGR, HCGRD, HCGRS, HGRT, HSGR,
+                                                            HSGRD, HSGRS, MSGRR, SGR, SGRD, SGRDD, SGRR, SGRS
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>SP</th>
+                                                        <th>SPR</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>PEF</th>
+                                                        <th>PE, PEF, PEFL, PEFS, PEFZ, PEF_SLDT</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>GR_OTHER</th>
+                                                        <th>HFK, HTHO, HURA, THOR, URAN, CGRRPOTA</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DENS</th>
+                                                        <th>RHOM, RHOB, RHOB_SLDT, RHOZ, ZDEN</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>POR</th>
+                                                        <th>CNC, CNC_LS, CNPOR_LS, DPHZLS, DPHZ_SS, DPO, ENPH_LS,
+                                                            NPHI, NPHI1, NPHILS_1, NPHILs, NPHI_LS, NPHI_LS_1,
+                                                            NPHS, NPOR, NPORLS, NPOR_LS, SNP, TNPH, TNPH_LIM,
+                                                            TNPH_LS, TNPH_SS, TNPJ_LS_1, TPHI_LS, DPHI, DPHI_LS,
+                                                            DPHI_LS, DPHI_SLDT, DPHZ, DPHZ2, DPHZ_LS, DPO, DPOR,
+                                                            DPOR_LS, DPO_LS, PORZ, PORZ_LS, PHIND_LS, PHIX,
+                                                            PHND_LS, PORS_LS, PXND, SPHI, SPHILS, SPHI_LS, SPHI_SS
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DRES</th>
+                                                        <th>AE90, AF60, AF90, AHF60, AHFCO60, AHT60, AHT90,
+                                                            AO60, AO90, AST90, AT60, AT90, CILD, HLLD, HRID,
+                                                            IDPC, IDPH, ILD, ILD1, ILD_1, LLD, LLD_R, LLD_R1,
+                                                            LLD_R2, RILD, RLA4, RLA5, RT_HRLT, TBI60, TBIT90
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>MRES</th>
+                                                        <th>AE30, AST30, AT30, HRIM, ILM, ILM_1, IMBC, IMPH,
+                                                            RLA4
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>SRES</th>
+                                                        <th>HMIN, HMNO, MGUARD, MSFL, MSFL_R, RLA1, RLA2, RXO8,
+                                                            RXOZ, RXOZ_R, RXO_HRLT, SFL, SFLA, SFLU, SFLU_1,
+                                                            SFLU_1
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>CO</th>
+                                                        <th>AFCO, AFCO60, CIDP
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DTCO</th>
+                                                        <th>DTCO, DT, DTC
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DEPT</th>
+                                                        <th>DEPTH, DEPTH_MD, DEPT_MD
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DTSM</th>
+                                                        <th>DTSM
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DT_OTHER</th>
+                                                        <th>DTM, DTSH
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>DRHO</th>
+                                                        <th>CORR, DRH, DRHO, HDRA, QRHO, QRHO_SLDT, DCOR, ZCOR
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>PR</th>
+                                                        <th>PR
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>VPVS</th>
+                                                        <th>PYR, VPVS, VPVS_X, VPVS_Y
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>OTHERS</th>
+                                                        <th>CBL, CIRF_FIL, DEVI, GRATIO, GTEM, HD1_PPC1, HD2_PPC1,
+                                                            HD2_PPC2, LTEN, RB, ROP, SIGMA, STIT, TEN, TEND,
+                                                            TEND1, TEND_1, TENR, TENR, TENR_R, TENR_R1, TENR_R2,
+                                                            TENS, TENS1, TENT, WTEP
+                                                        </th>
+                                                    </tr>
                                                 </tbody>
                                             </table>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                                            <button type="submit" class="btn btn-primary text-white"
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col" id="log_selector_form">
+                {% if columns %}
+                    <div class="card border-secondary mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">3. Exploratory Data Analysis (EDA)</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Calculate the correlation coefficient between all
+                                the
+                                different logs included in the data<sup><a
+                                    href="https://www.researchgate.net/publication/275470782_Pearson's_correlation_coefficient"
+                                    target="_blank" rel="noopener noreferrer">[1]</a></sup>.
+                                <br/>Colorbar shows correlation coefficient value.
+                                <br/>High
+                                value (1) shows positive correlation, low value (-1) shows negative correlation, while 0
+                                shows no correlation</h6>
+
+                            {{ heatmap_div|safe }}
+
+                            <p class="card-subtitle my-3 text-muted"><img
+                                src="{% static 'img/information-icon-red.svg' %}"
+                                alt="information" style="height:1.3em;"> Based on the correlation heat map, please
+                                choose the log data to be included for the model training (including the target
+                                log)</p>
+
+                            <form id="las_selector" data-hx-get="/threea" data-hx-params="*" data-hx-target="#las_box"
+                                data-hx-indicator="#submit_logs_indicator">
+                                {#                            <label for="selected_log" class="form-label mt-4">Based on the correlation heat map, please#}
+                                {#                                choose the log data to be included for the model training (including the target#}
+                                {#                                log)#}
+                                {#                            </label>#}
+                                <select name="selected_log" id="selected_log" style="visibility: hidden; width: 100%"
+                                    size="1" multiple>
+                                    {% for column in columns %}
+                                        <option value="{{ column }}">{{ column }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-primary text-white my-3">Submit
+                                    <img id="submit_logs_indicator" style="height:20px;" class="htmx-indicator"
+                                        src="{% static 'img/bars.svg' %}"/></button>
+                            </form>
+                            <div id="las_box">
+                                {% if las_div %}
+                                    <p class="card-subtitle mb-3 text-muted"><img
+                                        src="{% static 'img/information-icon-red.svg' %}"
+                                        alt="information" style="height:1.3em;"> You can remove potential data
+                                        outlier
+                                        by
+                                        modifying the minimum and maximum
+                                        value accepted for each logs.</p>
+                                    <div class="row">
+                                        <div class="col-4">
+                                            <form id="las_limit">
+                                                <table class="table table-responsive table-bordered table-striped">
+                                                    <thead class="table-primary">
+                                                        <tr>
+                                                            <th>Log</th>
+                                                            <th>Minimum</th>
+                                                            <th>Maximum</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for col, quartile in iqr.items %}
+                                                            <tr>
+                                                                <td><b>{{ col }}</b></td>
+                                                                <td><input type="number" class="form-control"
+                                                                    placeholder="{{ quartile.0 | floatformat:2 }}"
+                                                                    value="{{ quartile.0 | floatformat:2 }}"
+                                                                    name="{{ col }}_bottom"></td>
+                                                                <td><input type="number" class="form-control"
+                                                                    placeholder="{{ quartile.1 | floatformat:2 }}"
+                                                                    value="{{ quartile.1 | floatformat:2 }}"
+                                                                    name="{{ col }}_top"></td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+
+                                                <button type="submit" class="btn btn-primary text-white"
                                                     data-hx-include="#las_limit"
                                                     data-hx-get="/predicted_log"
                                                     data-hx-target="#predicted_log"
                                                     data-hx-indicator="#submit_precondition_indicator">
-                                                Submit
-                                                <img id="submit_precondition_indicator" style="height:20px;"
-                                                     class="htmx-indicator"
-                                                     src="{% static 'img/bars.svg' %}"/>
-                                            </button>
-                                            <button type="submit" class="btn btn-secondary text-white"
+                                                    Submit
+                                                    <img id="submit_precondition_indicator" style="height:20px;"
+                                                        class="htmx-indicator"
+                                                        src="{% static 'img/bars.svg' %}"/>
+                                                </button>
+                                                <button type="submit" class="btn btn-secondary text-white"
                                                     data-hx-include="#las_limit"
                                                     data-hx-get="/threeb"
                                                     data-hx-target="#las_box_preview"
                                                     data-hx-indicator="#preview_precondition_indicator">
-                                                Preview
-                                                <img id="preview_precondition_indicator" style="height:20px;"
-                                                     class="htmx-indicator"
-                                                     src="{% static 'img/bars.svg' %}"/>
-                                            </button>
-                                        </form>
-                                        <p class="my-3 text-muted"><img
+                                                    Preview
+                                                    <img id="preview_precondition_indicator" style="height:20px;"
+                                                        class="htmx-indicator"
+                                                        src="{% static 'img/bars.svg' %}"/>
+                                                </button>
+                                            </form>
+                                            <p class="my-3 text-muted"><img
                                                 src="{% static 'img/information-icon-red.svg' %}"
                                                 alt="information" style="height:1.3em;"> Make
-                                            sure that you are satisfied with the data
-                                            cleansing process, we will create a model based on this data by clicking
-                                            submit
-                                            button.</p>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="row">
-                                            <div class="col">
-                                                <h6 class="mb-2 text-muted">Before</h6>
-                                                {{ las_div | safe }}
-                                            </div>
+                                                sure that you are satisfied with the data
+                                                cleansing process, we will create a model based on this data by clicking
+                                                submit
+                                                button.</p>
                                         </div>
-                                        <hr>
-                                        <div class="row">
-                                            <div class="col">
-                                                <h6 class="mb-2 text-muted">After</h6>
-                                                <div id="las_box_preview">
+                                        <div class="col-8">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h6 class="mb-2 text-muted">Before</h6>
+                                                    {{ las_div | safe }}
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <div class="col">
+                                                    <h6 class="mb-2 text-muted">After</h6>
+                                                    <div id="las_box_preview">
 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                            {% endif %}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col" id="predicted_log">
-            {% if features %}
-                <div class="card border-secondary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">4. Model Building</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">The supervised learning method deployed here is a
-                            gradient boosting method<sup><a
+        <div class="row">
+            <div class="col" id="predicted_log">
+                {% if features %}
+                    <div class="card border-secondary mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">4. Model Building</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">The supervised learning method deployed here is a
+                                gradient boosting method<sup><a
                                     href="https://www.researchgate.net/publication/326087729_Gradient_Boosting_Machine"
                                     target="_blank" rel="noopener noreferrer">[2]</a></sup>.<br/><br/>
-                            The data samples from the training wells are divided into training and validation
-                            samples
-                            with the proportion of 80 and 20 percent respectively.</h6>
+                                The data samples from the training wells are divided into training and validation
+                                samples
+                                with the proportion of 80 and 20 percent respectively.</h6>
 
-                        <form id="predicted_log_form">
-                            <label for="predicted_log" class="form-label">Select log you want to predict</label>
-                            <select name="predicted_log" id="predicted_log" class="form-control">
-                                {% for feature in features %}
-                                    <option value="{{ feature }}">{{ feature }}</option>
-                                {% endfor %}
-                            </select>
-                            <button type="submit" class="btn btn-primary text-white my-2" data-hx-get="/four"
+                            <form id="predicted_log_form">
+                                <label for="predicted_log" class="form-label">Select log you want to predict</label>
+                                <select name="predicted_log" id="predicted_log" class="form-control">
+                                    {% for feature in features %}
+                                        <option value="{{ feature }}">{{ feature }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit" class="btn btn-primary text-white my-2" data-hx-get="/four"
                                     data-hx-params="*"
                                     data-hx-target="#las_box_limited"
                                     data-hx-include="#las_limit, #predicted_log"
                                     data-hx-indicator="#submit_predict_log_indicator">Submit
-                                <img id="submit_predict_log_indicator" style="height:20px;" class="htmx-indicator"
-                                     src="{% static 'img/bars.svg' %}"/></button>
-                        </form>
-                        <div id="las_box_limited">
-                            {% if rmse_test %}
-                                <br/>
+                                    <img id="submit_predict_log_indicator" style="height:20px;" class="htmx-indicator"
+                                        src="{% static 'img/bars.svg' %}"/></button>
+                            </form>
+                            <div id="las_box_limited">
+                                {% if rmse_test %}
+                                    <br/>
 
-                                <p class="card-subtitle mb-3 text-muted"><img
+                                    <p class="card-subtitle mb-3 text-muted"><img
                                         src="{% static 'img/information-icon-red.svg' %}"
                                         alt="information" style="height:1.3em;"> Assess the Root Mean Square Error
-                                    (RMSE)<sup><a
+                                        (RMSE)<sup><a
                                             href="https://www.researchgate.net/publication/262980567_Root_mean_square_error_RMSE_or_mean_absolute_error_MAE"
                                             target="_blank" rel="noopener noreferrer">[3]</a></sup> of the train &
-                                    validation samples.</p>
+                                        validation samples.</p>
 
-                                <div class="row">
-                                    <div class="col-lg-4 col-sm-12">
-                                        <table class="table table-vcenter table-bordered">
-                                            <tr>
-                                                <th class="table-light">RMSE train</th>
-                                                <td>{{ rmse_train | floatformat:3 }}</td>
-                                            </tr>
-                                            <tr>
-                                                <th class="table-light">RMSE validation</th>
-                                                <td>{{ rmse_test | floatformat:3 }}</td>
-                                            </tr>
-                                        </table>
+                                    <div class="row">
+                                        <div class="col-lg-4 col-sm-12">
+                                            <table class="table table-vcenter table-bordered">
+                                                <tr>
+                                                    <th class="table-light">RMSE train</th>
+                                                    <td>{{ rmse_train | floatformat:3 }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th class="table-light">RMSE validation</th>
+                                                    <td>{{ rmse_test | floatformat:3 }}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <p class="card-subtitle mb-3 text-muted"><img
+                                    <p class="card-subtitle mb-3 text-muted"><img
                                         src="{% static 'img/information-icon-red.svg' %}"
                                         alt="information" style="height:1.3em;"> Assess the predictor parameters
-                                    based
-                                    on the feature importance</p>
+                                        based
+                                        on the feature importance</p>
 
-                                {{ feature_importance_div | safe }}
+                                    {{ feature_importance_div | safe }}
 
-                                <form method="post" enctype="multipart/form-data" data-hx-post="/five"
-                                      data-hx-encoding='multipart/form-data'
-                                      data-hx-target="#output_log"
-                                      data-hx-indicator="#submit_pred_file_indicator">
-                                    {% csrf_token %}
-                                    <label for="id_las_file_predict" class="form-label">Select file to be used for
-                                        prediction:</label>
-                                    <div class="row">
-                                        <div class="col-lg-3">
-                                            <input type="file" name="las_file" required="" id="id_las_file_predict"
-                                                   class="form-control">
+                                    <form method="post" enctype="multipart/form-data" data-hx-post="/five"
+                                        data-hx-encoding='multipart/form-data'
+                                        data-hx-target="#output_log"
+                                        data-hx-indicator="#submit_pred_file_indicator">
+                                        {% csrf_token %}
+                                        <label for="id_las_file_predict" class="form-label">Select file to be used for
+                                            prediction:</label>
+                                        <div class="row">
+                                            <div class="col-lg-3">
+                                                <input type="file" name="las_file" required="" id="id_las_file_predict"
+                                                    class="form-control">
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <button type="submit" class="btn btn-primary text-white">Submit
+                                                    <img id="submit_pred_file_indicator" style="height:20px;"
+                                                        class="htmx-indicator"
+                                                        src="{% static 'img/bars.svg' %}"/></button>
+                                            </div>
                                         </div>
-                                        <div class="col-lg-2">
-                                            <button type="submit" class="btn btn-primary text-white">Submit
-                                                <img id="submit_pred_file_indicator" style="height:20px;"
-                                                     class="htmx-indicator"
-                                                     src="{% static 'img/bars.svg' %}"/></button>
-                                        </div>
-                                    </div>
-                                </form>
+                                    </form>
 
-                            {% endif %}
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col" id="output_log">
-            {% if predicted_log_div %}
-                <div class="card border-secondary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">5. Prediction result</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Plot the predicted log with the actual log</h6>
+        <div class="row">
+            <div class="col" id="output_log">
+                {% if predicted_log_div %}
+                    <div class="card border-secondary mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">5. Prediction result</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">Plot the predicted log with the actual log</h6>
 
-                        <button
+                            <button
                                 data-hx-get="/preview_pred_las"
                                 data-hx-target="#preview-las-modals-here"
                                 data-hx-trigger="click"
                                 data-hx-indicator="#preview_pred_log_indicator"
                                 class="btn btn-secondary text-white my-3"
                                 _="on htmx:afterOnLoad wait 10ms then add .show to #preview-las-modal then add .show to #preview-las-modal-backdrop">
-                            Open Uploaded file logs
-                            <img id="preview_pred_log_indicator" style="height:20px;" class="htmx-indicator"
-                                 src="{% static 'img/bars.svg' %}"/>
-                        </button>
+                                Open Uploaded file logs
+                                <img id="preview_pred_log_indicator" style="height:20px;" class="htmx-indicator"
+                                    src="{% static 'img/bars.svg' %}"/>
+                            </button>
 
-                        <div id="preview-las-modals-here"></div>
+                            <div id="preview-las-modals-here"></div>
 
-                        {{ predicted_log_div | safe }}
+                            {{ predicted_log_div | safe }}
 
-                        <p class="text-danger"><i>Disclaimer:</i> this workflow might not produce a good result on
-                            your
-                            dataset. The aim of this web-application is to facilitate a non-programmer geoscientists
-                            who
-                            are willing to learn and try the implementation of machine learning workflow on missing
-                            well
-                            log prediction.</p>
+                            <p class="text-danger"><i>Disclaimer:</i> this workflow might not produce a good result on
+                                your
+                                dataset. The aim of this web-application is to facilitate a non-programmer geoscientists
+                                who
+                                are willing to learn and try the implementation of machine learning workflow on missing
+                                well
+                                log prediction.</p>
 
-                        <a class="btn btn-primary text-white" href="/download_las">Download</a>
+                            <a class="btn btn-primary text-white" href="/download_las">Download</a>
+                        </div>
                     </div>
-                </div>
-                <h5>References</h5>
-                <p>1. Sedgwick, Philip (2012). <a
+                    <h5>References</h5>
+                    <p>1. Sedgwick, Philip (2012). <a
                         href="https://www.researchgate.net/publication/275470782_Pearson's_correlation_coefficient"
                         target="_blank"
                         rel="noopener noreferrer">Pearson's correlation coefficient</a></p>
-                <p>2. Ayyadevara, V Kishore (2018). <a
+                    <p>2. Ayyadevara, V Kishore (2018). <a
                         href="https://www.researchgate.net/publication/326087729_Gradient_Boosting_Machine"
                         target="_blank"
                         rel="noopener noreferrer">Gradient Boosting Machine</a></p>
-                <p>3. Chai, T., Draxler, R. R. (2014). <a
+                    <p>3. Chai, T., Draxler, R. R. (2014). <a
                         href="https://www.researchgate.net/publication/262980567_Root_mean_square_error_RMSE_or_mean_absolute_error_MAE"
                         target="_blank"
                         rel="noopener noreferrer">Root mean square error (RMSE) or mean absolute error (MAE)?</a></p>
-                <p>4. Doa Ibu Team (2021). <a
+                    <p>4. Doa Ibu Team (2021). <a
                         href="https://github.com/Geovartha/spe-gcs-ml-challenge-2021-/blob/main/spe_gcs_ml_challenge_2021.ipynb"
                         target="_blank"
                         rel="noopener noreferrer">SPE GCS ML Challenge 2021</a></p>
-            {% endif %}
+                {% endif %}
+            </div>
         </div>
+
+
     </div>
-
-
-</div>
 
 </body>
 </html>

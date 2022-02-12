@@ -49,7 +49,7 @@ def one_base_page(request):
         predicted_log_div: plotly log preview prediction vs real if available.
 
     Template:
-        template: index.html
+        index.html
 
     """
     form = LasUploadForm()
@@ -108,8 +108,15 @@ def one_base_page(request):
 
 
 def two_las_upload(request):
-    """
-    Process uploaded LAS Files
+    """Process Uploaded las files
+
+    If uploaded las files are valid, add to session and return it to the template.
+
+    Context:
+        las_files: list of uploaded and validated las files
+
+    Template:
+        las_list.html
     """
     if request.method == "POST":
         form = LasUploadForm(request.POST, request.FILES)
@@ -156,6 +163,15 @@ def two_las_upload(request):
 
 
 def log_selector(request):
+    """Returns correlation heatmap and ask for logs to train
+
+    Context:
+        columns: logs available based on the selected las files.
+        heatmap_div: plotly heatmap of logs correlation heatmap
+
+    Template:
+        log_selector.html
+    """
     selected_las = request.GET.getlist("selected_las")
     request.session["selected_las"] = selected_las
 
@@ -180,6 +196,15 @@ def log_selector(request):
 
 
 def threea_data_cleaning(request):
+    """Returns whisker plot of selected logs and asks for minmax of each
+
+    Context:
+        las_div: Plotly boxplot for selected logs
+        iqr: Value boundaries of selected logs. Default is minmax
+
+    Template:
+        las_box.html
+    """
     features = request.GET.getlist("selected_log")
     request.session["features"] = features
     train_df = pd.read_json(request.session["train_df"])
@@ -202,6 +227,14 @@ def threea_data_cleaning(request):
 
 
 def threeb_preview_cleaned(request):
+    """Returns whisker of selected logs based on users input boundaries
+
+    Context:
+        las_div: Plotly boxplot for selected logs
+
+    Template:
+        las_limited.html
+    """
     train_df = pd.read_json(request.session["train_df"])
     features = request.session["features"]
 
@@ -220,14 +253,32 @@ def threeb_preview_cleaned(request):
 
 
 def predicted_log(request):
-    features = request.session["features"]
+    """Asks for users log to be used for prediction
 
+    Context:
+        features: Log options to select for prediction
+
+    Template:
+        predicted_log.html
+    """
+    features = request.session["features"]
     template_name = "predicted_log.html"
     context = {"features": features}
     return render(request, template_name, context)
 
 
 def four_model_output(request):
+    """Returns RMSE, Feature importance chart and asks for new las to create prediction
+
+    Context:
+        feature_importance_div: Plotly bar chart for feature importance
+        rmse_train: RMSE of training set
+        rmse_test: RMSE of test set
+        upload_form: File input form for las file
+
+    Template:
+        las_pred.html
+    """
     train_df = pd.read_json(request.session["train_df"])
     features = request.session.get("features").copy()
     predicted_log = request.GET.get("predicted_log")
@@ -268,6 +319,16 @@ def four_model_output(request):
 
 
 def five_predicts(request):
+    """Returns plot of predicted log vs the log from uploaded file if available
+
+    TODO: Need to change accepted las file to actual saved filename
+
+    Context:
+        predicted_log_div: Plotly log plot of predicted log
+
+    Template:
+        las_predicted.html
+    """
     if request.method == "POST":
         form = LasUploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -336,7 +397,12 @@ def five_predicts(request):
             return render(request, template_name)
 
 
-def download_las(request):
+def download_las(request) -> FileResponse:
+    """Create download link for predicted log as las file
+
+    Returns:
+        FileResponse
+    """
     las_filename = request.session["pred_las"]
     pred_df = pd.read_json(request.session["pred_df"])
     # recreate las file for download
@@ -357,21 +423,26 @@ def download_las(request):
     )
 
 
-def download_sample(request):
+def download_sample(request) -> FileResponse:
+    """Creates download link for sample file
+
+    Returns:
+        FileResponse
+    """
     return FileResponse(open(settings.MEDIA_ROOT / "utils" / "sample_files.zip", "rb"))
 
 
 def las_preview(request):
-    # sizeModes = [
-    #     "fixed",
-    #     "stretch_width",
-    #     "stretch_height",
-    #     "stretch_both",
-    #     "scale_width",
-    #     "scale_height",
-    #     "scale_both",
-    # ]
-    # selected_las = request.GET.getlist("selected_las")
+    """Returns preview of las files. One track for each log
+
+    Context:
+        preview_log_div: Plotly log chart of las file
+        las_list: List of uploaded las files
+        curves_list: List of logs of selected las file
+
+    Template:
+        las_preview.html
+    """
     single_select_las = request.GET.get("single_select_las")
     las_list = request.session["las_list"]
     curves_list = request.GET.getlist("selected_logs")
@@ -388,12 +459,6 @@ def las_preview(request):
             if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT"
         ]
 
-    # myLog = []
-
-    # for logs in curves_list:
-    #     fig = well.addplot(logs)
-    #     myLog.append(fig)
-
     fig = well.create_plot(curves_list)
 
     config = {
@@ -408,16 +473,8 @@ def las_preview(request):
     }
 
     preview_log_div = fig.to_html(
-        # full_html=False,
         config=config,
-        # include_plotlyjs=False
     )
-
-    # for i in myLog:
-    #     i.y_range = myLog[0].y_range
-    #
-    # plot = gridplot([myLog], sizing_mode="stretch_both")
-    # plot_script, plot_div = components(plot)
 
     if request.htmx.target == "las_preview":
         context = {
@@ -489,6 +546,14 @@ def preview_pred_las(request):
 
 
 def feedback(request):
+    """Return popup for feedback form
+
+    Context:
+        form: Feedback form
+
+    Template:
+        contact_us.html
+    """
     if request.method == "POST":
         form = ContactUsForm(request.POST)
         if form.is_valid():
