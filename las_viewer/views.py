@@ -346,7 +346,7 @@ def five_predicts(request):
 
             data_real, _ = load_data(settings.MEDIA_ROOT / "las" / las_file.name)
             data_real = data_real.reset_index()
-            df_real = merge_alias(data_real, alias, list(data_real.columns))
+            df_real = merge_alias(data_real, alias)
             df_real.rename(columns={"DEPT": "DEPTH"}, inplace=True)
 
             well_real = df_real["WELL"].unique()
@@ -429,7 +429,10 @@ def download_sample(request) -> FileResponse:
     Returns:
         FileResponse
     """
-    return FileResponse(open(settings.MEDIA_ROOT / "utils" / "sample_files.zip", "rb"))
+    return FileResponse(
+        open(settings.MEDIA_ROOT / "utils" / "sample_files.zip", "rb"),
+        as_attachment=True,
+    )
 
 
 def las_preview(request):

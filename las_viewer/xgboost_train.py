@@ -29,7 +29,7 @@ def load_data(filename):
     return data_well, log_list
 
 
-def merge_alias(db, alias, logs_selected):
+def merge_alias(db, alias):
     well = db["WELL"].unique()
     merged_data = pd.DataFrame()
 
@@ -111,7 +111,7 @@ def dataframing_train(las_files):
     # Merge log aliases for train dataset
     data_train = data_train.reset_index()
     # data_train.rename(columns={"DEPT": "DEPTH"}, inplace=True)
-    train = merge_alias(data_train, alias, list(data_train.columns))
+    train = merge_alias(data_train, alias)
     train = train.apply(lambda x: pd.Series(x.dropna().values))
 
     # Select well data which has more than 5000ft length

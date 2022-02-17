@@ -1,9 +1,10 @@
 import os
+
 import lasio
 import magic
 import pandas as pd
-from django.core.exceptions import ValidationError
 import plotly.graph_objects as go
+from django.core.exceptions import ValidationError
 from plotly.subplots import make_subplots
 
 
@@ -26,7 +27,7 @@ def plot_correlation_heatmap(df):
 
     annotations = []
     for n, row in cor.iterrows():
-        for m, val in row.iteritems():
+        for m, _ in row.iteritems():
             annotations.append(
                 go.layout.Annotation(
                     text=str(round(cor[n][m], 2)),
