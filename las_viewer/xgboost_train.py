@@ -10,6 +10,15 @@ from xgboost import XGBRegressor
 
 
 def load_data(filename):
+    """Parse training las files and convert to pandas DataFrame.
+
+    Args:
+        filename (): path to uploaded las file
+
+    Returns:
+       data_well: dataframe of las file created with lasio
+       log_list: dataframe of las file with headers
+    """
     las_file = lasio.read(filename)
     data_well = las_file.df()
     log = list(data_well.columns.values)
@@ -84,7 +93,7 @@ def merge_alias(db, alias):
 
 
 def dataframing_train(las_files):
-    """
+    """Prepare selected las files for training.
 
     :return: data frame of train
     """

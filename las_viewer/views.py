@@ -108,7 +108,7 @@ def one_base_page(request):
 
 
 def two_las_upload(request):
-    """Process Uploaded las files
+    """Process Uploaded las files.
 
     If uploaded las files are valid, add to session and return it to the template.
 
@@ -163,7 +163,7 @@ def two_las_upload(request):
 
 
 def log_selector(request):
-    """Returns correlation heatmap and ask for logs to train
+    """Returns correlation heatmap and ask for logs to train.
 
     Context:
         columns: logs available based on the selected las files.
@@ -196,7 +196,7 @@ def log_selector(request):
 
 
 def threea_data_cleaning(request):
-    """Returns whisker plot of selected logs and asks for minmax of each
+    """Returns whisker plot of selected logs and asks for minmax of each.
 
     Context:
         las_div: Plotly boxplot for selected logs
@@ -227,7 +227,7 @@ def threea_data_cleaning(request):
 
 
 def threeb_preview_cleaned(request):
-    """Returns whisker of selected logs based on users input boundaries
+    """Returns whisker of selected logs based on users input boundaries.
 
     Context:
         las_div: Plotly boxplot for selected logs
@@ -253,7 +253,7 @@ def threeb_preview_cleaned(request):
 
 
 def predicted_log(request):
-    """Asks for users log to be used for prediction
+    """Asks for users log to be used for prediction.
 
     Context:
         features: Log options to select for prediction
@@ -268,7 +268,7 @@ def predicted_log(request):
 
 
 def four_model_output(request):
-    """Returns RMSE, Feature importance chart and asks for new las to create prediction
+    """Returns RMSE, Feature importance chart and asks for new las to create prediction.
 
     Context:
         feature_importance_div: Plotly bar chart for feature importance
@@ -319,7 +319,7 @@ def four_model_output(request):
 
 
 def five_predicts(request):
-    """Returns plot of predicted log vs the log from uploaded file if available
+    """Returns plot of predicted log vs the log from uploaded file if available.
 
     TODO: Need to change accepted las file to actual saved filename
 
@@ -398,7 +398,7 @@ def five_predicts(request):
 
 
 def download_las(request) -> FileResponse:
-    """Create download link for predicted log as las file
+    """Create download link for predicted log as las file.
 
     Returns:
         FileResponse
@@ -424,7 +424,7 @@ def download_las(request) -> FileResponse:
 
 
 def download_sample(request) -> FileResponse:
-    """Creates download link for sample file
+    """Creates download link for sample file.
 
     Returns:
         FileResponse
@@ -436,7 +436,7 @@ def download_sample(request) -> FileResponse:
 
 
 def las_preview(request):
-    """Returns preview of las files. One track for each log
+    """Returns preview of las files. One track for each log.
 
     Context:
         preview_log_div: Plotly log chart of las file
@@ -549,7 +549,7 @@ def preview_pred_las(request):
 
 
 def feedback(request):
-    """Return popup for feedback form
+    """Return popup for feedback form.
 
     Context:
         form: Feedback form
