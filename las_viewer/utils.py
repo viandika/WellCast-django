@@ -9,8 +9,9 @@ from plotly.subplots import make_subplots
 
 
 def validate_is_las(file):
-    """
-    Take in the input file and make sure the uploaded file has correct extension and mime type
+    """Validate uploaded las files.
+
+    Take in the input file and make sure the file has correct extension and mime type
     """
     valid_mime_types = ["text/plain"]
     file_mime_type = magic.from_buffer(file.read(1024), mime=True)
@@ -76,7 +77,8 @@ def plot_correlation_heatmap(df):
 def plot_range_boxplot(df, features):
 
     fig = make_subplots(rows=1, cols=len(features))
-    # TODO: plotly slows browser when theres a lot of points. Current workaround is to only show the whiskers
+    # TODO: plotly slows browser when theres a lot of points.
+    # Current workaround is to only show the whiskers
     for idx, feature in enumerate(features):
         fig.add_trace(
             go.Box(y=df[feature], name=feature, boxpoints=False),
@@ -230,7 +232,12 @@ class LasPlot:
 
             fig.update_yaxes(
                 autorange="reversed",
-                # title_text=(self.curvename[0] + " (" + str(self.unitDict[self.curvename[0]]) + ")"),
+                # title_text=(
+                #     self.curvename[0]
+                #     + " ("
+                #     + str(self.unitDict[self.curvename[0]])
+                #     + ")"
+                # ),
                 automargin=True,
                 showticklabels=True,
                 linecolor="black",
