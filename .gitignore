@@ -15,3 +15,6 @@
 **/las_downloads/*
 !**/sample_files.zip
 **/.python-version
+**/htmlcov/
+**/.coverage
+**/.ropeproject
