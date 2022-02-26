@@ -1,14 +1,12 @@
-// add Roboto Font
-@import "../../node_modules/@fontsource/roboto/400";
+$font-family-sans-serif: roboto;
+$primary: #00aff0;
+$secondary: #f58634;
+$border-radius: 0.6rem;
 
-$font-family-sans-serif: Roboto;
-$primary: #00AFF0;
-$secondary: #F58634;
-$border-radius: .6rem;
+@import "~bootstrap/scss/bootstrap";
+@import "~select2/src/scss/core";
+@import "~select2-bootstrap-5-theme/src/include-all";
+@import "./spinner";
+@import "~@fontsource/roboto/scss/mixins";
 
-@import "../../node_modules/bootstrap/scss/bootstrap";
-
-@import "../../node_modules/select2/src/scss/core";
-@import "../../node_modules/select2-bootstrap-5-theme/src/select2-bootstrap-5-theme";
-
-@import "spinner";
+@include fontFace($weight: 400, $fontDir: "~@fontsource/roboto/files");

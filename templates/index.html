@@ -1,4 +1,7 @@
 {% load static %}
+
+{% load render_bundle from webpack_loader %}
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -7,11 +10,13 @@
 
         <link rel="icon" href="{% static 'img/favicon.ico' %}" sizes="16x16">
 
-        <link href="{% static 'css/style.css' %}" rel="stylesheet">
+        <!-- <link href="{% static 'css/style.css' %}" rel="stylesheet"> -->
 
-        <script src="{% static "js/app.min.js" %}"></script>
-        <script src="{% static "js/index.js" %}"></script>
-        <script src="{% static "js/custom.js" %}"></script>
+        {% render_bundle 'app' 'css' %}
+        {% render_bundle 'app' 'js' %}
+        <!-- <script src="{% static "js/app.js" %}"></script> -->
+        <!-- <script src="{% static "js/index.js" %}"></script> -->
+        <!-- <script src="{% static "js/custom.js" %}"></script> -->
 
     </head>
     <body>
