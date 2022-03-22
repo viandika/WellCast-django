@@ -476,18 +476,16 @@ def las_preview(request):
     }
 
     preview_log_div = fig.to_html(
-        config=config,
+        full_html=False, config=config, include_plotlyjs=False
     )
 
     if request.htmx.target == "las_preview":
         context = {
-            # "plot_script": plot_script,
             "preview_log_div": preview_log_div,
             "curves_list": curves_list,
         }
     else:
         context = {
-            # "plot_script": plot_script,
             "preview_log_div": preview_log_div,
             "las_list": las_list,
             "curves_list": curves_list,
@@ -508,18 +506,6 @@ def preview_pred_las(request):
             if curve.mnemonic != "DEPTH" and curve.mnemonic != "DEPT"
         ]
 
-    # myLog = []
-
-    # for logs in curves_list:
-    #     fig = well.addplot(logs)
-    #     myLog.append(fig)
-    #
-    # for i in myLog:
-    #     i.y_range = myLog[0].y_range
-    #
-    # plot = gridplot([myLog], sizing_mode="stretch_both")
-    # plot_script, plot_div = components(plot)
-
     fig = well.create_plot(curves_list)
 
     config = {
@@ -534,13 +520,10 @@ def preview_pred_las(request):
     }
 
     preview_pred_log_div = fig.to_html(
-        # full_html=False,
-        config=config,
-        # include_plotlyjs=False
+        full_html=False, config=config, include_plotlyjs=False
     )
 
     context = {
-        # "plot_script": plot_script,
         "preview_pred_log_div": preview_pred_log_div,
         "curves_list": curves_list,
         "las_pred_filename": las_pred_filename,
