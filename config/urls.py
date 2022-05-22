@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 
 urlpatterns = [
-    url("", include(("las_viewer.urls", "las_viewer"), namespace="las_viewer")),
+    url("", include(("log_prediction.urls", "log_prediction"), namespace="log_prediction")),
 ]
 # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
