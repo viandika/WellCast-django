@@ -1,341 +1,341 @@
 {
   "status": "done",
   "assets": {
-    "fonts/roboto-cyrillic-ext-400-normal.woff2": {
-      "name": "fonts/roboto-cyrillic-ext-400-normal.woff2",
-      "path": "/home/vian/codes/python/WellCast-django/static/fonts/roboto-cyrillic-ext-400-normal.woff2",
-      "publicPath": "/static/fonts/roboto-cyrillic-ext-400-normal.woff2"
-    },
-    "fonts/roboto-all-400-normal.woff": {
-      "name": "fonts/roboto-all-400-normal.woff",
-      "path": "/home/vian/codes/python/WellCast-django/static/fonts/roboto-all-400-normal.woff",
-      "publicPath": "/static/fonts/roboto-all-400-normal.woff"
-    },
     "fonts/roboto-cyrillic-400-normal.woff2": {
       "name": "fonts/roboto-cyrillic-400-normal.woff2",
-      "path": "/home/vian/codes/python/WellCast-django/static/fonts/roboto-cyrillic-400-normal.woff2",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\fonts\\roboto-cyrillic-400-normal.woff2",
       "publicPath": "/static/fonts/roboto-cyrillic-400-normal.woff2"
     },
-    "fonts/roboto-latin-ext-400-normal.woff2": {
-      "name": "fonts/roboto-latin-ext-400-normal.woff2",
-      "path": "/home/vian/codes/python/WellCast-django/static/fonts/roboto-latin-ext-400-normal.woff2",
-      "publicPath": "/static/fonts/roboto-latin-ext-400-normal.woff2"
+    "fonts/roboto-cyrillic-ext-400-normal.woff2": {
+      "name": "fonts/roboto-cyrillic-ext-400-normal.woff2",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\fonts\\roboto-cyrillic-ext-400-normal.woff2",
+      "publicPath": "/static/fonts/roboto-cyrillic-ext-400-normal.woff2"
     },
     "fonts/roboto-latin-400-normal.woff2": {
       "name": "fonts/roboto-latin-400-normal.woff2",
-      "path": "/home/vian/codes/python/WellCast-django/static/fonts/roboto-latin-400-normal.woff2",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\fonts\\roboto-latin-400-normal.woff2",
       "publicPath": "/static/fonts/roboto-latin-400-normal.woff2"
     },
-    "js/app.7c091ef7.js": {
-      "name": "js/app.7c091ef7.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/app.7c091ef7.js",
-      "publicPath": "/static/js/app.7c091ef7.js"
+    "fonts/roboto-latin-ext-400-normal.woff2": {
+      "name": "fonts/roboto-latin-ext-400-normal.woff2",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\fonts\\roboto-latin-ext-400-normal.woff2",
+      "publicPath": "/static/fonts/roboto-latin-ext-400-normal.woff2"
+    },
+    "fonts/roboto-all-400-normal.woff": {
+      "name": "fonts/roboto-all-400-normal.woff",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\fonts\\roboto-all-400-normal.woff",
+      "publicPath": "/static/fonts/roboto-all-400-normal.woff"
+    },
+    "js/app.0c83b3ad.js": {
+      "name": "js/app.0c83b3ad.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\app.0c83b3ad.js",
+      "publicPath": "/static/js/app.0c83b3ad.js"
     },
     "js/npm.plotly.js.8fae92bf.js": {
       "name": "js/npm.plotly.js.8fae92bf.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.plotly.js.8fae92bf.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.plotly.js.8fae92bf.js",
       "publicPath": "/static/js/npm.plotly.js.8fae92bf.js"
     },
-    "js/npm.core-js.c0f475bc.js": {
-      "name": "js/npm.core-js.c0f475bc.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.core-js.c0f475bc.js",
-      "publicPath": "/static/js/npm.core-js.c0f475bc.js"
+    "js/npm.core-js.79f1aebc.js": {
+      "name": "js/npm.core-js.79f1aebc.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.core-js.79f1aebc.js",
+      "publicPath": "/static/js/npm.core-js.79f1aebc.js"
     },
     "js/npm.popperjs.5f2bc7c6.js": {
       "name": "js/npm.popperjs.5f2bc7c6.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.popperjs.5f2bc7c6.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.popperjs.5f2bc7c6.js",
       "publicPath": "/static/js/npm.popperjs.5f2bc7c6.js"
     },
     "js/npm.gl-mat4.bc35d849.js": {
       "name": "js/npm.gl-mat4.bc35d849.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.gl-mat4.bc35d849.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.gl-mat4.bc35d849.js",
       "publicPath": "/static/js/npm.gl-mat4.bc35d849.js"
     },
     "js/npm.world-calendars.35cf7bac.js": {
       "name": "js/npm.world-calendars.35cf7bac.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.world-calendars.35cf7bac.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.world-calendars.35cf7bac.js",
       "publicPath": "/static/js/npm.world-calendars.35cf7bac.js"
     },
     "js/npm.stream-browserify.cf91d1a8.js": {
       "name": "js/npm.stream-browserify.cf91d1a8.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.stream-browserify.cf91d1a8.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.stream-browserify.cf91d1a8.js",
       "publicPath": "/static/js/npm.stream-browserify.cf91d1a8.js"
     },
     "js/npm.probe-image-size.88281b7d.js": {
       "name": "js/npm.probe-image-size.88281b7d.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.probe-image-size.88281b7d.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.probe-image-size.88281b7d.js",
       "publicPath": "/static/js/npm.probe-image-size.88281b7d.js"
     },
     "js/npm.polybooljs.43526086.js": {
       "name": "js/npm.polybooljs.43526086.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.polybooljs.43526086.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.polybooljs.43526086.js",
       "publicPath": "/static/js/npm.polybooljs.43526086.js"
     },
     "js/npm.stream-parser.9e35a394.js": {
       "name": "js/npm.stream-parser.9e35a394.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.stream-parser.9e35a394.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.stream-parser.9e35a394.js",
       "publicPath": "/static/js/npm.stream-parser.9e35a394.js"
     },
     "js/npm.assert.8839d052.js": {
       "name": "js/npm.assert.8839d052.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.assert.8839d052.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.assert.8839d052.js",
       "publicPath": "/static/js/npm.assert.8839d052.js"
     },
     "js/npm.util.ef31b166.js": {
       "name": "js/npm.util.ef31b166.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.util.ef31b166.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.util.ef31b166.js",
       "publicPath": "/static/js/npm.util.ef31b166.js"
     },
     "js/npm.tinycolor2.ef35ec78.js": {
       "name": "js/npm.tinycolor2.ef35ec78.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.tinycolor2.ef35ec78.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.tinycolor2.ef35ec78.js",
       "publicPath": "/static/js/npm.tinycolor2.ef35ec78.js"
     },
     "js/npm.select2.35e23bf4.js": {
       "name": "js/npm.select2.35e23bf4.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.select2.35e23bf4.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.select2.35e23bf4.js",
       "publicPath": "/static/js/npm.select2.35e23bf4.js"
     },
     "js/npm.jquery.3387f0d5.js": {
       "name": "js/npm.jquery.3387f0d5.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.jquery.3387f0d5.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.jquery.3387f0d5.js",
       "publicPath": "/static/js/npm.jquery.3387f0d5.js"
     },
-    "js/npm.hyperscript.org.3501da42.js": {
-      "name": "js/npm.hyperscript.org.3501da42.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.hyperscript.org.3501da42.js",
-      "publicPath": "/static/js/npm.hyperscript.org.3501da42.js"
+    "js/npm.hyperscript.org.454244a6.js": {
+      "name": "js/npm.hyperscript.org.454244a6.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.hyperscript.org.454244a6.js",
+      "publicPath": "/static/js/npm.hyperscript.org.454244a6.js"
     },
     "js/npm.htmx.org.fe1622f6.js": {
       "name": "js/npm.htmx.org.fe1622f6.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.htmx.org.fe1622f6.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.htmx.org.fe1622f6.js",
       "publicPath": "/static/js/npm.htmx.org.fe1622f6.js"
     },
     "js/npm.buffer.883a79ea.js": {
       "name": "js/npm.buffer.883a79ea.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.buffer.883a79ea.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.buffer.883a79ea.js",
       "publicPath": "/static/js/npm.buffer.883a79ea.js"
     },
     "js/npm.bootstrap.a0101ac5.js": {
       "name": "js/npm.bootstrap.a0101ac5.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.bootstrap.a0101ac5.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.bootstrap.a0101ac5.js",
       "publicPath": "/static/js/npm.bootstrap.a0101ac5.js"
     },
     "js/npm.plotly.21a1d42e.js": {
       "name": "js/npm.plotly.21a1d42e.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.plotly.21a1d42e.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.plotly.21a1d42e.js",
       "publicPath": "/static/js/npm.plotly.21a1d42e.js"
     },
     "js/453.5ef733c7.js": {
       "name": "js/453.5ef733c7.js",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/453.5ef733c7.js",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\453.5ef733c7.js",
       "publicPath": "/static/js/453.5ef733c7.js"
     },
     "img/bars-black.svg": {
       "name": "img/bars-black.svg",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/bars-black.svg",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\bars-black.svg",
       "publicPath": "/static/img/bars-black.svg"
     },
     "img/bars.svg": {
       "name": "img/bars.svg",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/bars.svg",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\bars.svg",
       "publicPath": "/static/img/bars.svg"
     },
     "img/by-geov.png": {
       "name": "img/by-geov.png",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/by-geov.png",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\by-geov.png",
       "publicPath": "/static/img/by-geov.png"
     },
     "img/cropped-vartha-research.png": {
       "name": "img/cropped-vartha-research.png",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/cropped-vartha-research.png",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\cropped-vartha-research.png",
       "publicPath": "/static/img/cropped-vartha-research.png"
     },
     "img/favicon-16x16.png": {
       "name": "img/favicon-16x16.png",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/favicon-16x16.png",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\favicon-16x16.png",
       "publicPath": "/static/img/favicon-16x16.png"
     },
     "img/favicon-32x32.png": {
       "name": "img/favicon-32x32.png",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/favicon-32x32.png",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\favicon-32x32.png",
       "publicPath": "/static/img/favicon-32x32.png"
     },
     "img/favicon.ico": {
       "name": "img/favicon.ico",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/favicon.ico",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\favicon.ico",
       "publicPath": "/static/img/favicon.ico"
     },
     "img/information-icon-red.svg": {
       "name": "img/information-icon-red.svg",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/information-icon-red.svg",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\information-icon-red.svg",
       "publicPath": "/static/img/information-icon-red.svg"
     },
     "img/information.svg": {
       "name": "img/information.svg",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/information.svg",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\information.svg",
       "publicPath": "/static/img/information.svg"
     },
     "img/spinner.gif": {
       "name": "img/spinner.gif",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/spinner.gif",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\spinner.gif",
       "publicPath": "/static/img/spinner.gif"
     },
     "img/workflow.png": {
       "name": "img/workflow.png",
-      "path": "/home/vian/codes/python/WellCast-django/static/img/workflow.png",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\img\\workflow.png",
       "publicPath": "/static/img/workflow.png"
     },
     "js/453.5ef733c7.js.LICENSE.txt": {
       "name": "js/453.5ef733c7.js.LICENSE.txt",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/453.5ef733c7.js.LICENSE.txt",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\453.5ef733c7.js.LICENSE.txt",
       "publicPath": "/static/js/453.5ef733c7.js.LICENSE.txt"
     },
     "js/npm.assert.8839d052.js.LICENSE.txt": {
       "name": "js/npm.assert.8839d052.js.LICENSE.txt",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.assert.8839d052.js.LICENSE.txt",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.assert.8839d052.js.LICENSE.txt",
       "publicPath": "/static/js/npm.assert.8839d052.js.LICENSE.txt"
     },
     "js/npm.bootstrap.a0101ac5.js.LICENSE.txt": {
       "name": "js/npm.bootstrap.a0101ac5.js.LICENSE.txt",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.bootstrap.a0101ac5.js.LICENSE.txt",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.bootstrap.a0101ac5.js.LICENSE.txt",
       "publicPath": "/static/js/npm.bootstrap.a0101ac5.js.LICENSE.txt"
     },
     "js/npm.buffer.883a79ea.js.LICENSE.txt": {
       "name": "js/npm.buffer.883a79ea.js.LICENSE.txt",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.buffer.883a79ea.js.LICENSE.txt",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.buffer.883a79ea.js.LICENSE.txt",
       "publicPath": "/static/js/npm.buffer.883a79ea.js.LICENSE.txt"
     },
     "js/npm.jquery.3387f0d5.js.LICENSE.txt": {
       "name": "js/npm.jquery.3387f0d5.js.LICENSE.txt",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.jquery.3387f0d5.js.LICENSE.txt",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.jquery.3387f0d5.js.LICENSE.txt",
       "publicPath": "/static/js/npm.jquery.3387f0d5.js.LICENSE.txt"
     },
     "js/npm.polybooljs.43526086.js.LICENSE.txt": {
       "name": "js/npm.polybooljs.43526086.js.LICENSE.txt",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.polybooljs.43526086.js.LICENSE.txt",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.polybooljs.43526086.js.LICENSE.txt",
       "publicPath": "/static/js/npm.polybooljs.43526086.js.LICENSE.txt"
     },
-    "js/app.7c091ef7.js.map": {
-      "name": "js/app.7c091ef7.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/app.7c091ef7.js.map",
-      "publicPath": "/static/js/app.7c091ef7.js.map"
+    "js/app.0c83b3ad.js.map": {
+      "name": "js/app.0c83b3ad.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\app.0c83b3ad.js.map",
+      "publicPath": "/static/js/app.0c83b3ad.js.map"
     },
     "js/npm.plotly.js.8fae92bf.js.map": {
       "name": "js/npm.plotly.js.8fae92bf.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.plotly.js.8fae92bf.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.plotly.js.8fae92bf.js.map",
       "publicPath": "/static/js/npm.plotly.js.8fae92bf.js.map"
     },
-    "js/npm.core-js.c0f475bc.js.map": {
-      "name": "js/npm.core-js.c0f475bc.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.core-js.c0f475bc.js.map",
-      "publicPath": "/static/js/npm.core-js.c0f475bc.js.map"
+    "js/npm.core-js.79f1aebc.js.map": {
+      "name": "js/npm.core-js.79f1aebc.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.core-js.79f1aebc.js.map",
+      "publicPath": "/static/js/npm.core-js.79f1aebc.js.map"
     },
     "js/npm.popperjs.5f2bc7c6.js.map": {
       "name": "js/npm.popperjs.5f2bc7c6.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.popperjs.5f2bc7c6.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.popperjs.5f2bc7c6.js.map",
       "publicPath": "/static/js/npm.popperjs.5f2bc7c6.js.map"
     },
     "js/npm.gl-mat4.bc35d849.js.map": {
       "name": "js/npm.gl-mat4.bc35d849.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.gl-mat4.bc35d849.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.gl-mat4.bc35d849.js.map",
       "publicPath": "/static/js/npm.gl-mat4.bc35d849.js.map"
     },
     "js/npm.world-calendars.35cf7bac.js.map": {
       "name": "js/npm.world-calendars.35cf7bac.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.world-calendars.35cf7bac.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.world-calendars.35cf7bac.js.map",
       "publicPath": "/static/js/npm.world-calendars.35cf7bac.js.map"
     },
     "js/npm.stream-browserify.cf91d1a8.js.map": {
       "name": "js/npm.stream-browserify.cf91d1a8.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.stream-browserify.cf91d1a8.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.stream-browserify.cf91d1a8.js.map",
       "publicPath": "/static/js/npm.stream-browserify.cf91d1a8.js.map"
     },
     "js/npm.probe-image-size.88281b7d.js.map": {
       "name": "js/npm.probe-image-size.88281b7d.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.probe-image-size.88281b7d.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.probe-image-size.88281b7d.js.map",
       "publicPath": "/static/js/npm.probe-image-size.88281b7d.js.map"
     },
     "js/npm.polybooljs.43526086.js.map": {
       "name": "js/npm.polybooljs.43526086.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.polybooljs.43526086.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.polybooljs.43526086.js.map",
       "publicPath": "/static/js/npm.polybooljs.43526086.js.map"
     },
     "js/npm.stream-parser.9e35a394.js.map": {
       "name": "js/npm.stream-parser.9e35a394.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.stream-parser.9e35a394.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.stream-parser.9e35a394.js.map",
       "publicPath": "/static/js/npm.stream-parser.9e35a394.js.map"
     },
     "js/npm.assert.8839d052.js.map": {
       "name": "js/npm.assert.8839d052.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.assert.8839d052.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.assert.8839d052.js.map",
       "publicPath": "/static/js/npm.assert.8839d052.js.map"
     },
     "js/npm.util.ef31b166.js.map": {
       "name": "js/npm.util.ef31b166.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.util.ef31b166.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.util.ef31b166.js.map",
       "publicPath": "/static/js/npm.util.ef31b166.js.map"
     },
     "js/npm.tinycolor2.ef35ec78.js.map": {
       "name": "js/npm.tinycolor2.ef35ec78.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.tinycolor2.ef35ec78.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.tinycolor2.ef35ec78.js.map",
       "publicPath": "/static/js/npm.tinycolor2.ef35ec78.js.map"
     },
     "js/npm.select2.35e23bf4.js.map": {
       "name": "js/npm.select2.35e23bf4.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.select2.35e23bf4.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.select2.35e23bf4.js.map",
       "publicPath": "/static/js/npm.select2.35e23bf4.js.map"
     },
     "js/npm.jquery.3387f0d5.js.map": {
       "name": "js/npm.jquery.3387f0d5.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.jquery.3387f0d5.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.jquery.3387f0d5.js.map",
       "publicPath": "/static/js/npm.jquery.3387f0d5.js.map"
     },
-    "js/npm.hyperscript.org.3501da42.js.map": {
-      "name": "js/npm.hyperscript.org.3501da42.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.hyperscript.org.3501da42.js.map",
-      "publicPath": "/static/js/npm.hyperscript.org.3501da42.js.map"
+    "js/npm.hyperscript.org.454244a6.js.map": {
+      "name": "js/npm.hyperscript.org.454244a6.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.hyperscript.org.454244a6.js.map",
+      "publicPath": "/static/js/npm.hyperscript.org.454244a6.js.map"
     },
     "js/npm.htmx.org.fe1622f6.js.map": {
       "name": "js/npm.htmx.org.fe1622f6.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.htmx.org.fe1622f6.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.htmx.org.fe1622f6.js.map",
       "publicPath": "/static/js/npm.htmx.org.fe1622f6.js.map"
     },
     "js/npm.buffer.883a79ea.js.map": {
       "name": "js/npm.buffer.883a79ea.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.buffer.883a79ea.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.buffer.883a79ea.js.map",
       "publicPath": "/static/js/npm.buffer.883a79ea.js.map"
     },
     "js/npm.bootstrap.a0101ac5.js.map": {
       "name": "js/npm.bootstrap.a0101ac5.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.bootstrap.a0101ac5.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.bootstrap.a0101ac5.js.map",
       "publicPath": "/static/js/npm.bootstrap.a0101ac5.js.map"
     },
     "js/npm.plotly.21a1d42e.js.map": {
       "name": "js/npm.plotly.21a1d42e.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/npm.plotly.21a1d42e.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\npm.plotly.21a1d42e.js.map",
       "publicPath": "/static/js/npm.plotly.21a1d42e.js.map"
     },
     "js/453.5ef733c7.js.map": {
       "name": "js/453.5ef733c7.js.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/js/453.5ef733c7.js.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\js\\453.5ef733c7.js.map",
       "publicPath": "/static/js/453.5ef733c7.js.map"
     },
     "css/app-afe882815c510fa162d9.css": {
       "name": "css/app-afe882815c510fa162d9.css",
-      "path": "/home/vian/codes/python/WellCast-django/static/css/app-afe882815c510fa162d9.css",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\css\\app-afe882815c510fa162d9.css",
       "publicPath": "/static/css/app-afe882815c510fa162d9.css"
     },
     "css/app-afe882815c510fa162d9.css.map": {
       "name": "css/app-afe882815c510fa162d9.css.map",
-      "path": "/home/vian/codes/python/WellCast-django/static/css/app-afe882815c510fa162d9.css.map",
+      "path": "D:\\codes\\python\\WellCast-django\\static\\css\\app-afe882815c510fa162d9.css.map",
       "publicPath": "/static/css/app-afe882815c510fa162d9.css.map"
     }
   },
   "chunks": {
     "app": [
       "js/npm.plotly.js.8fae92bf.js",
-      "js/npm.core-js.c0f475bc.js",
+      "js/npm.core-js.79f1aebc.js",
       "js/npm.popperjs.5f2bc7c6.js",
       "js/npm.gl-mat4.bc35d849.js",
       "js/npm.world-calendars.35cf7bac.js",
@@ -348,13 +348,13 @@
       "js/npm.tinycolor2.ef35ec78.js",
       "js/npm.select2.35e23bf4.js",
       "js/npm.jquery.3387f0d5.js",
-      "js/npm.hyperscript.org.3501da42.js",
+      "js/npm.hyperscript.org.454244a6.js",
       "js/npm.htmx.org.fe1622f6.js",
       "js/npm.buffer.883a79ea.js",
       "js/npm.bootstrap.a0101ac5.js",
       "js/npm.plotly.21a1d42e.js",
       "js/453.5ef733c7.js",
-      "js/app.7c091ef7.js",
+      "js/app.0c83b3ad.js",
       "css/app-afe882815c510fa162d9.css"
     ]
   },
