@@ -1,13 +1,8 @@
 {
   "name": "wellcast",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
   "scripts": {
-    "scss": "node-sass --output-style compressed -o static/css src/scss --source-map true --source-map-contents true",
-    "autoprefixer": "postcss -u autoprefixer cssnano -r static/css/*.css",
-    "uglify": "uglifyjs src/js/*.js -m -o static/js/app.js --source-map && uglifyjs src/js/*.js -m -c -o static/js/app.min.js",
-    "build:css": "npm run scss && npm run autoprefixer",
-    "build:js": "npm run uglify",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "start": "webpack serve --config webpack.config.dev.js"
   },
@@ -17,7 +12,63 @@
   },
   "keywords": [],
   "author": "Vian",
-  "license": "MIT",
+  "license": "BSD 3",
+  "browserslist": {
+    "production staging": [
+      ">5%",
+      "last 2 versions",
+      "Firefox ESR",
+      "not ie < 11"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version"
+    ]
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "useBuiltIns": "usage",
+          "corejs": "3.0.0"
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-proposal-class-properties"
+    ]
+  },
+  "eslintConfig": {
+    "parser": "@babel/eslint-parser",
+    "extends": [
+      "eslint:recommended"
+    ],
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 8,
+      "sourceType": "module",
+      "requireConfigFile": false
+    },
+    "rules": {
+      "semi": 2,
+      "no-unused-vars": 0
+    }
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard",
+    "plugins": [
+      "stylelint-scss"
+    ],
+    "rules": {
+      "at-rule-no-unknown": null,
+      "scss/at-rule-no-unknown": true
+    }
+  },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
     "@bokeh/bokehjs": "2.3.1",
