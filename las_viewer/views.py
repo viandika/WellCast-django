@@ -469,7 +469,10 @@ def five_predicts(request):
                 filename=request.FILES["las_file"].name,
             )
             instance.save()  # save form to database
-            request.session["pred_las"] = las_file.name
+            file_names_qs = LasUpload.objects.filter(pk=instance.pk).values(
+                "las_file"
+            )
+            request.session["pred_las"] = file_names_qs[0]
             alias_file = settings.MEDIA_ROOT / "utils" / "alias.json"
 
             with open(alias_file, "r") as file:
