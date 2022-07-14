@@ -122,6 +122,9 @@ def one_base_page(request):
 
     if "rmse_train" in request.session:
         features = request.session["features"]
+        r2_train = request.session["r2_train"]
+        r2_test = request.session["r2_test"]
+
         model = XGBRegressor()
         model.load_model(
             settings.MEDIA_ROOT / "models" / (request.session.session_key + ".json")
@@ -153,6 +156,8 @@ def one_base_page(request):
         context["rmse_test"] = request.session["rmse_test"]
         context["feature_importance_div"] = feature_importance_div
         context["upload_form"] = upload_form
+        context["r2_train"] = r2_train
+        context["r2_test"] = r2_test
 
     if "pred_las" in request.session:
         predicted_log = request.session["predicted_log"]
