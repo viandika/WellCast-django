@@ -576,17 +576,17 @@ def download_las(request):
     las_filename = request.session["pred_las"]
     pred_df = pd.read_json(request.session["pred_df"])
     # recreate las file for download
-    las = lasio.read(settings.MEDIA_ROOT / "las" / las_filename)
+    las = lasio.read(settings.MEDIA_ROOT / "las" / os.path.basename(las_filename['las_file']))
     well = las.df()
     well["Predicted_Log"] = pred_df
     las.set_data(well)
     las.write(
-        str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + las_filename)),
+        str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + os.path.basename(las_filename['las_file']))),
         version=2.0,
     )
     return FileResponse(
         open(
-            str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + las_filename)),
+            str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + os.path.basename(las_filename['las_file']))),
             "rb",
         )
     )
