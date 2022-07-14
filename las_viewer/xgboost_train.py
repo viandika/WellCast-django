@@ -6,6 +6,7 @@ import json
 from django.conf import settings
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
 from xgboost import XGBRegressor
 
 
@@ -152,7 +153,11 @@ def train_model(df, columns, y_name):
 
     pred_train = model.predict(X_train)
     rmse_train = np.sqrt(mean_squared_error(y_train, pred_train))
+    r2_train = r2_score(y_train,pred_train)
+
+
     pred_test = model.predict(X_test)
     rmse_test = np.sqrt(mean_squared_error(y_test, pred_test))
+    r2_test = r2_score(y_test,pred_test)
 
-    return model, pred_train, rmse_train, pred_test, rmse_test
+    return model, pred_train, rmse_train, pred_test, rmse_test, r2_train, r2_test

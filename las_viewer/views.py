@@ -412,12 +412,15 @@ def four_model_output(request):
             (train_df[col] > float(request.GET.get(col + "_bottom")))
             & (train_df[col] < float(request.GET.get(col + "_top")))
         ]
-    model, pred_train, rmse_train, pred_test, rmse_test = train_model(
+    model, pred_train, rmse_train, pred_test, rmse_test, r2_train, r2_test = train_model(
         train_df, features, predicted_log
     )
 
     request.session["rmse_train"] = rmse_train
     request.session["rmse_test"] = rmse_test
+
+    request.session["r2_train"] = r2_train
+    request.session["r2_test"] = r2_test
 
     # Save model to file
     model.save_model(
@@ -453,6 +456,8 @@ def four_model_output(request):
         "feature_importance_div": feature_importance_div,
         "rmse_train": rmse_train,
         "rmse_test": rmse_test,
+        "r2_train": r2_train,
+        "r2_test": r2_test,
         "upload_form": upload_form,
     }
     template_name = "las_pred.html"
