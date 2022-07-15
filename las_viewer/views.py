@@ -526,9 +526,11 @@ def five_predicts(request):
             )
 
             dt_pred = model.predict(df_real2[features])
+            
 
             # save pred to session
             dt_pred_json = json.dumps(dt_pred.tolist())
+            
             request.session["pred_df"] = dt_pred_json
 
             df_real2["PRED"] = dt_pred
@@ -584,11 +586,16 @@ def five_predicts(request):
 
 def download_las(request):
     las_filename = request.session["pred_las"]
+    # pred_df = pd.read_json(request.session["pred_df"])
     pred_df = pd.read_json(request.session["pred_df"])
+    
     # recreate las file for download
     las = lasio.read(settings.MEDIA_ROOT / "las" / os.path.basename(las_filename['las_file']))
     well = las.df()
-    well["Predicted_Log"] = pred_df
+    
+    well["Predicted_Log"] = pred_df.values
+    
+    
     las.set_data(well)
     las.write(
         str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + os.path.basename(las_filename['las_file']))),
