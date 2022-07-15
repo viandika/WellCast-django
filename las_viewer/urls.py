@@ -14,6 +14,7 @@ from las_viewer.views import (
     feedback,
     preview_pred_las,
     download_sample,
+    download_csv,
 )
 
 urlpatterns = [
@@ -26,6 +27,7 @@ urlpatterns = [
     path("four", four_model_output, name="model_output"),
     path("five", five_predicts, name="five_predicts"),
     path("download_las", download_las, name="download_las"),
+    path("download_csv", download_csv, name="download_csv"),
     path("download_sample", download_sample, name="download_sample"),
     path("las_preview", las_preview, name="las_preview"),
     path("preview_pred_las", preview_pred_las, name="preview_pred_las"),

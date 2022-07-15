@@ -417,9 +417,15 @@ def four_model_output(request):
             (train_df[col] > float(request.GET.get(col + "_bottom")))
             & (train_df[col] < float(request.GET.get(col + "_top")))
         ]
-    model, pred_train, rmse_train, pred_test, rmse_test, r2_train, r2_test = train_model(
-        train_df, features, predicted_log
-    )
+    (
+        model,
+        pred_train,
+        rmse_train,
+        pred_test,
+        rmse_test,
+        r2_train,
+        r2_test,
+    ) = train_model(train_df, features, predicted_log)
 
     request.session["rmse_train"] = rmse_train
     request.session["rmse_test"] = rmse_test
@@ -479,9 +485,7 @@ def five_predicts(request):
                 filename=request.FILES["las_file"].name,
             )
             instance.save()  # save form to database
-            file_names_qs = LasUpload.objects.filter(pk=instance.pk).values(
-                "las_file"
-            )
+            file_names_qs = LasUpload.objects.filter(pk=instance.pk).values("las_file")
             request.session["pred_las"] = file_names_qs[0]
             alias_file = settings.MEDIA_ROOT / "utils" / "alias.json"
 
@@ -526,11 +530,10 @@ def five_predicts(request):
             )
 
             dt_pred = model.predict(df_real2[features])
-            
 
             # save pred to session
             dt_pred_json = json.dumps(dt_pred.tolist())
-            
+
             request.session["pred_df"] = dt_pred_json
 
             df_real2["PRED"] = dt_pred
@@ -588,22 +591,71 @@ def download_las(request):
     las_filename = request.session["pred_las"]
     # pred_df = pd.read_json(request.session["pred_df"])
     pred_df = pd.read_json(request.session["pred_df"])
-    
+
     # recreate las file for download
-    las = lasio.read(settings.MEDIA_ROOT / "las" / os.path.basename(las_filename['las_file']))
+    las = lasio.read(
+        settings.MEDIA_ROOT / "las" / os.path.basename(las_filename["las_file"])
+    )
     well = las.df()
-    
+
     well["Predicted_Log"] = pred_df.values
-    
-    
+
     las.set_data(well)
     las.write(
-        str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + os.path.basename(las_filename['las_file']))),
+        str(
+            settings.MEDIA_ROOT
+            / "las_downloads"
+            / ("pred " + os.path.basename(las_filename["las_file"]))
+        ),
         version=2.0,
     )
     return FileResponse(
         open(
-            str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + os.path.basename(las_filename['las_file']))),
+            str(
+                settings.MEDIA_ROOT
+                / "las_downloads"
+                / ("pred " + os.path.basename(las_filename["las_file"]))
+            ),
+            "rb",
+        )
+    )
+
+
+def download_csv(request):
+    las_filename = request.session["pred_las"]
+    pred_df = pd.read_json(request.session["pred_df"])
+    las = lasio.read(
+        settings.MEDIA_ROOT / "las" / os.path.basename(las_filename["las_file"])
+    )
+    well = las.df()
+    well["Predicted_Log"] = pred_df.values
+    well.to_csv(
+        str(
+            settings.MEDIA_ROOT
+            / "las_downloads"
+            / (
+                "pred "
+                + str(
+                    os.path.splitext(os.path.basename(las_filename["las_file"]))[0]
+                    + ".csv"
+                )
+            )
+        )
+    )
+
+    return FileResponse(
+        open(
+            str(
+                settings.MEDIA_ROOT
+                / "las_downloads"
+                / (
+                    "pred "
+                    + str(
+                        os.path.splitext(os.path.basename(las_filename["las_file"]))[0]
+                        + ".csv"
+                    )
+                )
+            ),
             "rb",
         )
     )
