@@ -498,22 +498,31 @@
                                         alt="information" style="height:1.3em;"> Assess the Root Mean Square Error
                                         (RMSE)<sup><a
                                             href="https://www.researchgate.net/publication/262980567_Root_mean_square_error_RMSE_or_mean_absolute_error_MAE"
-                                            target="_blank" rel="noopener noreferrer">[3]</a></sup> of the train &
-                                        validation samples.</p>
+                                            target="_blank" rel="noopener noreferrer">[3]</a></sup> and R<sup>2</sup> score<sup><a
+                                            href="https://www.researchgate.net/publication/312451551_What_is_R2_all_about"
+                                            target="_blank" rel="noopener noreferrer">[4]</a></sup>  of the train &
+                                    validation samples.</p>
 
-                                    <div class="row">
-                                        <div class="col-lg-4 col-sm-12">
-                                            <table class="table table-vcenter table-bordered">
-                                                <tr>
-                                                    <th class="table-light">RMSE train</th>
-                                                    <td>{{ rmse_train | floatformat:3 }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <th class="table-light">RMSE validation</th>
-                                                    <td>{{ rmse_test | floatformat:3 }}</td>
-                                                </tr>
-                                            </table>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-lg-4 col-sm-12">
+                                        <table class="table table-vcenter table-bordered">
+                                            <tr>
+                                                <th class="table-light">RMSE train</th>
+                                                <td>{{ rmse_train | floatformat:3 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="table-light">RMSE validation</th>
+                                                <td>{{ rmse_test | floatformat:3 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="table-light">R2 train</th>
+                                                <td>{{ r2_train | floatformat:3 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th class="table-light">R2 validation</th>
+                                                <td>{{ r2_test | floatformat:3 }}</td>
+                                            </tr>
+                                        </table>
                                     </div>
 
                                     <p class="card-subtitle mb-3 text-muted"><img
@@ -585,8 +594,8 @@
                                 well
                                 log prediction.</p>
 
-                            <a class="btn btn-primary text-white" href="/download_las">Download</a>
-                        </div>
+                        <a class="btn btn-primary text-white" href="/download_las">Download LAS file</a>
+                        <a class="btn btn-primary text-white" href="/download_csv">Download CSV file</a>
                     </div>
                     <h5>References</h5>
                     <p>1. Sedgwick, Philip (2012). <a
@@ -601,7 +610,11 @@
                         href="https://www.researchgate.net/publication/262980567_Root_mean_square_error_RMSE_or_mean_absolute_error_MAE"
                         target="_blank"
                         rel="noopener noreferrer">Root mean square error (RMSE) or mean absolute error (MAE)?</a></p>
-                    <p>4. Doa Ibu Team (2021). <a
+                <p>4. Figueiredo, Dalson & Júnior, Silva, & Rocha, Enivaldo. (2011). <a
+                        href="https://www.researchgate.net/publication/312451551_What_is_R2_all_about"
+                        target="_blank"
+                        rel="noopener noreferrer">What is R2 all about?</a></p>
+                <p>5. Doa Ibu Team (2021). <a
                         href="https://github.com/Geovartha/spe-gcs-ml-challenge-2021-/blob/main/spe_gcs_ml_challenge_2021.ipynb"
                         target="_blank"
                         rel="noopener noreferrer">SPE GCS ML Challenge 2021</a></p>

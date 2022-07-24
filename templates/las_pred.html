@@ -6,7 +6,9 @@
         alt="information" style="height:1.3em;"> Assess the Root Mean Square Error
     (RMSE)<sup><a
             href="https://www.researchgate.net/publication/262980567_Root_mean_square_error_RMSE_or_mean_absolute_error_MAE"
-            target="_blank" rel="noopener noreferrer">[3]</a></sup> of the train &
+            target="_blank" rel="noopener noreferrer">[3]</a></sup> and R<sup>2</sup> score<sup><a
+            href="https://www.researchgate.net/publication/312451551_What_is_R2_all_about"
+            target="_blank" rel="noopener noreferrer">[4]</a></sup>  of the train &
     validation samples.</p>
 
 <div class="row">
@@ -19,6 +21,14 @@
             <tr>
                 <th class="table-light">RMSE validation</th>
                 <td>{{ rmse_test | floatformat:3 }}</td>
+            </tr>
+            <tr>
+                <th class="table-light">R2 train</th>
+                <td>{{ r2_train | floatformat:3 }}</td>
+            </tr>
+            <tr>
+                <th class="table-light">R2 validation</th>
+                <td>{{ r2_test | floatformat:3 }}</td>
             </tr>
         </table>
     </div>

@@ -80,6 +80,9 @@ def one_base_page(request):
 
     if "rmse_train" in request.session:
         features = request.session["features"]
+        r2_train = request.session["r2_train"]
+        r2_test = request.session["r2_test"]
+
         model = XGBRegressor()
         model.load_model(
             settings.MEDIA_ROOT / "models" / (request.session.session_key + ".json")
@@ -93,6 +96,8 @@ def one_base_page(request):
         context["rmse_test"] = request.session["rmse_test"]
         context["feature_importance_div"] = feature_importance_div
         context["upload_form"] = upload_form
+        context["r2_train"] = r2_train
+        context["r2_test"] = r2_test
 
     if "pred_las" in request.session:
         predicted_log = request.session["predicted_log"]
@@ -290,13 +295,22 @@ def four_model_output(request):
             (train_df[col] > float(request.GET.get(col + "_bottom")))
             & (train_df[col] < float(request.GET.get(col + "_top")))
         ]
-
-    model, _, rmse_train, _, rmse_test = train_model(train_df, features, predicted_log)
+    (
+        model,
+        pred_train,
+        rmse_train,
+        pred_test,
+        rmse_test,
+        r2_train,
+        r2_test,
+    ) = train_model(train_df, features, predicted_log)
 
     request.session["rmse_train"] = rmse_train
     request.session["rmse_test"] = rmse_test
 
-    # TODO: make sure there is a folder for model
+    request.session["r2_train"] = r2_train
+    request.session["r2_test"] = r2_test
+
     # Save model to file
     model.save_model(
         settings.MEDIA_ROOT / "models" / (request.session.session_key + ".json")
@@ -312,6 +326,8 @@ def four_model_output(request):
         "feature_importance_div": feature_importance_div,
         "rmse_train": rmse_train,
         "rmse_test": rmse_test,
+        "r2_train": r2_train,
+        "r2_test": r2_test,
         "upload_form": upload_form,
     }
     template_name = "las_pred.html"
@@ -338,7 +354,8 @@ def five_predicts(request):
                 filename=request.FILES["las_file"].name,
             )
             instance.save()  # save form to database
-            request.session["pred_las"] = las_file.name
+            file_names_qs = LasUpload.objects.filter(pk=instance.pk).values("las_file")
+            request.session["pred_las"] = file_names_qs[0]
             alias_file = settings.MEDIA_ROOT / "utils" / "alias.json"
 
             with open(alias_file, "r") as file:
@@ -378,6 +395,7 @@ def five_predicts(request):
 
             # save pred to session
             dt_pred_json = json.dumps(dt_pred.tolist())
+
             request.session["pred_df"] = dt_pred_json
 
             df_real2["PRED"] = dt_pred
@@ -404,20 +422,74 @@ def download_las(request) -> FileResponse:
         FileResponse
     """
     las_filename = request.session["pred_las"]
+    # pred_df = pd.read_json(request.session["pred_df"])
     pred_df = pd.read_json(request.session["pred_df"])
+
     # recreate las file for download
-    las = lasio.read(settings.MEDIA_ROOT / "las" / las_filename)
+    las = lasio.read(
+        settings.MEDIA_ROOT / "las" / os.path.basename(las_filename["las_file"])
+    )
     well = las.df()
-    well["Predicted_Log"] = pred_df
+
+    well["Predicted_Log"] = pred_df.values
+
     las.set_data(well)
 
     las.write(
-        str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + las_filename)),
+        str(
+            settings.MEDIA_ROOT
+            / "las_downloads"
+            / ("pred " + os.path.basename(las_filename["las_file"]))
+        ),
         version=2.0,
     )
     return FileResponse(
         open(
-            str(settings.MEDIA_ROOT / "las_downloads" / ("pred " + las_filename)),
+            str(
+                settings.MEDIA_ROOT
+                / "las_downloads"
+                / ("pred " + os.path.basename(las_filename["las_file"]))
+            ),
+            "rb",
+        )
+    )
+
+
+def download_csv(request):
+    las_filename = request.session["pred_las"]
+    pred_df = pd.read_json(request.session["pred_df"])
+    las = lasio.read(
+        settings.MEDIA_ROOT / "las" / os.path.basename(las_filename["las_file"])
+    )
+    well = las.df()
+    well["Predicted_Log"] = pred_df.values
+    well.to_csv(
+        str(
+            settings.MEDIA_ROOT
+            / "las_downloads"
+            / (
+                "pred "
+                + str(
+                    os.path.splitext(os.path.basename(las_filename["las_file"]))[0]
+                    + ".csv"
+                )
+            )
+        )
+    )
+
+    return FileResponse(
+        open(
+            str(
+                settings.MEDIA_ROOT
+                / "las_downloads"
+                / (
+                    "pred "
+                    + str(
+                        os.path.splitext(os.path.basename(las_filename["las_file"]))[0]
+                        + ".csv"
+                    )
+                )
+            ),
             "rb",
         )
     )
