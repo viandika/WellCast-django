@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "log_prediction",
-    "webpack_loader",
+    # "webpack_loader",
 ]
 
 MIDDLEWARE = [
@@ -42,11 +42,11 @@ MIDDLEWARE = [
     # 'django_htmx.middleware.HtmxDetails',
 ]
 
-WEBPACK_LOADER = {
-    "DEFAULT": {
-        "STATS_FILE": str(BASE_DIR / "webpack-stats.json"),
-    },
-}
+# WEBPACK_LOADER = {
+#     "DEFAULT": {
+#         "STATS_FILE": str(BASE_DIR / "webpack-stats.json"),
+#     },
+# }
 
 ROOT_URLCONF = "config.urls"
 

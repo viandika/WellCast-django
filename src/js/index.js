@@ -1,6 +1,3 @@
-import $ from "jquery";
-import * as htmx from "htmx.org/dist/htmx.js";
-
 $(function () {
   setMultiSelect();
 

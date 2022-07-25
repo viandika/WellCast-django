@@ -569,7 +569,7 @@ def preview_pred_las(request):
     curves_list = request.GET.getlist("selected_logs")
     las_pred_filename = request.session["pred_las"]
 
-    well = LasPlot(settings.MEDIA_ROOT / "las" / las_pred_filename)
+    well = LasPlot(las_pred_filename["las_file"])
 
     if not curves_list:
         curves_list = [

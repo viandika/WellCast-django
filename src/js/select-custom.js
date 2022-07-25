@@ -1,6 +1,4 @@
-import $ from "jquery";
-
-(function () {
+$(function () {
   var Defaults = $.fn.select2.amd.require("select2/defaults");
 
   $.extend(Defaults.defaults, {
@@ -98,4 +96,4 @@ import $ from "jquery";
 
     this.$dropdownContainer.css(css);
   };
-})(window.jQuery);
+});
