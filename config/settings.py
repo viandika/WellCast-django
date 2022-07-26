@@ -1,24 +1,21 @@
+import os
 from pathlib import Path
 
 from django.contrib.messages import constants as messages
+from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# take environment variables from .env
+load_dotenv()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY", "ywcjqzy4@%+j6_y_4tm+t$1smfz^bon-ppzs0ud7(ca))%_pt@"
+)
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+DEBUG = os.getenv("DJANGO_DEBUG", True)
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-!!ls)5a7+b9kjgi)b#!hsvmtml6zg2=lagcz2kresli8bh^s@t"
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-
-# Application definition
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", ["*"])
 
 INSTALLED_APPS = [
     "django.contrib.auth",
@@ -27,7 +24,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "log_prediction",
-    # "webpack_loader",
 ]
 
 MIDDLEWARE = [
@@ -39,14 +35,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
-    # 'django_htmx.middleware.HtmxDetails',
 ]
-
-# WEBPACK_LOADER = {
-#     "DEFAULT": {
-#         "STATS_FILE": str(BASE_DIR / "webpack-stats.json"),
-#     },
-# }
 
 ROOT_URLCONF = "config.urls"
 
@@ -68,22 +57,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "config.wsgi.application"
 
-
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 USE_TZ = True
-TIME_ZONE = "Asia/Jakarta"
+TIME_ZONE = os.getenv("DJANGO_TIME_ZONE", "Asia/Jakarta")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-        "TIME_ZONE": "Asia/Jakarta",
+        "TIME_ZONE": os.getenv("DJANGO_TIME_ZONE", "Asia/Jakarta"),
     }
 }
-
-
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -114,23 +96,11 @@ LOGGING = {
     },
 }
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
-
 LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
 
 USE_I18N = True
 
 USE_L10N = True
-
-USE_TZ = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
@@ -138,9 +108,6 @@ STATICFILES_DIRS = (str(BASE_DIR / "static"),)
 
 MEDIA_ROOT = BASE_DIR / "media"
 MEDIA_URL = "/media/"
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
