@@ -582,6 +582,23 @@
 
                         {{ predicted_log_div | safe }}
 
+                        {% if rmse_blind %}
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-12">
+                                <table class="table table-vcenter table-bordered">
+                                    <tr>
+                                        <th class="table-light">RMSE predicted log</th>
+                                        <td>{{ rmse_blind | floatformat:3 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="table-light">R2 predicted log</th>
+                                        <td>{{ r2_blind | floatformat:3 }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        {% endif %}
+
                         <p class="text-danger"><i>Disclaimer:</i> this workflow might not produce a good result on
                             your
                             dataset. The aim of this web-application is to facilitate a non-programmer geoscientists

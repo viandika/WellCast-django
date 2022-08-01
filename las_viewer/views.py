@@ -14,6 +14,9 @@ from django.shortcuts import render
 from plotly.subplots import make_subplots
 from xgboost import XGBRegressor
 
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
+
 from las_viewer.forms import LasUploadForm, ContactUsForm
 from las_viewer.las_renderer import lasViewer
 from las_viewer.models import LasUpload
@@ -199,8 +202,12 @@ def one_base_page(request):
         predicted_log_div = fig.to_html(
             full_html=False, config=config, include_plotlyjs=False
         )
-
         context["predicted_log_div"] = predicted_log_div
+        if df_real2[predicted_log].notna().sum() > 0:
+            rmse_blind = np.sqrt(mean_squared_error(df_real2["PRED"], df_real2[predicted_log]))
+            r2_blind = r2_score(df_real2["PRED"],df_real2[predicted_log])
+            context["rmse_blind"] = rmse_blind
+            context["r2_blind"] = r2_blind
 
     template_name = "index.html"
     return render(request, template_name, context)
@@ -493,7 +500,8 @@ def five_predicts(request):
                 alias = json.load(file)
 
             data_real, log_ava_real = load_data(
-                settings.MEDIA_ROOT / "las" / las_file.name
+                # settings.MEDIA_ROOT / "las" / las_file.name
+                file_names_qs[0]['las_file']
             )
             data_real = data_real.reset_index()
             df_real = merge_alias(data_real, alias, list(data_real.columns))
@@ -523,6 +531,7 @@ def five_predicts(request):
                 if feature not in df_real2.columns:
                     df_real2[feature] = np.nan
             if predicted_log in features:
+                features_init = features.copy()
                 features.remove(predicted_log)
             model = XGBRegressor()
             model.load_model(
@@ -577,9 +586,18 @@ def five_predicts(request):
             predicted_log_div = fig.to_html(
                 full_html=False, config=config, include_plotlyjs=False
             )
-
-            template_name = "las_predicted.html"
             context = {"predicted_log_div": predicted_log_div}
+
+
+            if df_real2[predicted_log].notna().sum() > 0:
+                rmse_blind = np.sqrt(mean_squared_error(df_real2["PRED"], df_real2[predicted_log]))
+                r2_blind = r2_score(df_real2["PRED"],df_real2[predicted_log])
+                context['rmse_blind'] = rmse_blind
+                context['r2_blind'] = r2_blind
+
+            
+            template_name = "las_predicted.html"
+
             return render(request, template_name, context)
         else:
             template_name = "las_predicted.html"
