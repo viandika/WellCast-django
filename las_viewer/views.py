@@ -62,7 +62,7 @@ def one_base_page(request):
                 z=cor,
                 hovertemplate="<b>%{x}:%{y}</b> = %{z}<extra></extra>",
                 colorbar=dict(title=dict(text="Correlation Coefficient", side="right")),
-                colorscale="RdBu",
+                colorscale="Picnic",
                 zmin=-1,
                 zmax=1,
             )
@@ -83,6 +83,7 @@ def one_base_page(request):
                 "autoScale2d",
             ],
         }
+
 
         heatmap_div = fig.to_html(
             full_html=False, config=config, include_plotlyjs=False
@@ -288,7 +289,7 @@ def log_selector(request):
             z=cor,
             hovertemplate="<b>%{x}:%{y}</b> = %{z}<extra></extra>",
             colorbar=dict(title=dict(text="Correlation Coefficient", side="right")),
-            colorscale="RdBu",
+            colorscale="Picnic",
             zmin=-1,
             zmax=1,
         )
