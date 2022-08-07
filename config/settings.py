@@ -13,7 +13,7 @@ SECRET_KEY = os.getenv(
     "WELLCAST_SECRET_KEY", "ywcjqzy4@%+j6_y_4tm+t$1smfz^bon-ppzs0ud7(ca))%_pt@"
 )
 
-DEBUG = os.getenv("WELLCAST_DEBUG", True)
+DEBUG = bool(os.getenv("WELLCAST_DEBUG", True))
 
 ALLOWED_HOSTS = os.getenv("WELLCAST_ALLOWED_HOSTS", ["*"]).split(",")
 
