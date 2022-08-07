@@ -15,7 +15,7 @@ SECRET_KEY = os.getenv(
 
 DEBUG = os.getenv("WELLCAST_DEBUG", True)
 
-ALLOWED_HOSTS = os.getenv("WELLCAST_ALLOWED_HOSTS", ["*"])
+ALLOWED_HOSTS = os.getenv("WELLCAST_ALLOWED_HOSTS", ["*"]).split(",")
 
 INSTALLED_APPS = [
     "django.contrib.auth",
