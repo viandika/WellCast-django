@@ -10,12 +10,12 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv(
-    "DJANGO_SECRET_KEY", "ywcjqzy4@%+j6_y_4tm+t$1smfz^bon-ppzs0ud7(ca))%_pt@"
+    "WELLCAST_SECRET_KEY", "ywcjqzy4@%+j6_y_4tm+t$1smfz^bon-ppzs0ud7(ca))%_pt@"
 )
 
-DEBUG = os.getenv("DJANGO_DEBUG", True)
+DEBUG = os.getenv("WELLCAST_DEBUG", True)
 
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", ["*"])
+ALLOWED_HOSTS = os.getenv("WELLCAST_ALLOWED_HOSTS", ["*"])
 
 INSTALLED_APPS = [
     "django.contrib.auth",
@@ -58,14 +58,23 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 USE_TZ = True
-TIME_ZONE = os.getenv("DJANGO_TIME_ZONE", "Asia/Jakarta")
+TIME_ZONE = os.getenv("WELLCAST_TIME_ZONE", "Asia/Jakarta")
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
-        "TIME_ZONE": os.getenv("DJANGO_TIME_ZONE", "Asia/Jakarta"),
+        "TIME_ZONE": os.getenv("WELLCAST_TIME_ZONE", "Asia/Jakarta"),
     }
 }
+
+if os.getenv("WELLCAST_DBHOST"):
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.postgresql",
+        "HOST": os.getenv("WELLCAST_DBHOST"),
+        "NAME": os.getenv("WELLCAST_DBNAME", "wellcast"),
+        "USER": os.getenv("WELLCAST_DBUSER", "wellcast"),
+        "PASSWORD": os.getenv("WELLCAST_DBPASS", "wellcast"),
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {
