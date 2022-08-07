@@ -8,10 +8,8 @@ from django.conf import settings
 from django.contrib import messages
 from django.http import FileResponse
 from django.shortcuts import render
+from sklearn.metrics import mean_squared_error, r2_score
 from xgboost import XGBRegressor
-
-from sklearn.metrics import mean_squared_error
-from sklearn.metrics import r2_score
 
 from log_prediction.forms import ContactUsForm, LasUploadForm
 from log_prediction.models import LasUpload
@@ -111,8 +109,10 @@ def one_base_page(request):
 
         context["predicted_log_div"] = predicted_log_div
         if df_real2[predicted_log].notna().sum() > 0:
-            rmse_blind = np.sqrt(mean_squared_error(df_real2["PRED"], df_real2[predicted_log]))
-            r2_blind = r2_score(df_real2["PRED"],df_real2[predicted_log])
+            rmse_blind = np.sqrt(
+                mean_squared_error(df_real2["PRED"], df_real2[predicted_log])
+            )
+            r2_blind = r2_score(df_real2["PRED"], df_real2[predicted_log])
             context["rmse_blind"] = rmse_blind
             context["r2_blind"] = r2_blind
 
@@ -369,10 +369,7 @@ def five_predicts(request):
             with open(alias_file, "r") as file:
                 alias = json.load(file)
 
-            data_real, _ = load_data(
-                # settings.MEDIA_ROOT / "las" / las_file.name
-                file_names_qs[0]['las_file']
-            )
+            data_real, _ = load_data(file_names_qs[0]["las_file"])
             data_real = data_real.reset_index()
             df_real = merge_alias(data_real, alias)
             df_real.rename(columns={"DEPT": "DEPTH"}, inplace=True)
@@ -421,13 +418,13 @@ def five_predicts(request):
             template_name = "las_predicted.html"
             context = {"predicted_log_div": predicted_log_div}
 
-
             if df_real2[predicted_log].notna().sum() > 0:
-                rmse_blind = np.sqrt(mean_squared_error(df_real2["PRED"], df_real2[predicted_log]))
-                r2_blind = r2_score(df_real2["PRED"],df_real2[predicted_log])
-                context['rmse_blind'] = rmse_blind
-                context['r2_blind'] = r2_blind
-
+                rmse_blind = np.sqrt(
+                    mean_squared_error(df_real2["PRED"], df_real2[predicted_log])
+                )
+                r2_blind = r2_score(df_real2["PRED"], df_real2[predicted_log])
+                context["rmse_blind"] = rmse_blind
+                context["r2_blind"] = r2_blind
 
             template_name = "las_predicted.html"
 

@@ -47,7 +47,7 @@ def plot_correlation_heatmap(df):
             z=cor,
             hovertemplate="<b>%{x}:%{y}</b> = %{z}<extra></extra>",
             colorbar=dict(title=dict(text="Correlation Coefficient", side="right")),
-            colorscale="RdBu",
+            colorscale="Picnic",
             zmin=-1,
             zmax=1,
         )
