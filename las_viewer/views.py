@@ -419,6 +419,7 @@ def four_model_output(request):
     train_df = pd.read_json(request.session["train_df"])
     features = request.session.get("features").copy()
     predicted_log = request.GET.get("predicted_log")
+    test_perc = request.GET.get("test_perc")
     request.session["predicted_log"] = predicted_log
     for col in features:
         train_df = train_df.loc[
@@ -433,7 +434,7 @@ def four_model_output(request):
         rmse_test,
         r2_train,
         r2_test,
-    ) = train_model(train_df, features, predicted_log)
+    ) = train_model(train_df, features, predicted_log, test_perc)
 
     request.session["rmse_train"] = rmse_train
     request.session["rmse_test"] = rmse_test

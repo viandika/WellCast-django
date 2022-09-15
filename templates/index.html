@@ -466,10 +466,13 @@
                                     href="https://www.researchgate.net/publication/326087729_Gradient_Boosting_Machine"
                                     target="_blank" rel="noopener noreferrer">[2]</a></sup>.<br/><br/>
                             The data samples from the training wells are divided into training and validation
-                            samples
-                            with the proportion of 80 and 20 percent respectively.</h6>
+                            samples.
+                        </h6>
 
                         <form id="predicted_log_form">
+                            <label for="test_perc" class="form-label">Specify the Proportion of Validation Samples (%) </label>
+                            <input type="number" id="test_perc" name="test_perc" min="0" max="100">
+                            <br>
                             <label for="predicted_log" class="form-label">Select log you want to predict</label>
                             <select name="predicted_log" id="predicted_log" class="form-control">
                                 {% for feature in features %}

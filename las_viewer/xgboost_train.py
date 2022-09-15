@@ -140,12 +140,14 @@ def get_iqr(columns, quartiles):
     return iqr_dict
 
 
-def train_model(df, columns, y_name):
+def train_model(df, columns, y_name, test_perc):
     X = df[columns].drop([y_name], axis=1)
     y = df[y_name]
 
+    test_perc = float(test_perc)/100
+
     X_train, X_test, y_train, y_test = train_test_split(
-        X, y, test_size=0.3, random_state=9
+        X, y, test_size=test_perc, random_state=9
     )
 
     model = XGBRegressor()
