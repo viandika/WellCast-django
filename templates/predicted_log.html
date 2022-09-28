@@ -2,7 +2,7 @@
 <div class="card border-secondary mb-3">
     <div class="card-body">
         <h5 class="card-title">4. Model Building</h5>
-        <h6 class="card-subtitle mb-2 text-muted">The supervised learning method deployed here is a
+        <h6 class="card-subtitle mb-4 text-muted">The supervised learning method deployed here is a
             gradient boosting method<sup><a
                     href="https://www.researchgate.net/publication/326087729_Gradient_Boosting_Machine"
                     target="_blank" rel="noopener noreferrer">[2]</a></sup>.<br/><br/>
@@ -12,10 +12,9 @@
 
         <form id="predicted_log_form">
             <label for="test_perc" class="form-label">Specify the Proportion of Validation Samples (%) </label>
-            <input type="number" id="test_perc" name="test_perc" min="0" max="100">
-            <br>
+            <input class="form-control mb-4" type="number" id="test_perc" name="test_perc" min="0" max="100" value="80">
             <label for="predicted_log" class="form-label">Select log you want to predict</label>
-            <select name="predicted_log" id="predicted_log" class="form-control">
+            <select name="predicted_log" id="predicted_log" class="form-control mb-4">
                 {% for feature in features %}
                     <option value="{{ feature }}">{{ feature }}</option>
                 {% endfor %}
