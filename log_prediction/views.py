@@ -295,6 +295,7 @@ def four_model_output(request):
     train_df = pd.read_json(request.session["train_df"])
     features = request.session.get("features").copy()
     predicted_log = request.GET.get("predicted_log")
+    test_perc = request.GET.get("test_perc")
     request.session["predicted_log"] = predicted_log
 
     # Get the boundary parameters for each log from user input.
@@ -311,7 +312,7 @@ def four_model_output(request):
         rmse_test,
         r2_train,
         r2_test,
-    ) = train_model(train_df, features, predicted_log)
+    ) = train_model(train_df, features, predicted_log, test_perc)
 
     request.session["rmse_train"] = rmse_train
     request.session["rmse_test"] = rmse_test
@@ -618,7 +619,7 @@ def preview_pred_las(request):
     context = {
         "preview_pred_log_div": preview_pred_log_div,
         "curves_list": curves_list,
-        "las_pred_filename": las_pred_filename,
+        "las_pred_filename": os.path.basename(las_pred_filename["las_file"]),
     }
     return render(request, "las_pred_preview.html", context)
 

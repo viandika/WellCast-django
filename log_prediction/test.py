@@ -1,4 +1,6 @@
 import os
+import re
+import subprocess
 import tempfile
 
 from django.conf import settings
@@ -6,6 +8,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from log_prediction.models import LasUpload
+
 
 
 class LasUploadTest(TestCase):
@@ -37,3 +40,13 @@ class LasUploadTest(TestCase):
         os.remove(self.file2)
         las = LasUpload.objects.all()
         las.delete()
+
+
+_handle_pat = re.compile(r'(.*?)\s+pid:\s+(\d+).*[0-9a-fA-F]+:\s+(.*)')
+
+def open_files(name):
+    """return a list of (process_name, pid, filename) tuples for
+       open files matching the given name."""
+    lines = subprocess.check_output('handle.exe "%s"' % name).splitlines()
+    results = (_handle_pat.match(line.decode('mbcs')) for line in lines)
+    return [m.groups() for m in results if m]
