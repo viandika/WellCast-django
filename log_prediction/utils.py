@@ -174,8 +174,8 @@ class LasPlot:
     def __init__(self, lasname):
         self.lasname = lasname
         self.las = lasio.read(str(self.lasname))
-        self.df_precut = self.las.df().reset_index()
-        self.df = self.df_precut.apply(lambda x: pd.Series(x.dropna().values))
+        self.df = self.las.df().reset_index()
+        # self.df = self.df_precut.apply(lambda x: pd.Series(x.dropna().values))
         self.curvename = self.las.curves.keys()
         self.unit = [
             self.las.curves["%s" % self.curvename[i]].unit
